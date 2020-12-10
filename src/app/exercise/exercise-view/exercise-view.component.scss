@@ -1,0 +1,13 @@
+
+
+.requirements {
+    display: flex;
+    flex-direction: column;
+    .requirements-header {
+        display: flex;
+        align-items: center;
+        .add-button {
+            margin-right: 15px;
+        }
+    }
+}

@@ -1,4 +1,4 @@
-<section>
+<section *ngIf="exercise">
     <section class="exercise-data">
         <div class="exercise-title">
             <h1>Exercise Title</h1>
@@ -7,12 +7,17 @@
             <p>
                 This exercise is about many many things...
             </p>
+            <h2>
+                {{ exercise.getExportData() | json}}
+            </h2>
         </div>
     </section>
     <section class="requirements">
         <div class="requirements-header">
-            <button pButton type="button" class="p-button-raised"></button>
-            <div>
+            <div class="add-button">
+                <button pButton type="button" class="p-button-raised" label="Add Requirement"></button>
+            </div>
+            <div class="highlighted-text">
                 Requirements
             </div>
         </div>

@@ -9,10 +9,10 @@ import { from } from 'rxjs';
   declarations: [
     AppComponent,
     ExerciseViewComponent,
-    ButtonModule
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    ButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
