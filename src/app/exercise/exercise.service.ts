@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { of } from 'rxjs';
+import { BehaviorSubject, from, Observable, of } from 'rxjs';
 import { Exercise } from '../models/exercise';
 import exercise01 from '../models/mocks/01';
 import { ClassRequirement } from '../models/requirements/class-requirement';
@@ -7,16 +7,31 @@ import { ContainsSubRequirement } from '../models/requirements/contains-sub-requ
 import { ExtendSubRequirement } from '../models/requirements/extend-sub-requirement';
 import { IRequirement } from '../models/requirements/irequirement';
 import { ISubRequirement } from '../models/requirements/isub-requirement';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExerciseService {
 
-  constructor() { }
+  private currentExerciseSubject!: BehaviorSubject<Exercise | null>;
+
+  public currentExerciseObservable: Observable<Exercise | null>;
+
+  constructor() {
+    this.currentExerciseSubject = new BehaviorSubject<Exercise | null>(null);
+    this.currentExerciseObservable = this.currentExerciseSubject.asObservable();
+  }
+
+  public get userValue(): Exercise | null {
+    return this.currentExerciseSubject.value;
+  }
 
   openExercise() {
-    return of(this.createExerciseByJson(exercise01));
+    return of(this.createExerciseByJson(exercise01)).pipe(map((exercise) => {
+      this.currentExerciseSubject.next(exercise);
+      return exercise;
+    }));
   }
 
   createExerciseByJson(jsonData: any) {
@@ -43,7 +58,6 @@ export class ExerciseService {
     }
 
     return exercise;
-
   }
 
   getClassById(classRequirements: IRequirement[], id: any): ClassRequirement | null {

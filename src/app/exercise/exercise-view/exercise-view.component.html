@@ -13,13 +13,7 @@
         </div>
     </section>
     <section class="requirements">
-        <div class="requirements-header">
-            <div class="add-button">
-                <button pButton type="button" class="p-button-raised" label="Add Requirement"></button>
-            </div>
-            <div class="highlighted-text">
-                Requirements
-            </div>
-        </div>
+        <app-exercise-requirements-view *ngIf="!editSubRequirement" [exercise]="exercise" (editClassRequirement)="editClassRequirement($event)"></app-exercise-requirements-view>
+        <app-exercise-sub-requirements-view *ngIf="editSubRequirement" [exercise]="exercise" [editClassRequirement]="editRequirement" (back)="backToRequirements()"></app-exercise-sub-requirements-view>
     </section>
 </section>

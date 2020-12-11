@@ -1,0 +1,25 @@
+<section class="requirements">
+    <div class="requirements-header">
+        <div class="add-button">
+            <button pButton type="button" class="p-button-raised" label="Add Requirement" icon="pi pi-plus"></button>
+        </div>
+        <div class="highlighted-text">
+            Requirements
+        </div>
+    </div>
+    <div class="requirements-list">
+        <div class="requirement-item" *ngFor="let req of exercise.requirements">
+            <div class="requirement-content">
+                <div class="requirement-type">
+                    {{ req.type }}
+                </div>
+                <div class="requirement-description">
+                    Class with name <span class="highlight-name">{{ getClassRequirement(req).name }}</span>
+                </div>
+                <div class="requirement-action">
+                    <button pButton pRipple type="button" icon="pi pi-cog" class="p-button-rounded" (click)="editRequirement(req)"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,22 +1,25 @@
-
-
-.requirements {
+.subrequirements {
     display: flex;
     flex-direction: column;
-    .requirements-header {
+    .subrequirements-header {
         display: flex;
         align-items: center;
-        .add-button {
+        .top-buttons {
             margin-right: 15px;
+            min-width: 190px;
+            display: flex;
+            button {
+                margin: auto 3px;
+            }
         }
     }
-    .requirements-list {
+    .subrequirements-list {
         width: 80%;
         margin: 25px auto 0 auto;
         display: flex;
         flex-direction: column;
         align-items: center;
-        .requirement-item {
+        .subrequirement-item {
             background: #ffffff;
             box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
             border-radius: 3px;
@@ -25,25 +28,25 @@
             height: 70px;
             width: 100%;
             cursor: pointer;
-            .requirement-content {
+            .subrequirement-content {
                 display: flex;
                 justify-content: space-evenly;
                 align-items: center;
                 height: 100%;
-                .requirement-type {
+                .subrequirement-type {
                     border: solid #0891cf 1px;
                     color: #0891cf;
                     border-radius: 1em;
-                    padding: 3px 6px;
+                    padding: 3px 8px;
                 }
-                .requirement-description {
+                .subrequirement-description {
                     width: 30%;
                     .highlight-name {
                         font-weight: 600;
                         color: #0891cf;
                     }
                 }
-                .requirement-action {
+                .subrequirement-action {
                     width: 5%;
                 }
             }

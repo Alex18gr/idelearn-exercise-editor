@@ -1,0 +1,26 @@
+<section class="subrequirements">
+    <div class="subrequirements-header">
+        <div class="top-buttons">
+            <button pButton pRipple type="button" icon="pi pi-arrow-left" class="p-button-raised" label="back" (click)="goBackToRequirements()"></button>
+            <button pButton pRipple type="button" class="p-button-raised" label="Add Subrequirement" icon="pi pi-plus"></button>
+        </div>
+        <div class="highlighted-text">
+            Class {{ editClassRequirement.name }} Subrequirements
+        </div>
+    </div>
+    <div class="subrequirements-list">
+        <div class="subrequirement-item" *ngFor="let req of editClassRequirement.relatedRequirements">
+            <div class="subrequirement-content">
+                <div class="subrequirement-type">
+                    {{ req.type }}
+                </div>
+                <div class="subrequirement-description">
+                    Subrequirement Description
+                </div>
+                <div class="subrequirement-action">
+                    <button pButton pRipple type="button" icon="pi pi-cog" class="p-button-rounded" (click)="editSubRequirement(req)"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
