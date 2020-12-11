@@ -9,6 +9,9 @@ import { ExerciseSubRequirementsViewComponent } from './exercise/exercise-sub-re
 import { ToastModule } from 'primeng/toast';
 import { MessageModule } from 'primeng/message';
 import { MessageService } from 'primeng/api';
+import { DialogModule } from 'primeng/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RequirementEditDialogComponent } from './exercise/dialogs/requirement-edit-dialog/requirement-edit-dialog.component';
 
 @NgModule({
   declarations: [
@@ -16,12 +19,15 @@ import { MessageService } from 'primeng/api';
     ExerciseViewComponent,
     ExerciseRequirementsViewComponent,
     ExerciseSubRequirementsViewComponent,
+    RequirementEditDialogComponent,
   ],
   imports: [
     BrowserModule,
     ButtonModule,
     ToastModule,
-    MessageModule
+    MessageModule,
+    DialogModule,
+    BrowserAnimationsModule
   ],
   providers: [MessageService],
   bootstrap: [AppComponent]

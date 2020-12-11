@@ -3,6 +3,7 @@ import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { Exercise } from 'src/app/models/exercise';
 import { ClassRequirement } from 'src/app/models/requirements/class-requirement';
+import { ExerciseDialogService } from '../dialogs/exercise-dialog.service';
 import { ExerciseService } from '../exercise.service';
 
 @Component({
@@ -19,7 +20,8 @@ export class ExerciseViewComponent implements OnInit, OnDestroy {
   exerciseSubscription!: Subscription;
 
   constructor(private exerciseService: ExerciseService,
-    private messageService: MessageService) { }
+    private messageService: MessageService,
+    private exerciseDialogService: ExerciseDialogService) { }
 
   ngOnInit(): void {
     this.initializeExerciseSubscriptions();
@@ -42,6 +44,10 @@ export class ExerciseViewComponent implements OnInit, OnDestroy {
 
   generateUniqueId() {
     return Math.random().toString(36).substr(2, 9);
+  }
+
+  addNewRequirement() {
+    this.exerciseDialogService.showEditRequirementDialog();
   }
 
   editClassRequirement(req: ClassRequirement) {
