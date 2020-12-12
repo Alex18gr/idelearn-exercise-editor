@@ -1,6 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { IRequirement } from 'src/app/models/requirements/irequirement';
+import { ExerciseService } from '../../exercise.service';
 import { ExerciseDialogService } from '../exercise-dialog.service';
 
 @Component({
@@ -11,14 +14,31 @@ import { ExerciseDialogService } from '../exercise-dialog.service';
 export class RequirementEditDialogComponent implements OnInit, OnDestroy {
   display: boolean = false;
   showDialogSubscription!: Subscription;
-
+  savingData: boolean = false;
   editMode: boolean = false;
   editRequirement!: IRequirement | null;
+  title: string = '';
+  selectedRequirementType!: string;
+  requirementTypeOptions: RequirementTypeDropdown[] = [
+    { label: 'Class Requirement', value: 'class' }
+  ];
+  requirementTypeDropdownDisabled: boolean = false;
 
-  constructor(private exerciseDialogService: ExerciseDialogService) { }
+  classRequirementForm!: FormGroup;
+
+  constructor(private exerciseDialogService: ExerciseDialogService,
+    private exerciseService: ExerciseService,
+    private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.initializeSubscriptions();
+    this.initializeClassRequirementForm();
+  }
+
+  initializeClassRequirementForm() {
+    this.classRequirementForm = new FormGroup({
+      className: new FormControl('', [Validators.required])
+    });
   }
 
   initializeSubscriptions() {
@@ -26,8 +46,14 @@ export class RequirementEditDialogComponent implements OnInit, OnDestroy {
       if (options?.requirement) {
         this.editMode = true;
         this.editRequirement = options.requirement;
+        this.selectedRequirementType = this.requirementTypeOptions[0].value;
+        this.requirementTypeDropdownDisabled = true;
+        this.title = 'Edit Requirement';
       } else {
         this.editMode = false;
+        this.selectedRequirementType = this.requirementTypeOptions[0].value;
+        this.requirementTypeDropdownDisabled = false;
+        this.title = 'Add New Requirement';
       }
       this.showDialog();
     });
@@ -37,10 +63,46 @@ export class RequirementEditDialogComponent implements OnInit, OnDestroy {
     this.display = true;
   }
 
+  hideDialog() {
+    this.display = false;
+    this.title = '';
+    this.classRequirementForm.reset();
+    this.selectedRequirementType = this.requirementTypeOptions[0].value;
+  }
+
   ngOnDestroy(): void {
     if (this.showDialogSubscription) {
       this.showDialogSubscription.unsubscribe();
     }
   }
 
+  isControlInvalid(control: AbstractControl): boolean {
+    return control.invalid && control.dirty;
+  }
+
+  getErrorMessage(control: AbstractControl): string {
+    if (control.errors?.required) { return 'This field is required' }
+    return ''
+  }
+
+  saveClassRequirement() {
+    this.savingData = true;
+    this.exerciseService.addRequirementToCurrentExercise({
+      type: this.selectedRequirementType,
+      requirementData: this.classRequirementForm.getRawValue()
+    }).subscribe(data => {
+      this.savingData = false;
+      this.messageService.add({severity:'success', summary:'Created Success', detail:'Class Requirement created successfuly'});
+      this.hideDialog();
+    }, error => {
+      this.savingData = false;
+      this.messageService.add({severity:'error', summary:'Create error', detail: error});
+    });
+  }
+
+}
+
+interface RequirementTypeDropdown {
+  label: string,
+  value: string
 }

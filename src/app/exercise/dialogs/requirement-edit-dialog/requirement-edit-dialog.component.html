@@ -1,3 +1,35 @@
-<p-dialog header="Title" [(visible)]="display" [modal]="true" [draggable]="false">
-    Content
+<p-dialog [header]="title" [(visible)]="display" [modal]="true" [draggable]="false" (onHide)="hideDialog()" [position]="'top'"
+    styleClass="custom-edit-dialog">
+    <section class="dialog-content">
+        <div class="requirement-type-dropdown">
+            <span class="p-float-label">
+                <p-dropdown inputId="dropdown" [autoDisplayFirst]="false" [options]="requirementTypeOptions"
+                    [(ngModel)]="selectedRequirementType" optionLabel="label" optionValue="value" appendTo="body"
+                    styleClass="requirement-type-custom-dropdown" [disabled]="requirementTypeDropdownDisabled">
+                </p-dropdown>
+                <label for="dropdown">Requirement Type</label>
+            </span>
+        </div>
+        <div class="requirement-form-container">
+            <h2>Class Requirement</h2>
+            <form class="requirement-form" [formGroup]="classRequirementForm">
+                <div class="p-field">
+                    <span class="p-float-label">
+                        <input type="text" id="className" class="custom-input-text" formControlName="className"
+                            pInputText>
+                        <label for="className">Class Name</label>
+                    </span>
+                    <small *ngIf="isControlInvalid(classRequirementForm.controls.className)" id="username2-help" class="p-invalid">
+                        {{ getErrorMessage(classRequirementForm.controls.className) }}
+                    </small>
+                </div>
+            </form>
+        </div>
+    </section>
+    <p-footer>
+        <button pButton pRipple type="button" class="p-button-raised p-button-text" label="Cancel" icon="pi pi-times"
+            (click)="hideDialog()"></button>
+        <button *ngIf="!savingData" pButton pRipple type="button" class="p-button-raised" label="Save" icon="pi pi-save" (click)="saveClassRequirement()" [disabled]="this.classRequirementForm.invalid"></button>
+        <button *ngIf="savingData" pButton pRipple type="button" class="p-button-raised" label="Saving" icon="pi pi-spin pi-spinner" [disabled]="true"></button>
+    </p-footer>
 </p-dialog>

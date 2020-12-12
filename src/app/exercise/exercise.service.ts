@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, from, Observable, of } from 'rxjs';
+import { BehaviorSubject, from, Observable, of, throwError } from 'rxjs';
 import { Exercise } from '../models/exercise';
 import exercise01 from '../models/mocks/01';
 import { ClassRequirement } from '../models/requirements/class-requirement';
@@ -18,6 +18,9 @@ export class ExerciseService {
 
   public currentExerciseObservable: Observable<Exercise | null>;
 
+  private maxClassId: number = -1;
+  private currentExerciseValue!: Exercise;
+
   constructor() {
     this.currentExerciseSubject = new BehaviorSubject<Exercise | null>(null);
     this.currentExerciseObservable = this.currentExerciseSubject.asObservable();
@@ -30,11 +33,13 @@ export class ExerciseService {
   openExercise() {
     return of(this.createExerciseByJson(exercise01)).pipe(map((exercise) => {
       this.currentExerciseSubject.next(exercise);
+      this.currentExerciseValue = exercise;
       return exercise;
     }));
   }
 
   createExerciseByJson(jsonData: any) {
+    this.maxClassId = -1;
     const exercise: Exercise = new Exercise({
       id: jsonData.id,
       name: jsonData.name,
@@ -72,6 +77,9 @@ export class ExerciseService {
   }
 
   createClassRequirement(reqData: any): ClassRequirement {
+    if (reqData.class_id > this.maxClassId) {
+      this.maxClassId = reqData.class_id;
+    }
     return new ClassRequirement({
       classId: reqData.class_id,
       name: reqData.name
@@ -108,5 +116,24 @@ export class ExerciseService {
     }
 
     currentClass.relatedRequirements = subRequirementsList;
+  }
+
+  private getNewClassId(): number {
+    return ++this.maxClassId;
+  }
+
+  addRequirementToCurrentExercise(options: {type: string, requirementData: any}): Observable<any> {
+    for (let req of this.currentExerciseValue.requirements) {
+      if (req.type === 'class' && (req as ClassRequirement).name === options.requirementData.className) {
+        return throwError(new Error('Class with this class name already exists'));
+      }
+    }
+
+    this.currentExerciseValue.requirements.push(new ClassRequirement({
+      classId: this.getNewClassId(),
+      name: options.requirementData.className,
+    }));
+    this.currentExerciseSubject.next(this.currentExerciseValue);
+    return of(this.currentExerciseValue);
   }
 }
