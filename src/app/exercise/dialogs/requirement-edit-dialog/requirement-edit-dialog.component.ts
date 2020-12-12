@@ -93,7 +93,6 @@ export class RequirementEditDialogComponent implements OnInit, OnDestroy {
   }
 
   saveClassRequirement() {
-
     if (this.editMode && !!this.editRequirement) {
       this.savingData = true;
       this.exerciseService.editRequirement({
@@ -121,8 +120,6 @@ export class RequirementEditDialogComponent implements OnInit, OnDestroy {
         this.messageService.add({ severity: 'error', summary: 'Create error', detail: error });
       });
     }
-
-
   }
 
 }

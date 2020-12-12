@@ -1,0 +1,71 @@
+<section class="sub-equirement-form-container" *ngIf="classSubRequirementForm">
+    <h2>{{ formHeader }}</h2>
+    <div [ngSwitch]="subRequirementType">
+        <form class="sub-requirement-form" [formGroup]="classSubRequirementForm" *ngSwitchCase="'extend'">
+            <!-- <div class="p-field sub-requirement-input-group">
+                <span class="p-float-label">
+                    <p-dropdown inputId="mainClass" [autoDisplayFirst]="false" [options]="currentExerciseClassList"
+                        optionLabel="name" optionValue="id" appendTo="body" formControlName="mainClass"
+                        styleClass="sub-requirement-type-custom-dropdown">
+                    </p-dropdown>
+                    <label for="mainClass">Class Name</label>
+                </span>
+                <small *ngIf="isControlInvalid(classSubRequirementForm.controls.mainClass)" class="p-invalid">
+                    {{ getErrorMessage(classSubRequirementForm.controls.mainClass) }}
+                </small>
+            </div> -->
+            <div class="p-field sub-requirement-input-group">
+                <span class="p-float-label">
+                    <p-dropdown inputId="extendClass" [autoDisplayFirst]="false" [options]="currentExerciseClassList"
+                        optionLabel="name" optionValue="id" appendTo="body" formControlName="extendClass"
+                        styleClass="sub-requirement-type-custom-dropdown">
+                    </p-dropdown>
+                    <label for="extendClass">Extend Name</label>
+                </span>
+                <small *ngIf="isControlInvalid(classSubRequirementForm.controls.extendClass)" class="p-invalid">
+                    {{ getErrorMessage(classSubRequirementForm.controls.extendClass) }}
+                </small>
+            </div>
+        </form>
+
+        <form class="sub-requirement-form" [formGroup]="classSubRequirementForm" *ngSwitchCase="'contains'">
+            <!-- <div class="p-field sub-requirement-input-group">
+                <span class="p-float-label">
+                    <p-dropdown inputId="mainClass" [autoDisplayFirst]="false" [options]="currentExerciseClassList"
+                        optionLabel="name" optionValue="id" appendTo="body" formControlName="mainClass"
+                        styleClass="sub-requirement-type-custom-dropdown">
+                    </p-dropdown> <label for="mainClass">Class Name</label>
+                </span>
+                <small *ngIf="isControlInvalid(classSubRequirementForm.controls.mainClass)" class="p-invalid">
+                    {{ getErrorMessage(classSubRequirementForm.controls.mainClass) }}
+                </small>
+            </div> -->
+            <div class="p-field sub-requirement-input-group">
+                <span class="p-float-label">
+                    <p-dropdown inputId="containClass" [autoDisplayFirst]="false" [options]="currentExerciseClassList"
+                        optionLabel="name" optionValue="id" appendTo="body" formControlName="containClass"
+                        styleClass="sub-requirement-type-custom-dropdown">
+                    </p-dropdown>
+                    <label for="containClass">Contain Class</label>
+                </span>
+                <small *ngIf="isControlInvalid(classSubRequirementForm.controls.containClass)" class="p-invalid">
+                    {{ getErrorMessage(classSubRequirementForm.controls.containClass) }}
+                </small>
+            </div>
+
+            <div class="p-field sub-requirement-input-group">
+                <span class="p-float-label">
+                    <p-dropdown inputId="relationType" [autoDisplayFirst]="false" [options]="relationTypes"
+                        optionLabel="label" optionValue="value" appendTo="body" formControlName="relationType"
+                        styleClass="sub-requirement-type-custom-dropdown">
+                    </p-dropdown>
+                    <label for="relationType">Relation Type</label>
+                </span>
+                <small *ngIf="isControlInvalid(classSubRequirementForm.controls.containClass)" class="p-invalid">
+                    {{ getErrorMessage(classSubRequirementForm.controls.containClass) }}
+                </small>
+            </div>
+        </form>
+
+    </div>
+</section>

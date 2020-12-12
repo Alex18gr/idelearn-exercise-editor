@@ -7,19 +7,19 @@ import { IRequirement } from 'src/app/models/requirements/irequirement';
 })
 export class ExerciseDialogService {
 
-  private showEditRequirementDialogSubject: Subject<{requirement?: IRequirement}> = new Subject();
-  public showEditRequirementDialogObservable: Observable<{requirement?: IRequirement}> = this.showEditRequirementDialogSubject.asObservable();
+  private showEditRequirementDialogSubject: Subject<{ requirement?: IRequirement }> = new Subject();
+  public showEditRequirementDialogObservable: Observable<{ requirement?: IRequirement }> = this.showEditRequirementDialogSubject.asObservable();
 
-  private showEditSubrequirementDialogSubject: Subject<{subrequirement?: IRequirement}> = new Subject();
-  public showEditSubrequirementDialogObservable: Observable<{subrequirement?: IRequirement}> = this.showEditSubrequirementDialogSubject.asObservable();
+  private showEditSubrequirementDialogSubject: Subject<{ parentRequirement: IRequirement, subrequirement?: IRequirement }> = new Subject();
+  public showEditSubRequirementDialogObservable: Observable<{ parentRequirement: IRequirement, subrequirement?: IRequirement }> = this.showEditSubrequirementDialogSubject.asObservable();
 
   constructor() { }
 
-  showEditRequirementDialog(options?: {requirement?: IRequirement}) {
+  showEditRequirementDialog(options?: { requirement?: IRequirement }) {
     this.showEditRequirementDialogSubject.next(options);
   }
 
-  showEditSubrequirementDialog(options?: {subrequirement?: IRequirement}) {
+  showEditSubrequirementDialog(options?: { parentRequirement: IRequirement, subrequirement?: IRequirement }) {
     this.showEditSubrequirementDialogSubject.next(options);
   }
 

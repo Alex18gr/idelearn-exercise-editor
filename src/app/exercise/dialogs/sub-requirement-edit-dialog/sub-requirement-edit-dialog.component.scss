@@ -1,0 +1,45 @@
+.dialog-content {
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    .sub-requirement-type-dropdown {
+        margin-top: 20px;
+    }
+    .sub-requirement-form-container {
+        display: flex;
+        flex-direction: column;
+        margin-top: 25px;
+    }
+}
+
+:host ::ng-deep .sub-requirement-type-custom-dropdown {
+    width: 100%;
+}
+
+:host ::ng-deep .custom-input-text {
+    width: 100%;
+}
+
+:host ::ng-deep .custom-edit-dialog {
+    width: 50vw;
+    // height: 70vh;
+}
+
+@media screen and (max-width: 1300px) {
+    :host ::ng-deep .custom-edit-dialog {
+       width: 65vw;
+   }
+}
+
+@media screen and (max-width: 1100px) {
+    :host ::ng-deep .custom-edit-dialog {
+       width: 85vw;
+   }
+}
+
+@media screen and (max-width: 650px) {
+    :host ::ng-deep .custom-edit-dialog {
+        width: 95vw;
+    }
+}

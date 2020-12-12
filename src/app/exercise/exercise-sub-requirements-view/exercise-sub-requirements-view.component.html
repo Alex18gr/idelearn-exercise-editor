@@ -2,7 +2,7 @@
     <div class="subrequirements-header">
         <div class="top-buttons">
             <button pButton pRipple type="button" icon="pi pi-arrow-left" class="p-button-raised" label="back" (click)="goBackToRequirements()"></button>
-            <button pButton pRipple type="button" class="p-button-raised" label="Add Subrequirement" icon="pi pi-plus"></button>
+            <button pButton pRipple type="button" class="p-button-raised" label="Add Subrequirement" icon="pi pi-plus" (click)="addSubRequirement()"></button>
         </div>
         <div class="highlighted-text">
             Class {{ editClassRequirement.name }} Subrequirements
@@ -14,8 +14,13 @@
                 <div class="subrequirement-type">
                     {{ req.type }}
                 </div>
-                <div class="subrequirement-description">
-                    Subrequirement Description
+                <div class="subrequirement-description" [ngSwitch]="req.type">
+                    <div *ngSwitchCase="'extend'">
+                        Class <span class="highlight-name">{{ editClassRequirement.name }}</span> extends class <span class="highlight-name">{{ getExtendRequirement(req).extendClass.name }}</span>
+                    </div>
+                    <div *ngSwitchCase="'contains'">
+                        Class <span class="highlight-name">{{ editClassRequirement.name }}</span> contains instance of class <span class="highlight-name">{{ getContainsRequirement(req).containClass.name }}</span>
+                    </div>
                 </div>
                 <div class="subrequirement-action">
                     <button pButton pRipple type="button" icon="pi pi-cog" class="p-button-rounded" (click)="editSubRequirement(req)"></button>

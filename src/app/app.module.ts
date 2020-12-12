@@ -15,6 +15,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RequirementEditDialogComponent } from './exercise/dialogs/requirement-edit-dialog/requirement-edit-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SubRequirementEditDialogComponent } from './exercise/dialogs/sub-requirement-edit-dialog/sub-requirement-edit-dialog.component';
+import { SubRequirementFormComponent } from './exercise/dialogs/sub-requirement-edit-dialog/sub-requirement-form/sub-requirement-form.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ExerciseRequirementsViewComponent,
     ExerciseSubRequirementsViewComponent,
     RequirementEditDialogComponent,
+    SubRequirementEditDialogComponent,
+    SubRequirementFormComponent,
   ],
   imports: [
     BrowserModule,
