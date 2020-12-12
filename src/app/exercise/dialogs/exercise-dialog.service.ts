@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
+import { Exercise } from 'src/app/models/exercise';
 import { IRequirement } from 'src/app/models/requirements/irequirement';
 
 @Injectable({
@@ -13,6 +14,9 @@ export class ExerciseDialogService {
   private showEditSubrequirementDialogSubject: Subject<{ parentRequirement: IRequirement, subrequirement?: IRequirement }> = new Subject();
   public showEditSubRequirementDialogObservable: Observable<{ parentRequirement: IRequirement, subrequirement?: IRequirement }> = this.showEditSubrequirementDialogSubject.asObservable();
 
+  private showEditExerciseDetailsSubject: Subject<Exercise> = new Subject();
+  public showEditExerciseDetailsObservable: Observable<Exercise> = this.showEditExerciseDetailsSubject.asObservable();
+
   constructor() { }
 
   showEditRequirementDialog(options?: { requirement?: IRequirement }) {
@@ -21,6 +25,10 @@ export class ExerciseDialogService {
 
   showEditSubrequirementDialog(options?: { parentRequirement: IRequirement, subrequirement?: IRequirement }) {
     this.showEditSubrequirementDialogSubject.next(options);
+  }
+
+  showEditExerciseDetailsDialog(exercise: Exercise) {
+    this.showEditExerciseDetailsSubject.next(exercise);
   }
 
 }

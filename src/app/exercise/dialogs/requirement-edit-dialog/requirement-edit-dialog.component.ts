@@ -100,7 +100,7 @@ export class RequirementEditDialogComponent implements OnInit, OnDestroy {
         newValue: this.classRequirementForm.getRawValue()
       }).subscribe(data => {
         this.savingData = false;
-        this.messageService.add({ severity: 'success', summary: 'Edit Success', detail: 'Class Requirement Edited successfuly' });
+        this.messageService.add({ severity: 'success', summary: 'Edit Success', detail: 'Class Requirement changed successfuly' });
         this.hideDialog();
       }, error => {
         this.savingData = false;

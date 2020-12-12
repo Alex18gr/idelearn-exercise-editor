@@ -1,16 +1,33 @@
 <section *ngIf="exercise">
     <section class="exercise-data">
         <div class="exercise-title">
-            <h1>Exercise Title</h1>
+            <h2>{{ exercise.name }}</h2>
         </div>
-        <div class="exercise-description">
+        <div class="exercise-id">
+            Exercise id: <span>{{ exercise.id }}</span>
+        </div>
+        <div class="exercise-exercise-project-info">
+            <div class="project-info-item">
+                <span class="project-info-header">Title:</span> {{ exercise.projectInfo.title }}
+            </div>
+            <div class="project-info-item">
+                <span class="project-info-header">Starting Project:</span> {{ exercise.projectInfo.startingProject ? 'With starting project' : 'Without starting project' }}
+            </div>
+            <div class="project-info-edit-button">
+                <button pButton pRipple type="button" class="p-button-raised" icon="pi pi-pencil" (click)="editExerciseDetails()"></button>
+            </div>
+        </div>
+        <div class="exercise-project-file">
+
+        </div>
+        <!-- <div class="exercise-description">
             <p>
                 This exercise is about many many things...
             </p>
             <h2>
                 {{ exercise.getExportData() | json}}
             </h2>
-        </div>
+        </div> -->
     </section>
     <section class="requirements">
         <app-exercise-requirements-view *ngIf="!editSubRequirement" [exercise]="exercise" (addClassRequirement)="addNewRequirement()"
@@ -21,3 +38,4 @@
 
 <app-requirement-edit-dialog></app-requirement-edit-dialog>
 <app-sub-requirement-edit-dialog></app-sub-requirement-edit-dialog>
+<app-exercise-edit-details-dialog></app-exercise-edit-details-dialog>

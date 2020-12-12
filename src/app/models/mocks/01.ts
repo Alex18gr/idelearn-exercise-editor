@@ -6,7 +6,7 @@ export default {
         "Target 2"
     ],
     "exercise_project_info": {
-        "title": "ExerciseExerciseProjectInfo.java01",
+        "title": "Exercise01",
         "starting_project": false
     },
     "requirements": [

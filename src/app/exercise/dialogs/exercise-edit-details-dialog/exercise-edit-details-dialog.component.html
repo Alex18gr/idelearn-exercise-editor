@@ -1,0 +1,38 @@
+<p-dialog [header]="title" [(visible)]="display" [modal]="true" [draggable]="false" (onHide)="hideDialog()" [position]="'top'"
+    styleClass="custom-edit-dialog">
+    <section class="dialog-content">
+        <div class="edit-form-container" *ngIf="exerciseForm">
+            <form class="edit-form" [formGroup]="exerciseForm">
+                <div class="p-field input-group">
+                    <span class="p-float-label">
+                        <input type="text" id="exerciseName" class="custom-input-text" formControlName="exerciseName"
+                            pInputText>
+                        <label for="exerciseName">Exercise Name</label>
+                    </span>
+                    <small *ngIf="isControlInvalid(exerciseForm.controls.exerciseName)" class="p-invalid">
+                        {{ getErrorMessage(exerciseForm.controls.exerciseName) }}
+                    </small>
+                </div>
+                <div class="p-field input-group">
+                    <span class="p-float-label">
+                        <input type="text" id="projectTitle" class="custom-input-text" formControlName="projectTitle"
+                            pInputText>
+                        <label for="projectTitle">Exercise Project Title</label>
+                    </span>
+                    <small *ngIf="isControlInvalid(exerciseForm.controls.projectTitle)" class="p-invalid">
+                        {{ getErrorMessage(exerciseForm.controls.projectTitle) }}
+                    </small>
+                </div>
+                <div class="p-field input-group">
+                    <p-fileUpload name="myfile[]" customUpload="true" (uploadHandler)="myUploader($event)"></p-fileUpload>
+                </div>
+            </form>
+        </div>
+    </section>
+    <p-footer>
+        <button pButton pRipple type="button" class="p-button-raised p-button-text" label="Cancel" icon="pi pi-times"
+            (click)="hideDialog()"></button>
+        <button *ngIf="!savingData" pButton pRipple type="button" class="p-button-raised" label="Save" icon="pi pi-save" (click)="saveExercise()"></button>
+        <button *ngIf="savingData" pButton pRipple type="button" class="p-button-raised" label="Saving" icon="pi pi-spin pi-spinner" [disabled]="true"></button>
+    </p-footer>
+</p-dialog>

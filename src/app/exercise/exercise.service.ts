@@ -10,6 +10,7 @@ import { ISubRequirement } from '../models/requirements/isub-requirement';
 import { map } from 'rxjs/operators';
 import { SubRequirementFormComponent } from './dialogs/sub-requirement-edit-dialog/sub-requirement-form/sub-requirement-form.component';
 import { SubRequirementType } from '../models/sub-requirement-type';
+import { ProjectInfo } from '../models/project-info';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +45,11 @@ export class ExerciseService {
     const exercise: Exercise = new Exercise({
       id: jsonData.id,
       name: jsonData.name,
-      targets: jsonData.targets
+      targets: jsonData.targets,
+      projectInfo: new ProjectInfo({
+        title: jsonData.exercise_project_info.title,
+        startingProject: jsonData.starting_project
+      })
     });
 
     for (let req of jsonData.requirements) {
@@ -272,5 +277,17 @@ export class ExerciseService {
     }
 
     return throwError(new Error('Invalid subrequirement type'));
+  }
+
+  saveExerciseDetails(options: { exercise: Exercise, exerciseDetailsData: any }) {
+    if (options.exerciseDetailsData.exerciseName === '' || options.exerciseDetailsData.projectTitle === '') {
+      return throwError(new Error('Exercise name and exercise project title cannot be empty'));
+    }
+
+    options.exercise.name = options.exerciseDetailsData.exerciseName;
+    options.exercise.projectInfo.title = options.exerciseDetailsData.projectTitle;
+    
+    this.currentExerciseSubject.next(options.exercise);
+    return of(this.currentExerciseValue);
   }
 }
