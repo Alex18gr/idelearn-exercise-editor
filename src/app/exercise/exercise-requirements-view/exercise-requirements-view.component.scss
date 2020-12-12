@@ -47,7 +47,11 @@
                     }
                 }
                 .requirement-action {
-                    width: 5%;
+                    width: auto;
+                    display: flex;
+                    button {
+                        margin: 0 2px;
+                    }
                 }
             }
         }

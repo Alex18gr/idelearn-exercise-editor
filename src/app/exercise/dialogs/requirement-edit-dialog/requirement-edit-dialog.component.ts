@@ -2,6 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
+import { ClassRequirement } from 'src/app/models/requirements/class-requirement';
 import { IRequirement } from 'src/app/models/requirements/irequirement';
 import { ExerciseService } from '../../exercise.service';
 import { ExerciseDialogService } from '../exercise-dialog.service';
@@ -61,12 +62,18 @@ export class RequirementEditDialogComponent implements OnInit, OnDestroy {
 
   showDialog() {
     this.display = true;
+    if (this.editMode) {
+      this.classRequirementForm.patchValue({
+        className: (this.editRequirement as ClassRequirement).name
+      });
+    }
   }
 
   hideDialog() {
     this.display = false;
     this.title = '';
     this.classRequirementForm.reset();
+    this.editRequirement = null;
     this.selectedRequirementType = this.requirementTypeOptions[0].value;
   }
 
@@ -86,18 +93,36 @@ export class RequirementEditDialogComponent implements OnInit, OnDestroy {
   }
 
   saveClassRequirement() {
-    this.savingData = true;
-    this.exerciseService.addRequirementToCurrentExercise({
-      type: this.selectedRequirementType,
-      requirementData: this.classRequirementForm.getRawValue()
-    }).subscribe(data => {
-      this.savingData = false;
-      this.messageService.add({severity:'success', summary:'Created Success', detail:'Class Requirement created successfuly'});
-      this.hideDialog();
-    }, error => {
-      this.savingData = false;
-      this.messageService.add({severity:'error', summary:'Create error', detail: error});
-    });
+
+    if (this.editMode && !!this.editRequirement) {
+      this.savingData = true;
+      this.exerciseService.editRequirement({
+        requirement: this.editRequirement,
+        newValue: this.classRequirementForm.getRawValue()
+      }).subscribe(data => {
+        this.savingData = false;
+        this.messageService.add({ severity: 'success', summary: 'Edit Success', detail: 'Class Requirement Edited successfuly' });
+        this.hideDialog();
+      }, error => {
+        this.savingData = false;
+        this.messageService.add({ severity: 'error', summary: 'Create error', detail: error });
+      });
+    } else {
+      this.savingData = true;
+      this.exerciseService.addRequirementToCurrentExercise({
+        type: this.selectedRequirementType,
+        requirementData: this.classRequirementForm.getRawValue()
+      }).subscribe(data => {
+        this.savingData = false;
+        this.messageService.add({ severity: 'success', summary: 'Created Success', detail: 'Class Requirement created successfuly' });
+        this.hideDialog();
+      }, error => {
+        this.savingData = false;
+        this.messageService.add({ severity: 'error', summary: 'Create error', detail: error });
+      });
+    }
+
+
   }
 
 }

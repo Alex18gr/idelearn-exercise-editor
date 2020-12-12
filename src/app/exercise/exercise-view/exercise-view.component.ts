@@ -51,6 +51,10 @@ export class ExerciseViewComponent implements OnInit, OnDestroy {
   }
 
   editClassRequirement(req: ClassRequirement) {
+    this.exerciseDialogService.showEditRequirementDialog({requirement: req});
+  }
+
+  editClassRequirementSubrequirements(req: ClassRequirement) {
     this.editRequirement = req;
     this.editSubRequirement = true;
   }

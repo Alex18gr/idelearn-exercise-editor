@@ -17,7 +17,8 @@
                     Class with name <span class="highlight-name">{{ getClassRequirement(req).name }}</span>
                 </div>
                 <div class="requirement-action">
-                    <button pButton pRipple type="button" icon="pi pi-cog" class="p-button-rounded" (click)="editRequirement(req)"></button>
+                    <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded" (click)="editRequirement(req)"></button>
+                    <button pButton pRipple type="button" icon="pi pi-cog" class="p-button-rounded" (click)="editRequirementSubrequirements(req)"></button>
                 </div>
             </div>
         </div>

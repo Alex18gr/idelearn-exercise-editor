@@ -136,4 +136,22 @@ export class ExerciseService {
     this.currentExerciseSubject.next(this.currentExerciseValue);
     return of(this.currentExerciseValue);
   }
+
+  editRequirement(options: {requirement: IRequirement, newValue: any}) {
+    // check if the name is the same as before
+    if ((options.requirement as ClassRequirement).name === options.newValue.className) {
+      return throwError(new Error('Class name is same as before'));
+    }
+
+    // Check if the name already exists
+    for (let req of this.currentExerciseValue.requirements) {
+      if (req.type === 'class' && (req as ClassRequirement).name === options.newValue.className) {
+        return throwError(new Error('Class with this class name already exists'));
+      }
+    }
+
+    (options.requirement as ClassRequirement).name = options.newValue.className;
+    this.currentExerciseSubject.next(this.currentExerciseValue);
+    return of(this.currentExerciseValue);
+  }
 }

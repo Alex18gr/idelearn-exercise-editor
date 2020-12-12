@@ -11,6 +11,7 @@ import { IRequirement } from 'src/app/models/requirements/irequirement';
 export class ExerciseRequirementsViewComponent implements OnInit {
   @Input() exercise!: Exercise;
   @Output() editClassRequirement: EventEmitter<ClassRequirement> = new EventEmitter();
+  @Output() editClassRequirementSubrequirements: EventEmitter<ClassRequirement> = new EventEmitter();
   @Output() addClassRequirement: EventEmitter<void> = new EventEmitter();
 
   constructor() { }
@@ -28,8 +29,16 @@ export class ExerciseRequirementsViewComponent implements OnInit {
     }
   }
 
+  editRequirementSubrequirements(req: IRequirement) {
+    if (req.type === 'class') {
+      this.editClassRequirementSubrequirements.emit(req as ClassRequirement);
+    }
+  }
+
   addRequirement() {
     this.addClassRequirement.emit();
   }
+
+  
 
 }
