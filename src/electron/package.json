@@ -1,0 +1,9 @@
+{
+    "name": "idelearn-exercise-editor",
+    "description": "Angular Electron Sample",
+    "version": "0.0.0",
+    "author": {
+      "name": "Alexandros Tsichouridis"
+    },
+    "main": "main.js"
+}

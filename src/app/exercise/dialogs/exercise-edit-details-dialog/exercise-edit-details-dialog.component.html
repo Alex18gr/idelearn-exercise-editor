@@ -24,7 +24,8 @@
                     </small>
                 </div>
                 <div class="p-field input-group">
-                    <p-fileUpload name="myfile[]" customUpload="true" (uploadHandler)="myUploader($event)"></p-fileUpload>
+                    <h2>Upload Project Zip</h2>
+                    <p-fileUpload name="myfile[]" [customUpload]="true" (uploadHandler)="myUploader($event)"></p-fileUpload>
                 </div>
             </form>
         </div>
