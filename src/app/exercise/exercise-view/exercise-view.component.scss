@@ -57,6 +57,11 @@
     display: flex;
     flex-direction: column;
     padding: 10px;
+    z-index: 990;
+    position: sticky;
+    top: 0;
+    background-color: #ffffff;
+    border-bottom: 1px solid #0891cf;
     .exercise-title {
         font-size: 1.5rem;
         font-weight: 500;
