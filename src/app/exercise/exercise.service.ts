@@ -40,6 +40,13 @@ export class ExerciseService {
     }));
   }
 
+  openExerciseByJsonObject(jsonStringData: any) {
+    const exercise: Exercise = this.createExerciseByJson(jsonStringData);
+    this.currentExerciseSubject.next(exercise);
+    this.currentExerciseValue = exercise;
+    return exercise;
+  }
+
   createExerciseByJson(jsonData: any) {
     this.maxClassId = -1;
     const exercise: Exercise = new Exercise({

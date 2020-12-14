@@ -3,7 +3,10 @@
     "description": "Angular Electron Sample",
     "version": "0.0.0",
     "author": {
-      "name": "Alexandros Tsichouridis"
+        "name": "Alexandros Tsichouridis"
     },
-    "main": "main.js"
+    "main": "main.js",
+    "devDependencies": {
+        "@types/adm-zip": "^0.4.33"
+    }
 }

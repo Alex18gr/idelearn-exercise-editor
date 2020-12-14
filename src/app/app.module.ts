@@ -23,6 +23,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ExerciseFileService } from './exercise/file/exercise-file.service';
 import { exerciseFileServiceFactory } from './exercise/file/exercise-file-service.factory';
 import { ElectronService, NgxElectronModule } from 'ngx-electron';
+import { StartPageComponent } from './home/start-page/start-page.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { ElectronService, NgxElectronModule } from 'ngx-electron';
     SubRequirementEditDialogComponent,
     SubRequirementFormComponent,
     ExerciseEditDetailsDialogComponent,
+    StartPageComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,7 @@
 
 <section class="main-container">
-    <app-exercise-view></app-exercise-view>
+    <app-exercise-view *ngIf="exercise"></app-exercise-view>
+    <app-start-page *ngIf="!exercise"></app-start-page>
 </section>
 
 <!-- For PrimeNG Toast Functionality -->
