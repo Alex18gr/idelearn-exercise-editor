@@ -20,6 +20,9 @@ import { SubRequirementEditDialogComponent } from './exercise/dialogs/sub-requir
 import { SubRequirementFormComponent } from './exercise/dialogs/sub-requirement-edit-dialog/sub-requirement-form/sub-requirement-form.component';
 import { ExerciseEditDetailsDialogComponent } from './exercise/dialogs/exercise-edit-details-dialog/exercise-edit-details-dialog.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ExerciseFileService } from './exercise/file/exercise-file.service';
+import { exerciseFileServiceFactory } from './exercise/file/exercise-file-service.factory';
+import { ElectronService, NgxElectronModule } from 'ngx-electron';
 
 @NgModule({
   declarations: [
@@ -44,9 +47,13 @@ import { HttpClientModule } from '@angular/common/http';
     FormsModule,
     ReactiveFormsModule,
     FileUploadModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxElectronModule
   ],
-  providers: [MessageService],
+  providers: [
+    MessageService,
+    { provide: ExerciseFileService, useFactory: exerciseFileServiceFactory, deps: [ElectronService] },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

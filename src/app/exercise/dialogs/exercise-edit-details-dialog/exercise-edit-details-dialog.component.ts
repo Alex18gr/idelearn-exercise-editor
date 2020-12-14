@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { Exercise } from 'src/app/models/exercise';
 import { ExerciseService } from '../../exercise.service';
+import { ExerciseFileService } from '../../file/exercise-file.service';
 import { ExerciseDialogService } from '../exercise-dialog.service';
 
 @Component({
@@ -21,7 +22,8 @@ export class ExerciseEditDetailsDialogComponent implements OnInit {
 
   constructor(private exerciseDialogService: ExerciseDialogService,
     private exerciseService: ExerciseService,
-    private messageService: MessageService) { }
+    private messageService: MessageService,
+    private exerciseFileService: ExerciseFileService) { }
 
   ngOnInit(): void {
     this.initializeForm();
@@ -81,6 +83,12 @@ export class ExerciseEditDetailsDialogComponent implements OnInit {
     //event.files == files to upload
     const files: File[] = event.files;
     console.log(files);
+  }
+
+  openSelectFileDialog() {
+    this.exerciseFileService.openExerciseFileWithDialog().subscribe(res => {
+      console.log(res);
+    });
   }
 
 }

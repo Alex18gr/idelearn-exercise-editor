@@ -1,8 +1,8 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import * as fs from 'fs';
 import { watch } from 'fs';
 
-let win: BrowserWindow;
+export let win: BrowserWindow;
 
 function createWindow () {
   const mainWindow = new BrowserWindow({
@@ -25,4 +25,13 @@ app.whenReady().then(() => {
 ipcMain.handle('getPirates', () => {
   const result = fs.readFileSync(__dirname + '/assets/pirates.json');
   return JSON.parse(result.toString());
+});
+
+ipcMain.handle('openExerciseFile', () => {
+  // const result = fs.readFileSync(__dirname + '/assets/pirates.json');
+  // return JSON.parse(result.toString());
+
+  const dialogSelection: string[] | undefined = dialog.showOpenDialogSync(win);
+  console.log(dialogSelection);
+  return dialogSelection;
 });
