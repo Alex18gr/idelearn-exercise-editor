@@ -13,4 +13,7 @@ export class ExerciseFileLocalService {
     return from(this.electron.ipcRenderer.invoke('openExerciseFile'));
   }
 
+  createNewExerciseFile(options: { exerciseDetailsData: any }) {
+    return from(this.electron.ipcRenderer.invoke('createNewExercise', options.exerciseDetailsData));
+  }
 }

@@ -1,0 +1,5 @@
+<div class="file-upload" [ngClass]="{'file-over': fileOver}">
+    <span (click)="choseFile()" class="chose-file-text">Choose file</span>
+    <span class="drag-selected-file">{{ file ? file.name : 'or drag and drop file here' }}</span>
+    <input #fileInput class="file-input" type="file">
+</div>

@@ -25,18 +25,9 @@ export class ExerciseViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initializeExerciseSubscriptions();
-    this.exerciseService.openExercise().subscribe(data => {
-      this.exercise = data;
-    });
   }
 
   initializeExerciseSubscriptions() {
-    this.exerciseService.openExercise().subscribe(data => {
-      // data loaded
-      this.messageService.add({severity:'success', summary:'Exercise Loaded' });
-    }, error => {
-      this.messageService.add({severity:'error', summary:'Exercise Load Error' });
-    });
     this.exerciseSubscription = this.exerciseService.currentExerciseObservable.subscribe((exercise: Exercise | null) => {
       if (exercise) { this.exercise = exercise }
     });
@@ -51,7 +42,7 @@ export class ExerciseViewComponent implements OnInit, OnDestroy {
   }
 
   editClassRequirement(req: ClassRequirement) {
-    this.exerciseDialogService.showEditRequirementDialog({requirement: req});
+    this.exerciseDialogService.showEditRequirementDialog({ requirement: req });
   }
 
   editClassRequirementSubrequirements(req: ClassRequirement) {

@@ -17,6 +17,9 @@ export class ExerciseDialogService {
   private showEditExerciseDetailsSubject: Subject<Exercise> = new Subject();
   public showEditExerciseDetailsObservable: Observable<Exercise> = this.showEditExerciseDetailsSubject.asObservable();
 
+  private showNewExerciseSubject: Subject<void> = new Subject();
+  public showNewExerciseObservable: Observable<void> = this.showNewExerciseSubject.asObservable();
+
   constructor() { }
 
   showEditRequirementDialog(options?: { requirement?: IRequirement }) {
@@ -29,6 +32,10 @@ export class ExerciseDialogService {
 
   showEditExerciseDetailsDialog(exercise: Exercise) {
     this.showEditExerciseDetailsSubject.next(exercise);
+  }
+
+  showNewExerciseDialog() {
+    this.showNewExerciseSubject.next();
   }
 
 }

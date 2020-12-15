@@ -11,4 +11,8 @@ export class ExerciseFileService {
   openExerciseFileWithDialog() {
     return of(null);
   }
+
+  createNewExerciseFile(options: { exerciseDetailsData: any }) {
+    return of(null);
+  }
 }

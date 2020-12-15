@@ -9,7 +9,8 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "postinstall": "ngcc --properties es5 browser module main --first-only",
-    "start:electron": "concurrently \"ng build -c=electron --delete-output-path=false --watch\" \"webpack --config webpack.electron.dev.config.js --watch\" \"electron ./dist/idelearn-exercise-editor/shell.js --serve\""
+    "start:electron": "concurrently \"ng build -c=electron --delete-output-path=false --watch\" \"webpack --config webpack.electron.dev.config.js --watch\" \"electron ./dist/idelearn-exercise-editor/shell.js --serve\"",
+    "start:electron-serve": "concurrently \"ng build -c=electron --delete-output-path=false --watch\" \"webpack --config webpack.electron.dev.config.js --watch\""
   },
   "private": true,
   "dependencies": {
@@ -23,12 +24,14 @@
     "@angular/platform-browser-dynamic": "~11.0.4",
     "@angular/router": "~11.0.4",
     "@types/adm-zip": "^0.4.33",
+    "@types/uuid": "^8.3.0",
     "adm-zip": "^0.5.1",
     "ngx-electron": "^2.2.0",
     "primeicons": "^4.1.0",
     "primeng": "^11.0.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
+    "uuid": "^8.3.2",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {

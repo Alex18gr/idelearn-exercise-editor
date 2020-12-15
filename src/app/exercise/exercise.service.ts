@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, from, Observable, of, throwError } from 'rxjs';
 import { Exercise } from '../models/exercise';
-import exercise01 from '../models/mocks/01';
 import { ClassRequirement } from '../models/requirements/class-requirement';
 import { ContainsSubRequirement } from '../models/requirements/contains-sub-requirement';
 import { ExtendSubRequirement } from '../models/requirements/extend-sub-requirement';
@@ -11,6 +10,7 @@ import { map } from 'rxjs/operators';
 import { SubRequirementFormComponent } from './dialogs/sub-requirement-edit-dialog/sub-requirement-form/sub-requirement-form.component';
 import { SubRequirementType } from '../models/sub-requirement-type';
 import { ProjectInfo } from '../models/project-info';
+import { ExerciseFileService } from './file/exercise-file.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +23,7 @@ export class ExerciseService {
   private maxClassId: number = -1;
   private currentExerciseValue!: Exercise;
 
-  constructor() {
+  constructor(private exerciseFileService: ExerciseFileService) {
     this.currentExerciseSubject = new BehaviorSubject<Exercise | null>(null);
     this.currentExerciseObservable = this.currentExerciseSubject.asObservable();
   }
@@ -32,14 +32,15 @@ export class ExerciseService {
     return this.currentExerciseSubject.value;
   }
 
-  openExercise() {
-    return of(this.createExerciseByJson(exercise01)).pipe(map((exercise) => {
+  createExercise(options: { exerciseDetailsData: ExerciseData }): Observable<Exercise> {
+    return this.exerciseFileService.createNewExerciseFile({ exerciseDetailsData: options.exerciseDetailsData }).pipe(map((data: any) => {
+      const exercise = this.createExerciseByJson(data);
       this.currentExerciseSubject.next(exercise);
       this.currentExerciseValue = exercise;
       return exercise;
     }));
   }
-
+  
   openExerciseByJsonObject(jsonStringData: any) {
     const exercise: Exercise = this.createExerciseByJson(jsonStringData);
     this.currentExerciseSubject.next(exercise);
@@ -286,15 +287,22 @@ export class ExerciseService {
     return throwError(new Error('Invalid subrequirement type'));
   }
 
-  saveExerciseDetails(options: { exercise: Exercise, exerciseDetailsData: any }) {
+  saveExerciseDetails(options: { exercise: Exercise, exerciseDetailsData: ExerciseData }) {
     if (options.exerciseDetailsData.exerciseName === '' || options.exerciseDetailsData.projectTitle === '') {
       return throwError(new Error('Exercise name and exercise project title cannot be empty'));
     }
 
     options.exercise.name = options.exerciseDetailsData.exerciseName;
     options.exercise.projectInfo.title = options.exerciseDetailsData.projectTitle;
-    
+
     this.currentExerciseSubject.next(options.exercise);
     return of(this.currentExerciseValue);
   }
+}
+
+export interface ExerciseData {
+  exerciseName: string;
+  projectTitle: string;
+  startingProjectUrl: string;
+  hasStartingProject: boolean
 }

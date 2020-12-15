@@ -1,0 +1,38 @@
+.file-upload {
+    display: flex;
+    padding: 25px 20px;
+    border: 2px solid #0891cf;
+    color: #0891cf;
+    border-radius: 5px;
+    color: #0891cf;
+    align-items: center;
+    cursor: pointer;
+    .chose-file-text {
+        padding: 7px;
+        border: 1px solid #0891cf;
+        color: #0891cf;
+        border-radius: 5px;
+        color: #0891cf;
+        font-size: 1em;
+        margin-right: 12px;
+        cursor: pointer;
+        transition: background-color .4s;
+    }
+    .chose-file-text:hover {
+        background-color: #0890cf34;
+    }
+    .chose-file-text:active {
+        background-color: #0890cf65;
+    }
+    .drag-selected-file {
+        font-size: .85em;
+    }
+    .file-input {
+        display: none;
+    }
+}
+
+.file-over {
+    cursor: copy;
+    background-color: #0890cf18;
+}

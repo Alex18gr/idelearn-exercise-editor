@@ -1,5 +1,5 @@
-<p-dialog [header]="title" [(visible)]="display" [modal]="true" [draggable]="false" (onHide)="hideDialog()"
-    [position]="'top'" styleClass="custom-edit-dialog">
+<p-dialog [header]="title" [(visible)]="display" [modal]="true" [draggable]="false" (onHide)="hideDialog()" [position]="'top'"
+    styleClass="custom-edit-dialog">
     <section class="dialog-content">
         <div class="edit-form-container" *ngIf="exerciseForm">
             <form class="edit-form" [formGroup]="exerciseForm">
@@ -23,23 +23,13 @@
                         {{ getErrorMessage(exerciseForm.controls.projectTitle) }}
                     </small>
                 </div>
-                <div class="file-upload-container">
-                    <div class="p-field input-group switch-input-group">
-                        <label for="enableFileUploadSwitch">Enable Start Project</label>
-                        <p-inputSwitch inputId="enableFileUploadSwitch" (onChange)="startProjectSwitchChanged($event)"
-                            formControlName="hasStartingProject"></p-inputSwitch>
-                    </div>
-                    <div class="p-field input-group" [hidden]="!enableFileUpload">
-                        <h1>Upload Project Zip</h1>
-                        <app-file-upload formControlName="startingProjectUrl"></app-file-upload>
-                    </div>
+                <div class="p-field input-group">
+                    <h2>Upload Project Zip</h2>
+                    <p-fileUpload name="myfile[]" (uploadHandler)="myUploader($event)"></p-fileUpload>
                 </div>
                 <div class="p-field input-group">
                     <h2>Upload Project Zip</h2>
-                    <button pButton pRipple type="button" class="p-button-raised" label="Select File" icon="pi pi-plus"
-                        (click)="openSelectFileDialog()"></button>
-                    <button pButton pRipple type="button" class="p-button-raised" label="Select File" icon="pi pi-plus"
-                        (click)="logFormValue()"></button>
+                    <button pButton pRipple type="button" class="p-button-raised" label="Select File" icon="pi pi-plus" (click)="openSelectFileDialog()"></button>
                 </div>
             </form>
         </div>
@@ -47,9 +37,7 @@
     <p-footer>
         <button pButton pRipple type="button" class="p-button-raised p-button-text" label="Cancel" icon="pi pi-times"
             (click)="hideDialog()"></button>
-        <button *ngIf="!savingData" pButton pRipple type="button" class="p-button-raised"
-            [label]="editMode ? 'Save' : 'Create'" icon="pi pi-save" (click)="saveExercise()"></button>
-        <button *ngIf="savingData" pButton pRipple type="button" class="p-button-raised" label="Saving"
-            icon="pi pi-spin pi-spinner" [disabled]="true"></button>
+        <button *ngIf="!savingData" pButton pRipple type="button" class="p-button-raised" label="Save" icon="pi pi-save" (click)="saveExercise()"></button>
+        <button *ngIf="savingData" pButton pRipple type="button" class="p-button-raised" label="Saving" icon="pi pi-spin pi-spinner" [disabled]="true"></button>
     </p-footer>
 </p-dialog>

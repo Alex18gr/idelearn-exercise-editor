@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ExerciseDialogService } from 'src/app/exercise/dialogs/exercise-dialog.service';
 import { ExerciseService } from 'src/app/exercise/exercise.service';
 import { ExerciseFileService } from 'src/app/exercise/file/exercise-file.service';
 
@@ -10,7 +11,8 @@ import { ExerciseFileService } from 'src/app/exercise/file/exercise-file.service
 export class StartPageComponent implements OnInit {
 
   constructor(private exerciseFileService: ExerciseFileService,
-    private exerciseService: ExerciseService) { }
+    private exerciseService: ExerciseService,
+    private exerciseDialogService: ExerciseDialogService) { }
 
   ngOnInit(): void {
   }
@@ -22,6 +24,10 @@ export class StartPageComponent implements OnInit {
         this.exerciseService.openExerciseByJsonObject(data);
       }
     });
+  }
+
+  newExercise() {
+    this.exerciseDialogService.showNewExerciseDialog();
   }
 
 }

@@ -14,11 +14,14 @@ import { ExerciseDialogService } from '../exercise-dialog.service';
 })
 export class ExerciseEditDetailsDialogComponent implements OnInit {
   display: boolean = false;
-  showDialogSubscription!: Subscription;
+  showDialogEditSubscription!: Subscription;
+  showDialogNewSubscription!: Subscription;
   savingData: boolean = false;
+  editMode: boolean = false;
   title: string = 'Edit Exercise Details';
   exercise!: Exercise;
-  exerciseForm!: FormGroup;
+  exerciseForm!: FormGroup | null;
+  enableFileUpload: boolean = false;
 
   constructor(private exerciseDialogService: ExerciseDialogService,
     private exerciseService: ExerciseService,
@@ -26,17 +29,24 @@ export class ExerciseEditDetailsDialogComponent implements OnInit {
     private exerciseFileService: ExerciseFileService) { }
 
   ngOnInit(): void {
-    this.initializeForm();
     this.initializeSubscriptions();
   }
 
   initializeSubscriptions() {
-    this.showDialogSubscription = this.exerciseDialogService.showEditExerciseDetailsObservable.subscribe((exercise: Exercise) => {
+    this.showDialogEditSubscription = this.exerciseDialogService.showEditExerciseDetailsObservable.subscribe((exercise: Exercise) => {
+      this.editMode = true;
       this.exercise = exercise;
-      this.exerciseForm.patchValue({
+      this.initializeForm();
+      this.enableFileUpload = exercise.projectInfo.startingProject;
+      this.exerciseForm?.patchValue({
         exerciseName: exercise.name,
         projectTitle: exercise.projectInfo.title
       });
+      this.showDialog();
+    });
+    this.showDialogNewSubscription = this.exerciseDialogService.showNewExerciseObservable.subscribe(() => {
+      this.editMode = false;
+      this.initializeForm();
       this.showDialog();
     });
   }
@@ -45,7 +55,8 @@ export class ExerciseEditDetailsDialogComponent implements OnInit {
     this.exerciseForm = new FormGroup({
       exerciseName: new FormControl('', [Validators.required]),
       projectTitle: new FormControl('', [Validators.required]),
-      startingProject: new FormControl('')
+      hasStartingProject: new FormControl(''),
+      startingProjectUrl: new FormControl('')
     });
   }
 
@@ -54,6 +65,7 @@ export class ExerciseEditDetailsDialogComponent implements OnInit {
   }
 
   hideDialog() {
+    this.exerciseForm = null;
     this.display = false;
   }
 
@@ -67,15 +79,27 @@ export class ExerciseEditDetailsDialogComponent implements OnInit {
   }
 
   saveExercise() {
-    if (this.exerciseForm.valid) {
-      this.exerciseService.saveExerciseDetails({ exercise: this.exercise, exerciseDetailsData: this.exerciseForm.getRawValue() }).subscribe(res => {
-        this.savingData = false;
-        this.messageService.add({ severity: 'success', summary: 'Edit Success', detail: 'Exercise details changed successfuly' });
-        this.hideDialog();
-      }, error => {
-        this.savingData = false;
-        this.messageService.add({ severity: 'error', summary: 'Create error', detail: error });
-      });
+    if (this.exerciseForm?.valid) {
+      if (this.editMode) {
+        this.exerciseService.saveExerciseDetails({ exercise: this.exercise, exerciseDetailsData: this.exerciseForm.getRawValue() }).subscribe(res => {
+          this.savingData = false;
+          this.messageService.add({ severity: 'success', summary: 'Edit Success', detail: 'Exercise details changed successfuly' });
+          this.hideDialog();
+        }, error => {
+          this.savingData = false;
+          this.messageService.add({ severity: 'error', summary: 'Create error', detail: error });
+        });
+      } else {
+        this.exerciseService.createExercise({ exerciseDetailsData: this.exerciseForm.getRawValue() }).subscribe(res => {
+          this.savingData = false;
+          this.messageService.add({ severity: 'success', summary: 'Edit Success', detail: 'Exercise details changed successfuly' });
+          this.hideDialog();
+        }, error => {
+          this.savingData = false;
+          this.messageService.add({ severity: 'error', summary: 'Create error', detail: error });
+        });
+      }
+      
     }
   }
 
@@ -89,6 +113,19 @@ export class ExerciseEditDetailsDialogComponent implements OnInit {
     this.exerciseFileService.openExerciseFileWithDialog().subscribe(res => {
       console.log(res);
     });
+  }
+
+  logFormValue() {
+    console.log(this.exerciseForm?.getRawValue());
+  }
+
+  startProjectSwitchChanged(event: any) {
+    this.enableFileUpload = event.checked;
+    if (!event.checked && !this.editMode) {
+      this.exerciseForm?.patchValue({
+        startingProjectUrl: ''
+      });
+    }
   }
 
 }

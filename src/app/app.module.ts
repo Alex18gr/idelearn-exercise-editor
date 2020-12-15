@@ -13,6 +13,7 @@ import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { FileUploadModule } from 'primeng/fileupload';
+import { InputSwitchModule } from 'primeng/inputswitch';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RequirementEditDialogComponent } from './exercise/dialogs/requirement-edit-dialog/requirement-edit-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -24,6 +25,8 @@ import { ExerciseFileService } from './exercise/file/exercise-file.service';
 import { exerciseFileServiceFactory } from './exercise/file/exercise-file-service.factory';
 import { ElectronService, NgxElectronModule } from 'ngx-electron';
 import { StartPageComponent } from './home/start-page/start-page.component';
+import { NewExerciseDialogComponent } from './exercise/dialogs/new-exercise-dialog/new-exercise-dialog.component';
+import { FileUploadComponent } from './exercise/dialogs/exercise-edit-details-dialog/file-upload/file-upload.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +39,8 @@ import { StartPageComponent } from './home/start-page/start-page.component';
     SubRequirementFormComponent,
     ExerciseEditDetailsDialogComponent,
     StartPageComponent,
+    NewExerciseDialogComponent,
+    FileUploadComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,7 +55,8 @@ import { StartPageComponent } from './home/start-page/start-page.component';
     ReactiveFormsModule,
     FileUploadModule,
     HttpClientModule,
-    NgxElectronModule
+    NgxElectronModule,
+    InputSwitchModule
   ],
   providers: [
     MessageService,
