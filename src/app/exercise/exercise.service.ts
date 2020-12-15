@@ -32,6 +32,10 @@ export class ExerciseService {
     return this.currentExerciseSubject.value;
   }
 
+  exportExercise() {
+    return this.exerciseFileService.exportExercisePackage(this.currentExerciseValue);
+  }
+
   createExercise(options: { exerciseDetailsData: ExerciseData }): Observable<Exercise> {
     return this.exerciseFileService.createNewExerciseFile({ exerciseDetailsData: options.exerciseDetailsData }).pipe(map((data: any) => {
       const exercise = this.createExerciseByJson(data);
@@ -40,7 +44,7 @@ export class ExerciseService {
       return exercise;
     }));
   }
-  
+
   openExerciseByJsonObject(jsonStringData: any) {
     const exercise: Exercise = this.createExerciseByJson(jsonStringData);
     this.currentExerciseSubject.next(exercise);

@@ -1,5 +1,6 @@
 <section *ngIf="exercise">
     <section class="exercise-data">
+        <button pButton pRipple label="Export Data" type="button" class="p-button-raised" icon="pi pi-save" (click)="exportExercise()"></button>
         <div class="exercise-title">
             <h2>{{ exercise.name }}</h2>
         </div>

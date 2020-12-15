@@ -30,6 +30,29 @@ ipcMain.handle('getPirates', () => {
   return JSON.parse(result.toString());
 });
 
+ipcMain.handle('exportCurrentExercise', (event: IpcMainInvokeEvent, args: any[]) => {
+
+  const saveFile = dialog.showSaveDialogSync(win, {
+    title: 'Export exercise file',
+    filters: [
+      {
+        name: 'Exercise Package File',
+        extensions: [
+          'exercisepackage'
+        ]
+      }
+    ]
+  });
+
+  const editExercisePath: string = path.join(app.getPath('userData'), 'edit-exercise');
+
+  const extractExerciseZipFile: AdmZip = new AdmZip();
+  extractExerciseZipFile.addFile('exercise.json', fs.readFileSync(path.join(editExercisePath, 'exercise.json')));
+  extractExerciseZipFile.addFile('project.zip', fs.readFileSync(path.join(editExercisePath, 'project.zip')));
+
+  extractExerciseZipFile.writeZip(saveFile);
+});
+
 ipcMain.handle('createNewExercise', (event: IpcMainInvokeEvent, args: any[]) => {
   if (!args) {
     throw new Error('No args provided!');
@@ -65,6 +88,10 @@ ipcMain.handle('createNewExercise', (event: IpcMainInvokeEvent, args: any[]) => 
   }
 
   fs.writeFileSync(path.join(editExercisePath, 'exercise.json'), JSON.stringify(exercise));
+  if (!!exerciseData.hasStartingProject && exerciseData.hasStartingProject !== '') {
+    fs.copyFileSync(exerciseData.startingProjectUrl, path.join(editExercisePath, 'project.zip'));
+  }
+
   return exercise;
 });
 

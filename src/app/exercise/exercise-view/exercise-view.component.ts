@@ -18,6 +18,7 @@ export class ExerciseViewComponent implements OnInit, OnDestroy {
   editRequirement!: ClassRequirement;
   editSubRequirement: boolean = false;
   exerciseSubscription!: Subscription;
+  savingData: boolean = false;
 
   constructor(private exerciseService: ExerciseService,
     private messageService: MessageService,
@@ -62,5 +63,16 @@ export class ExerciseViewComponent implements OnInit, OnDestroy {
 
   editExerciseDetails() {
     this.exerciseDialogService.showEditExerciseDetailsDialog(this.exercise);
+  }
+
+  exportExercise() {
+    this.savingData = true;
+    this.exerciseService.exportExercise().subscribe(res => {
+      this.savingData = false;
+      this.messageService.add({ severity: 'success', summary: 'Edit Success', detail: 'Exercise exported successfuly' });
+    }, error => {
+      this.savingData = false;
+      this.messageService.add({ severity: 'error', summary: 'Export Error', detail: error });
+    });
   }
 }
