@@ -1,7 +1,11 @@
 
 <section class="main-container">
-    <app-exercise-view></app-exercise-view>
+    <app-exercise-view *ngIf="exercise"></app-exercise-view>
+    <app-start-page *ngIf="!exercise"></app-start-page>
 </section>
 
 <!-- For PrimeNG Toast Functionality -->
 <p-toast position="bottom-right"></p-toast>
+
+<!-- Dialogs -->
+<app-exercise-edit-details-dialog></app-exercise-edit-details-dialog>

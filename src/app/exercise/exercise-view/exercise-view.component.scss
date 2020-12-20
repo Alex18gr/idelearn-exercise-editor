@@ -3,6 +3,8 @@
 .requirements {
     display: flex;
     flex-direction: column;
+    border-top: #0891cf solid 2px;
+    padding-top: 8px;
     .requirements-header {
         display: flex;
         align-items: center;
@@ -48,6 +50,53 @@
                 }
             }
         }
+    }
+}
+
+.exercise-data {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    z-index: 990;
+    position: sticky;
+    top: 0;
+    background-color: #ffffff;
+    border-bottom: 1px solid #0891cf;
+    .exercise-title {
+        font-size: 1.5rem;
+        font-weight: 500;
+    }
+    .exercise-id {
+        font-size: 1em;
+        color: grey;
+    }
+    .exercise-exercise-project-info {
+        border: 2px solid #0890cf7a;
+        border-radius: 5px;
+        padding: 7px;
+        margin-top: 15px;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        .project-info-item {
+            margin-left: 15px;
+            margin-top: 10px;
+            font-size: 1.25em;
+            .project-info-header {
+                color: #0891cf;
+                font-weight: 500;
+                margin-right: 20px;
+            }
+        }
+        .project-info-edit-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+        }
+    }
+    .exercise-project-file {
+        border: 1px #0891cf;
+        border-radius: 5px;
     }
 }
 

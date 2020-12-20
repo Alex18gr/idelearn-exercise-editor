@@ -18,6 +18,7 @@ export class ExerciseViewComponent implements OnInit, OnDestroy {
   editRequirement!: ClassRequirement;
   editSubRequirement: boolean = false;
   exerciseSubscription!: Subscription;
+  savingData: boolean = false;
 
   constructor(private exerciseService: ExerciseService,
     private messageService: MessageService,
@@ -25,18 +26,9 @@ export class ExerciseViewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.initializeExerciseSubscriptions();
-    this.exerciseService.openExercise().subscribe(data => {
-      this.exercise = data;
-    });
   }
 
   initializeExerciseSubscriptions() {
-    this.exerciseService.openExercise().subscribe(data => {
-      // data loaded
-      this.messageService.add({severity:'success', summary:'Exercise Loaded' });
-    }, error => {
-      this.messageService.add({severity:'error', summary:'Exercise Load Error' });
-    });
     this.exerciseSubscription = this.exerciseService.currentExerciseObservable.subscribe((exercise: Exercise | null) => {
       if (exercise) { this.exercise = exercise }
     });
@@ -51,7 +43,7 @@ export class ExerciseViewComponent implements OnInit, OnDestroy {
   }
 
   editClassRequirement(req: ClassRequirement) {
-    this.exerciseDialogService.showEditRequirementDialog({requirement: req});
+    this.exerciseDialogService.showEditRequirementDialog({ requirement: req });
   }
 
   editClassRequirementSubrequirements(req: ClassRequirement) {
@@ -67,5 +59,20 @@ export class ExerciseViewComponent implements OnInit, OnDestroy {
 
   backToRequirements() {
     this.editSubRequirement = false;
+  }
+
+  editExerciseDetails() {
+    this.exerciseDialogService.showEditExerciseDetailsDialog(this.exercise);
+  }
+
+  exportExercise() {
+    this.savingData = true;
+    this.exerciseService.exportExercise().subscribe(res => {
+      this.savingData = false;
+      this.messageService.add({ severity: 'success', summary: 'Edit Success', detail: 'Exercise exported successfuly' });
+    }, error => {
+      this.savingData = false;
+      this.messageService.add({ severity: 'error', summary: 'Export Error', detail: error });
+    });
   }
 }
