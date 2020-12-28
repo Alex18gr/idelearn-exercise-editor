@@ -33,7 +33,7 @@ export class ExerciseService {
   }
 
   exportExercise() {
-    return this.exerciseFileService.exportExercisePackage(this.currentExerciseValue);
+    return this.exerciseFileService.exportExercisePackage(this.currentExerciseValue.getExportData());
   }
 
   createExercise(options: { exerciseDetailsData: ExerciseData }): Observable<Exercise> {
@@ -100,7 +100,8 @@ export class ExerciseService {
     }
     return new ClassRequirement({
       classId: reqData.class_id,
-      name: reqData.name
+      name: reqData.name,
+      isAbstract: reqData.is_abstract
     });
   }
 
@@ -166,19 +167,19 @@ export class ExerciseService {
   }
 
   editRequirement(options: { requirement: IRequirement, newValue: any }) {
-    // check if the name is the same as before
-    if ((options.requirement as ClassRequirement).name === options.newValue.className) {
-      return throwError(new Error('Class name is same as before'));
-    }
 
     // Check if the name already exists
     for (let req of this.currentExerciseValue.requirements) {
-      if (req.type === 'class' && (req as ClassRequirement).name === options.newValue.className) {
+      if (req.type === 'class' && (req as ClassRequirement).name === options.newValue.className &&
+        (req as ClassRequirement).classId !== (options.requirement as ClassRequirement).classId) {
         return throwError(new Error('Class with this class name already exists'));
       }
     }
 
+    // Update class requirement data
     (options.requirement as ClassRequirement).name = options.newValue.className;
+    (options.requirement as ClassRequirement).isAbstract = options.newValue.isAbstract;
+
     this.currentExerciseSubject.next(this.currentExerciseValue);
     return of(this.currentExerciseValue);
   }

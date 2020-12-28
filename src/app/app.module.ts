@@ -14,6 +14,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { FileUploadModule } from 'primeng/fileupload';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { CheckboxModule } from 'primeng/checkbox';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RequirementEditDialogComponent } from './exercise/dialogs/requirement-edit-dialog/requirement-edit-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -56,7 +57,8 @@ import { FileUploadComponent } from './exercise/dialogs/exercise-edit-details-di
     FileUploadModule,
     HttpClientModule,
     NgxElectronModule,
-    InputSwitchModule
+    InputSwitchModule,
+    CheckboxModule
   ],
   providers: [
     MessageService,

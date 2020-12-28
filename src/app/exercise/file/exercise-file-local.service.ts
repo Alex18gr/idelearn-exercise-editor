@@ -18,7 +18,7 @@ export class ExerciseFileLocalService {
     return from(this.electron.ipcRenderer.invoke('createNewExercise', options.exerciseDetailsData));
   }
 
-  exportExercisePackage(exercise: Exercise) {
+  exportExercisePackage(exercise: any) {
     return from(this.electron.ipcRenderer.invoke('exportCurrentExercise', exercise));
   }
 

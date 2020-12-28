@@ -33,6 +33,8 @@ ipcMain.handle('getPirates', () => {
 
 ipcMain.handle('exportCurrentExercise', (event: IpcMainInvokeEvent, args: any[]) => {
 
+  saveExercise(args);
+
   const saveFile = dialog.showSaveDialogSync(win, {
     title: 'Export exercise file',
     filters: [
@@ -155,6 +157,11 @@ ipcMain.handle('updateExerciseZipProject', (event: IpcMainInvokeEvent, args: any
   } 
   
 });
+
+const saveExercise = (exercise: any): void => {
+  const editExercisePath: string = path.join(app.getPath('userData'), 'edit-exercise');
+  fs.writeFileSync(path.join(editExercisePath, 'exercise.json'), JSON.stringify(exercise, null, 2));
+};
 
 interface ExerciseFile {
   fileUrl: string;

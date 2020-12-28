@@ -17,7 +17,7 @@ export class ExerciseFileService {
     return of(null);
   }
 
-  exportExercisePackage(exercise: Exercise) {
+  exportExercisePackage(exercise: any) {
     return of(null);
   }
 
