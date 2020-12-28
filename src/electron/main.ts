@@ -4,6 +4,7 @@ import * as path from 'path';
 import { watch } from 'fs';
 import * as AdmZip from 'adm-zip';
 import * as uuid from 'uuid';
+import { fileURLToPath } from 'url';
 
 export let win: BrowserWindow;
 
@@ -100,7 +101,7 @@ ipcMain.handle('openExerciseFile', () => {
   // return JSON.parse(result.toString());
 
   const dialogFileSelection: string[] | undefined = dialog.showOpenDialogSync(win);
-  console.log(dialogFileSelection);
+  // console.log(dialogFileSelection);
 
 
   if (dialogFileSelection) {
@@ -128,6 +129,36 @@ ipcMain.handle('openExerciseFile', () => {
   return null;
 
 });
+
+ipcMain.handle('updateExerciseZipProject', (event: IpcMainInvokeEvent, args: any[]) => {
+  if (!args) {
+    throw new Error('No args provided!');
+  }
+
+  const exerciseFile = args as any as ExerciseFile;
+
+  if (exerciseFile && exerciseFile.fileUrl) {
+
+
+    if (!fs.existsSync(exerciseFile.fileUrl)) {
+      throw new Error('File not found');
+    }
+
+    const editExerciseFilePath: string = path.join(app.getPath('userData'), 'edit-exercise', 'project.zip');
+
+    fs.copyFileSync(exerciseFile.fileUrl, editExerciseFilePath);
+
+    return editExerciseFilePath;
+
+  } else {
+    throw new Error('File data error');
+  } 
+  
+});
+
+interface ExerciseFile {
+  fileUrl: string;
+}
 
 interface ExerciseData {
   exerciseName: string;

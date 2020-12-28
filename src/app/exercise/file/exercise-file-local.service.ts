@@ -21,4 +21,8 @@ export class ExerciseFileLocalService {
   exportExercisePackage(exercise: Exercise) {
     return from(this.electron.ipcRenderer.invoke('exportCurrentExercise', exercise));
   }
+
+  updateExerciseZipProject(exerciseFile: { fileUrl: string }) {
+    return from(this.electron.ipcRenderer.invoke('updateExerciseZipProject', exerciseFile));
+  }
 }

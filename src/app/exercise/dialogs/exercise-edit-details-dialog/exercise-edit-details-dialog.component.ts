@@ -19,6 +19,7 @@ export class ExerciseEditDetailsDialogComponent implements OnInit {
   savingData: boolean = false;
   editMode: boolean = false;
   title: string = 'Edit Exercise Details';
+  uploadProjectZipLabel: string = '';
   exercise!: Exercise;
   exerciseForm!: FormGroup | null;
   enableFileUpload: boolean = false;
@@ -38,9 +39,15 @@ export class ExerciseEditDetailsDialogComponent implements OnInit {
       this.exercise = exercise;
       this.initializeForm();
       this.enableFileUpload = exercise.projectInfo.startingProject;
+      if (exercise.projectInfo.startingProject) {
+        this.uploadProjectZipLabel = 'Upload New Project Zip';
+      } else {
+        this.uploadProjectZipLabel = 'Upload Project Zip';
+      }
       this.exerciseForm?.patchValue({
         exerciseName: exercise.name,
-        projectTitle: exercise.projectInfo.title
+        projectTitle: exercise.projectInfo.title,
+        hasStartingProject: exercise.projectInfo.startingProject
       });
       this.showDialog();
     });
@@ -67,6 +74,7 @@ export class ExerciseEditDetailsDialogComponent implements OnInit {
   hideDialog() {
     this.exerciseForm = null;
     this.display = false;
+    this.uploadProjectZipLabel = '';
   }
 
   isControlInvalid(control: AbstractControl): boolean {

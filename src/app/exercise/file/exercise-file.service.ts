@@ -20,4 +20,8 @@ export class ExerciseFileService {
   exportExercisePackage(exercise: Exercise) {
     return of(null);
   }
+
+  updateExerciseZipProject(exerciseFile: { fileUrl: string }) {
+    return of(null);
+  }
 }

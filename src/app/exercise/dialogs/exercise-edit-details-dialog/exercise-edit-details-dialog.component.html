@@ -30,7 +30,7 @@
                             formControlName="hasStartingProject"></p-inputSwitch>
                     </div>
                     <div class="p-field input-group" [hidden]="!enableFileUpload">
-                        <h1>Upload Project Zip</h1>
+                        <h1>{{ uploadProjectZipLabel }}</h1>
                         <app-file-upload formControlName="startingProjectUrl"></app-file-upload>
                     </div>
                 </div>

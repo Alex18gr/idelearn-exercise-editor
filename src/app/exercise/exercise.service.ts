@@ -60,7 +60,7 @@ export class ExerciseService {
       targets: jsonData.targets,
       projectInfo: new ProjectInfo({
         title: jsonData.exercise_project_info.title,
-        startingProject: jsonData.starting_project
+        startingProject: jsonData.exercise_project_info.starting_project
       })
     });
 
@@ -291,16 +291,21 @@ export class ExerciseService {
     return throwError(new Error('Invalid subrequirement type'));
   }
 
-  saveExerciseDetails(options: { exercise: Exercise, exerciseDetailsData: ExerciseData }) {
+  saveExerciseDetails(options: { exercise: Exercise, exerciseDetailsData: ExerciseData }): Observable<any> {
     if (options.exerciseDetailsData.exerciseName === '' || options.exerciseDetailsData.projectTitle === '') {
       return throwError(new Error('Exercise name and exercise project title cannot be empty'));
     }
 
     options.exercise.name = options.exerciseDetailsData.exerciseName;
     options.exercise.projectInfo.title = options.exerciseDetailsData.projectTitle;
+    options.exercise.projectInfo.startingProject = options.exerciseDetailsData.hasStartingProject;
 
-    this.currentExerciseSubject.next(options.exercise);
-    return of(this.currentExerciseValue);
+    if (options.exerciseDetailsData.startingProjectUrl) {
+      return this.exerciseFileService.updateExerciseZipProject({ fileUrl: options.exerciseDetailsData.startingProjectUrl });
+    } else {
+      this.currentExerciseSubject.next(options.exercise);
+      return of(this.currentExerciseValue);
+    }
   }
 }
 
