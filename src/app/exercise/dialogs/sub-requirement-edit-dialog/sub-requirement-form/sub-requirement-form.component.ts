@@ -104,7 +104,7 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
           this.classSubRequirementForm.patchValue({
             fieldName: (this.editSubRequirement as ClassHasFieldRequirement).field.name,
             modifiers: (this.editSubRequirement as ClassHasFieldRequirement).field.modifiers,
-            type: (this.editSubRequirement as ClassHasFieldRequirement).field.type
+            type: this.exerciseService.stringifyType((this.editSubRequirement as ClassHasFieldRequirement).field.type)
           });
           break;
         default:

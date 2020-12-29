@@ -15,6 +15,10 @@ export class ClassHasFieldRequirement implements ISubRequirement{
         this.field = options.field;
     }
     getExportData() {
-        throw new Error("Method not implemented.");
+        return {
+            type: this.type,
+            main_class_id: this.mainClass.classId,
+            field: this.field
+        };
     }
 }

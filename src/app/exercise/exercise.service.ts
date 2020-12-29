@@ -7,7 +7,6 @@ import { ExtendSubRequirement } from '../models/requirements/extend-sub-requirem
 import { IRequirement } from '../models/requirements/irequirement';
 import { ISubRequirement } from '../models/requirements/isub-requirement';
 import { map } from 'rxjs/operators';
-import { SubRequirementFormComponent } from './dialogs/sub-requirement-edit-dialog/sub-requirement-form/sub-requirement-form.component';
 import { SubRequirementType } from '../models/sub-requirement-type';
 import { ProjectInfo } from '../models/project-info';
 import { ExerciseFileService } from './file/exercise-file.service';
@@ -136,7 +135,7 @@ export class ExerciseService {
               mainClass: currentClass,
               field: new FieldRequirement({
                 name: subReq.field.name,
-                type: this.stringifyType(subReq.field.type),
+                type: subReq.field.type,
                 modifiers: subReq.field.modifiers
               })
             }));
@@ -302,7 +301,7 @@ export class ExerciseService {
 
         (options.subRequirement as ClassHasFieldRequirement).field.name = options.newValue.fieldName;
         (options.subRequirement as ClassHasFieldRequirement).field.modifiers = options.newValue.modifiers;
-        (options.subRequirement as ClassHasFieldRequirement).field.type = options.newValue.type;
+        (options.subRequirement as ClassHasFieldRequirement).field.type = this.parseType(options.newValue.type);
 
         this.currentExerciseSubject.next(this.currentExerciseValue);
         return of(this.currentExerciseValue);

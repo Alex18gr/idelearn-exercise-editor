@@ -23,7 +23,7 @@
                     </div>
                     <div *ngSwitchCase="'contains-field'">
                         Class <span class="highlight-name">{{ editClassRequirement.name }}</span> contains a field with name <span class="highlight-name">{{ getClassHasFieldRequirement(req).field.name }}</span> 
-                        and type <span class="highlight-name">{{ getClassHasFieldRequirement(req).field.type }}</span>
+                        and type <span class="highlight-name">{{ stringifyType(getClassHasFieldRequirement(req).field.type) }}</span>
                     </div>
                 </div>
                 <div class="subrequirement-action">

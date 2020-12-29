@@ -5,6 +5,7 @@ import { ContainsSubRequirement } from 'src/app/models/requirements/contains-sub
 import { ExtendSubRequirement } from 'src/app/models/requirements/extend-sub-requirement';
 import { ClassHasFieldRequirement } from 'src/app/models/requirements/has-field-sub-requirement';
 import { IRequirement } from 'src/app/models/requirements/irequirement';
+import { RequirementType } from 'src/app/models/requirements/requirement-type';
 import { ExerciseDialogService } from '../dialogs/exercise-dialog.service';
 import { ExerciseService } from '../exercise.service';
 
@@ -41,6 +42,10 @@ export class ExerciseSubRequirementsViewComponent implements OnInit {
 
   goBackToRequirements() {
     this.back.emit();
+  }
+
+  stringifyType(type: RequirementType): string {
+    return this.exerciseService.stringifyType(type);
   }
 
   getExtendRequirement(req: IRequirement): ExtendSubRequirement {
