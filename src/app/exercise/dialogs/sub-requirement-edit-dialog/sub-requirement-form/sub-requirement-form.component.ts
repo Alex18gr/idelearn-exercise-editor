@@ -7,6 +7,7 @@ import { ExtendSubRequirement } from 'src/app/models/requirements/extend-sub-req
 import { ClassHasConstructorRequirement } from 'src/app/models/requirements/has-constructor-sub-requirement';
 import { ClassHasFieldRequirement } from 'src/app/models/requirements/has-field-sub-requirement';
 import { ClassHasMethodRequirement } from 'src/app/models/requirements/has-method-sub-requirement';
+import { ImplementNameRequirement } from 'src/app/models/requirements/implement-name-requirement';
 import { IRequirement } from 'src/app/models/requirements/irequirement';
 import { SubRequirementType } from 'src/app/models/sub-requirement-type';
 
@@ -68,6 +69,12 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
             relationType: new FormControl('', [Validators.required]),
           });
           break;
+        case SubRequirementType.IMPLEMENT_NAME:
+          this.formHeader = 'Implements interface by name Requirement';
+          this.classSubRequirementForm = new FormGroup({
+            implementTypeName: new FormControl('', [Validators.required])
+          });
+          break;
         case SubRequirementType.CONTAINS_FIELD:
           this.formHeader = 'Contain Field Requirement';
           this.classSubRequirementForm = new FormGroup({
@@ -123,6 +130,12 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
             fieldName: (this.editSubRequirement as ClassHasFieldRequirement).field.name,
             modifiers: (this.editSubRequirement as ClassHasFieldRequirement).field.modifiers,
             type: this.exerciseService.stringifyType((this.editSubRequirement as ClassHasFieldRequirement).field.type)
+          });
+          break;
+        case SubRequirementType.IMPLEMENT_NAME:
+
+          this.classSubRequirementForm.patchValue({
+            implementTypeName: (this.editSubRequirement as ImplementNameRequirement).implementTypeName,
           });
           break;
         case SubRequirementType.METHOD:

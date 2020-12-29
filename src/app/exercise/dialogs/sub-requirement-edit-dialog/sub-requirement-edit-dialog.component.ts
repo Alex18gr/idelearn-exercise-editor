@@ -27,6 +27,7 @@ export class SubRequirementEditDialogComponent implements OnInit {
   subRequirementTypeOptions: RequirementTypeDropdown[] = [
     { label: 'Extend a Class', value: 'extend' },
     { label: 'Contain an Instance of a class', value: 'contains' },
+    { label: 'Implements an interface with name', value: 'implement-name' },
     { label: 'Contain a field', value: 'contains-field' },
     { label: 'Contain a method', value: 'method' },
     { label: 'Contain a constructor', value: 'constructor' }

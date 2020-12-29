@@ -32,6 +32,9 @@
                     <div *ngSwitchCase="'constructor'">
                         Class <span class="highlight-name">{{ editClassRequirement.name }}</span> contains a constructor with parameters list <div class="highlight-name">{{ getMethodTypeString(getClassHasConstructorRequirement(req).constructorReq) }}</div>
                     </div>
+                    <div *ngSwitchCase="'implement-name'">
+                        Class <span class="highlight-name">{{ editClassRequirement.name }}</span> implements an interface named <div class="highlight-name">{{ getImplementNameRequirement(req).implementTypeName }}</div>
+                    </div>
                 </div>
                 <div class="subrequirement-action">
                     <button pButton pRipple type="button" icon="pi pi-cog" class="p-button-rounded" (click)="editSubRequirement(req)"></button>

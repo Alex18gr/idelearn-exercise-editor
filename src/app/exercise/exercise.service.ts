@@ -17,6 +17,7 @@ import { RequirementMethod } from '../models/requirements/requirement-method';
 import { ClassHasMethodRequirement } from '../models/requirements/has-method-sub-requirement';
 import { ClassHasConstructorRequirement } from '../models/requirements/has-constructor-sub-requirement';
 import { RequirementConstructor } from '../models/requirements/requirement-constructor';
+import { ImplementNameRequirement } from '../models/requirements/implement-name-requirement';
 
 @Injectable({
   providedIn: 'root'
@@ -132,6 +133,12 @@ export class ExerciseService {
             subRequirementsList.push(new ExtendSubRequirement({
               mainClass: currentClass,
               extendClass: this.getClassById(classList, subReq.extend_class_id) || currentClass
+            }));
+            break;
+          case SubRequirementType.IMPLEMENT_NAME:
+            subRequirementsList.push(new ImplementNameRequirement({
+              mainClass: currentClass,
+              implementTypeName: subReq.implement_type_name
             }));
             break;
           case SubRequirementType.CONTAINS_FIELD:
@@ -286,6 +293,19 @@ export class ExerciseService {
 
         (options.parentRequirement as ClassRequirement).relatedRequirements.push(extendRequirement);
         break;
+      case SubRequirementType.IMPLEMENT_NAME:
+
+        const implementNameRequirement = new ImplementNameRequirement({
+          mainClass: options.parentRequirement as ClassRequirement,
+          implementTypeName: options.subRequirementData.implementTypeName
+        });
+
+        if (this.checkSubRequirementExists(options.parentRequirement, implementNameRequirement)) {
+          return throwError(new Error('Implements name requirement already exists'));
+        }
+
+        (options.parentRequirement as ClassRequirement).relatedRequirements.push(implementNameRequirement);
+        break;
       case SubRequirementType.CONTAINS_FIELD:
         const classHasFieldRequirement = new ClassHasFieldRequirement({
           mainClass: options.parentRequirement as ClassRequirement,
@@ -381,6 +401,12 @@ export class ExerciseService {
         } else {
           (options.subRequirement as ExtendSubRequirement).extendClass = extendClass;
         }
+        this.currentExerciseSubject.next(this.currentExerciseValue);
+        return of(this.currentExerciseValue);
+      case SubRequirementType.IMPLEMENT_NAME:
+
+        (options.subRequirement as ImplementNameRequirement).implementTypeName = options.newValue.implementTypeName;
+        
         this.currentExerciseSubject.next(this.currentExerciseValue);
         return of(this.currentExerciseValue);
       case SubRequirementType.CONTAINS_FIELD:

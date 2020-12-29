@@ -6,6 +6,7 @@ import { ExtendSubRequirement } from 'src/app/models/requirements/extend-sub-req
 import { ClassHasConstructorRequirement } from 'src/app/models/requirements/has-constructor-sub-requirement';
 import { ClassHasFieldRequirement } from 'src/app/models/requirements/has-field-sub-requirement';
 import { ClassHasMethodRequirement } from 'src/app/models/requirements/has-method-sub-requirement';
+import { ImplementNameRequirement } from 'src/app/models/requirements/implement-name-requirement';
 import { IRequirement } from 'src/app/models/requirements/irequirement';
 import { RequirementConstructor } from 'src/app/models/requirements/requirement-constructor';
 import { RequirementMethod } from 'src/app/models/requirements/requirement-method';
@@ -74,6 +75,10 @@ export class ExerciseSubRequirementsViewComponent implements OnInit {
 
   getClassHasConstructorRequirement(req: IRequirement): ClassHasConstructorRequirement {
     return req as ClassHasConstructorRequirement;
+  }
+
+  getImplementNameRequirement(req: IRequirement): ImplementNameRequirement {
+    return req as ImplementNameRequirement;
   }
 
 }
