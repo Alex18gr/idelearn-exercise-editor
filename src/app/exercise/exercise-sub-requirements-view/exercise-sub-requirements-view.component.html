@@ -21,6 +21,10 @@
                     <div *ngSwitchCase="'contains'">
                         Class <span class="highlight-name">{{ editClassRequirement.name }}</span> contains instance of class <span class="highlight-name">{{ getContainsRequirement(req).containClass.name }}</span>
                     </div>
+                    <div *ngSwitchCase="'contains-field'">
+                        Class <span class="highlight-name">{{ editClassRequirement.name }}</span> contains a field with name <span class="highlight-name">{{ getClassHasFieldRequirement(req).field.name }}</span> 
+                        and type <span class="highlight-name">{{ getClassHasFieldRequirement(req).field.type }}</span>
+                    </div>
                 </div>
                 <div class="subrequirement-action">
                     <button pButton pRipple type="button" icon="pi pi-cog" class="p-button-rounded" (click)="editSubRequirement(req)"></button>

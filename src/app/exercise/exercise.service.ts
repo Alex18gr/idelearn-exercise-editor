@@ -11,6 +11,8 @@ import { SubRequirementFormComponent } from './dialogs/sub-requirement-edit-dial
 import { SubRequirementType } from '../models/sub-requirement-type';
 import { ProjectInfo } from '../models/project-info';
 import { ExerciseFileService } from './file/exercise-file.service';
+import { FieldRequirement } from '../models/requirements/field-requirement';
+import { ClassHasFieldRequirement } from '../models/requirements/has-field-sub-requirement';
 
 @Injectable({
   providedIn: 'root'
@@ -126,6 +128,16 @@ export class ExerciseService {
             subRequirementsList.push(new ExtendSubRequirement({
               mainClass: currentClass,
               extendClass: this.getClassById(classList, subReq.extend_class_id) || currentClass
+            }));
+            break;
+          case 'contains-field':
+            subRequirementsList.push(new ClassHasFieldRequirement({
+              mainClass: currentClass,
+              field: new FieldRequirement({
+                name: subReq.field.name,
+                type: this.stringifyType(subReq.field.type),
+                modifiers: subReq.field.modifiers
+              })
             }));
             break;
           default:
@@ -308,6 +320,44 @@ export class ExerciseService {
       return of(this.currentExerciseValue);
     }
   }
+
+  stringifyType(type: any): string {
+    if (!type) { return '' }
+    const stringArray = [];
+    stringArray.push(type.name);
+    if (type.type_arguments && type.type_arguments.length > 0) {
+      stringArray.push('<');
+      for (let t of type.type_arguments) {
+        this.stringifyTypeRecursive(t, stringArray);
+        if ((type.type_arguments as any[]).indexOf(t) + 1 !== (type.type_arguments as any[]).length) {
+          stringArray.push(', ')
+        }
+      }
+      stringArray.push('>');
+    }
+    return stringArray.join('');
+  }
+
+  private stringifyTypeRecursive(type: any, stringArray: string[]): void {
+    if (!type) { return }
+    stringArray.push(type.name);
+    if (type.type_arguments && type.type_arguments.length > 0) {
+      stringArray.push('<');
+      for (let t of type.type_arguments) {
+        this.stringifyTypeRecursive(t, stringArray);
+        if ((type.type_arguments as any[]).indexOf(t) + 1 !== (type.type_arguments as any[]).length) {
+          stringArray.push(', ')
+        }
+      }
+      stringArray.push('>');
+    }
+  }
+
+  parseType(typeString: string): any {
+
+  }
+
+
 }
 
 export interface ExerciseData {

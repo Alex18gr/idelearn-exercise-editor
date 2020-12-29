@@ -3,6 +3,7 @@ import { Exercise } from 'src/app/models/exercise';
 import { ClassRequirement } from 'src/app/models/requirements/class-requirement';
 import { ContainsSubRequirement } from 'src/app/models/requirements/contains-sub-requirement';
 import { ExtendSubRequirement } from 'src/app/models/requirements/extend-sub-requirement';
+import { ClassHasFieldRequirement } from 'src/app/models/requirements/has-field-sub-requirement';
 import { IRequirement } from 'src/app/models/requirements/irequirement';
 import { ExerciseDialogService } from '../dialogs/exercise-dialog.service';
 import { ExerciseService } from '../exercise.service';
@@ -48,6 +49,10 @@ export class ExerciseSubRequirementsViewComponent implements OnInit {
 
   getContainsRequirement(req: IRequirement): ContainsSubRequirement {
     return req as ContainsSubRequirement;
+  }
+
+  getClassHasFieldRequirement(req: IRequirement): ClassHasFieldRequirement {
+    return req as ClassHasFieldRequirement;
   }
 
 }
