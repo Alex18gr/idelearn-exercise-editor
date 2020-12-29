@@ -13,6 +13,8 @@ import { ExerciseFileService } from './file/exercise-file.service';
 import { FieldRequirement } from '../models/requirements/field-requirement';
 import { ClassHasFieldRequirement } from '../models/requirements/has-field-sub-requirement';
 import { RequirementType } from '../models/requirements/requirement-type';
+import { RequirementMethod } from '../models/requirements/requirement-method';
+import { ClassHasMethodRequirement } from '../models/requirements/has-method-sub-requirement';
 
 @Injectable({
   providedIn: 'root'
@@ -140,6 +142,17 @@ export class ExerciseService {
               })
             }));
             break;
+          case 'method':
+            subRequirementsList.push(new ClassHasMethodRequirement({
+              mainClass: currentClass,
+              method: new RequirementMethod({
+                name: subReq.method.name,
+                type: subReq.method.type,
+                modifiers: subReq.method.modifiers,
+                parameters: subReq.method.parameters
+              })
+            }));
+            break;
           default:
             break;
         }
@@ -219,7 +232,7 @@ export class ExerciseService {
           }
           break;
         default:
-          break;
+          return false;
       }
     }
     return false;
@@ -262,6 +275,46 @@ export class ExerciseService {
 
         (options.parentRequirement as ClassRequirement).relatedRequirements.push(extendRequirement);
         break;
+      case SubRequirementType.CONTAINS_FIELD:
+        const classHasFieldRequirement = new ClassHasFieldRequirement({
+          mainClass: options.parentRequirement as ClassRequirement,
+          field: new FieldRequirement({
+            name: options.subRequirementData.fieldName,
+            modifiers: options.subRequirementData.modifiers,
+            type: this.parseType(options.subRequirementData.type)
+          })
+        });
+
+        if (this.checkSubRequirementExists(options.parentRequirement, classHasFieldRequirement)) {
+          return throwError(new Error('Field subrequirement already exists'));
+        }
+
+        (options.parentRequirement as ClassRequirement).relatedRequirements.push(classHasFieldRequirement);
+        break;
+      case SubRequirementType.METHOD:
+        const parameters: any[] = [];
+        for (let p of options.subRequirementData.parameters) {
+          parameters.push({
+            name: p.name,
+            type: this.parseType(p.type)
+          });
+        }
+        const classHasMethodRequirement = new ClassHasMethodRequirement({
+          mainClass: options.parentRequirement as ClassRequirement,
+          method: new RequirementMethod({
+            name: options.subRequirementData.name,
+            modifiers: options.subRequirementData.modifiers,
+            type: this.parseType(options.subRequirementData.type),
+            parameters: parameters
+          })
+        });
+
+        if (this.checkSubRequirementExists(options.parentRequirement, classHasMethodRequirement)) {
+          return throwError(new Error('Method subrequirement already exists'));
+        }
+
+        (options.parentRequirement as ClassRequirement).relatedRequirements.push(classHasMethodRequirement);
+        break;
       default:
         return throwError(new Error('Invalid subrequirement type'));
     }
@@ -302,6 +355,22 @@ export class ExerciseService {
         (options.subRequirement as ClassHasFieldRequirement).field.name = options.newValue.fieldName;
         (options.subRequirement as ClassHasFieldRequirement).field.modifiers = options.newValue.modifiers;
         (options.subRequirement as ClassHasFieldRequirement).field.type = this.parseType(options.newValue.type);
+
+        this.currentExerciseSubject.next(this.currentExerciseValue);
+        return of(this.currentExerciseValue);
+      case SubRequirementType.METHOD:
+        const parameters: any[] = [];
+        for (let p of options.newValue.parameters) {
+          parameters.push({
+            name: p.name,
+            type: this.parseType(p.type)
+          });
+        }
+
+        (options.subRequirement as ClassHasMethodRequirement).method.name = options.newValue.name;
+        (options.subRequirement as ClassHasMethodRequirement).method.modifiers = options.newValue.modifiers;
+        (options.subRequirement as ClassHasMethodRequirement).method.type = this.parseType(options.newValue.type);
+        (options.subRequirement as ClassHasMethodRequirement).method.parameters = parameters;
 
         this.currentExerciseSubject.next(this.currentExerciseValue);
         return of(this.currentExerciseValue);
@@ -433,6 +502,19 @@ export class ExerciseService {
       index: typeArgumentsString.length,
       typeArguments
     };
+  }
+
+  getMethodParametersString(method: RequirementMethod): string {
+    const parametersArray: string[] = [];
+    parametersArray.push('(');
+    for (let p of method.parameters) {
+      parametersArray.push(this.stringifyType(p.type));
+      if (method.parameters.indexOf(p) + 1 !== method.parameters.length) {
+        parametersArray.push(', ');
+      }
+    }
+    parametersArray.push(')');
+    return parametersArray.join('');
   }
 
 }

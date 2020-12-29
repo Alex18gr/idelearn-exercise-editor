@@ -7,6 +7,10 @@
         margin-top: 15px;
         .sub-requirement-input-group {
             margin-top: 15px;
+            
+        }
+        .parameter-input {
+            display: flex;
         }
     }
 }
@@ -21,4 +25,26 @@
 
 :host ::ng-deep .custom-input-text {
     width: 100%;
+}
+
+:host ::ng-deep .parameter-input {
+    display: flex;
+    margin-left: 15px;
+    margin-top: 25px;
+    .parameter-field {
+        width: 45%;
+        margin-right: 2%;
+    }
+}
+
+:host ::ng-deep .parameter-input-text {
+    width: 100%;
+}
+
+.parameters-header {
+    display: flex;
+    align-items: center;
+    .parameters-header-title {
+        margin-right: 25px;
+    }
 }

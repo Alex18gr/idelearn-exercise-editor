@@ -4,7 +4,9 @@ import { ClassRequirement } from 'src/app/models/requirements/class-requirement'
 import { ContainsSubRequirement } from 'src/app/models/requirements/contains-sub-requirement';
 import { ExtendSubRequirement } from 'src/app/models/requirements/extend-sub-requirement';
 import { ClassHasFieldRequirement } from 'src/app/models/requirements/has-field-sub-requirement';
+import { ClassHasMethodRequirement } from 'src/app/models/requirements/has-method-sub-requirement';
 import { IRequirement } from 'src/app/models/requirements/irequirement';
+import { RequirementMethod } from 'src/app/models/requirements/requirement-method';
 import { RequirementType } from 'src/app/models/requirements/requirement-type';
 import { ExerciseDialogService } from '../dialogs/exercise-dialog.service';
 import { ExerciseService } from '../exercise.service';
@@ -48,6 +50,10 @@ export class ExerciseSubRequirementsViewComponent implements OnInit {
     return this.exerciseService.stringifyType(type);
   }
 
+  getMethodTypeString(method: RequirementMethod): string {
+    return this.exerciseService.getMethodParametersString(method);
+  }
+
   getExtendRequirement(req: IRequirement): ExtendSubRequirement {
     return req as ExtendSubRequirement;
   }
@@ -58,6 +64,10 @@ export class ExerciseSubRequirementsViewComponent implements OnInit {
 
   getClassHasFieldRequirement(req: IRequirement): ClassHasFieldRequirement {
     return req as ClassHasFieldRequirement;
+  }
+
+  getClassHasMethodRequirement(req: IRequirement): ClassHasMethodRequirement {
+    return req as ClassHasMethodRequirement;
   }
 
 }
