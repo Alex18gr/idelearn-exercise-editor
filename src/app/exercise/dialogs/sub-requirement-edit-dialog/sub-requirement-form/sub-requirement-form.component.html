@@ -44,6 +44,19 @@
             </div>
         </form>
 
+        <form class="sub-requirement-form" [formGroup]="classSubRequirementForm" *ngSwitchCase="'extend-name'">
+            <div class="p-field sub-requirement-input-group">
+                <span class="p-float-label">
+                    <input type="text" id="extendTypeName" class="parameter-input-text" formControlName="extendTypeName"
+                        pInputText>
+                    <label for="extendTypeName">Extend Type Name</label>
+                </span>
+                <small *ngIf="isControlInvalid(classSubRequirementForm.controls.extendTypeName)" class="p-invalid">
+                    {{ getErrorMessage(classSubRequirementForm.controls.extendTypeName) }}
+                </small>
+            </div>
+        </form>
+
         <form class="sub-requirement-form" [formGroup]="classSubRequirementForm" *ngSwitchCase="'implement-name'">
             <div class="p-field sub-requirement-input-group">
                 <span class="p-float-label">

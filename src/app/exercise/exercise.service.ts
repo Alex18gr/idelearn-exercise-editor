@@ -18,6 +18,7 @@ import { ClassHasMethodRequirement } from '../models/requirements/has-method-sub
 import { ClassHasConstructorRequirement } from '../models/requirements/has-constructor-sub-requirement';
 import { RequirementConstructor } from '../models/requirements/requirement-constructor';
 import { ImplementNameRequirement } from '../models/requirements/implement-name-requirement';
+import { ExtendNameRequirement } from '../models/requirements/extend-name-requirement';
 
 @Injectable({
   providedIn: 'root'
@@ -133,6 +134,12 @@ export class ExerciseService {
             subRequirementsList.push(new ExtendSubRequirement({
               mainClass: currentClass,
               extendClass: this.getClassById(classList, subReq.extend_class_id) || currentClass
+            }));
+            break;
+          case SubRequirementType.EXTEND_NAME:
+            subRequirementsList.push(new ExtendNameRequirement({
+              mainClass: currentClass,
+              extendTypeName: subReq.extend_type_name
             }));
             break;
           case SubRequirementType.IMPLEMENT_NAME:
@@ -293,6 +300,18 @@ export class ExerciseService {
 
         (options.parentRequirement as ClassRequirement).relatedRequirements.push(extendRequirement);
         break;
+      case SubRequirementType.EXTEND_NAME:
+        const extendNameRequirement = new ExtendNameRequirement({
+          mainClass: options.parentRequirement as ClassRequirement,
+          extendTypeName: options.subRequirementData.extendTypeName
+        });
+
+        if (this.checkSubRequirementExists(options.parentRequirement, extendNameRequirement)) {
+          return throwError(new Error('Extends name requirement already exists'));
+        }
+
+        (options.parentRequirement as ClassRequirement).relatedRequirements.push(extendNameRequirement);
+        break;
       case SubRequirementType.IMPLEMENT_NAME:
 
         const implementNameRequirement = new ImplementNameRequirement({
@@ -403,10 +422,16 @@ export class ExerciseService {
         }
         this.currentExerciseSubject.next(this.currentExerciseValue);
         return of(this.currentExerciseValue);
+      case SubRequirementType.EXTEND_NAME:
+
+        (options.subRequirement as ExtendNameRequirement).extendTypeName = options.newValue.extendTypeName;
+
+        this.currentExerciseSubject.next(this.currentExerciseValue);
+        return of(this.currentExerciseValue);
       case SubRequirementType.IMPLEMENT_NAME:
 
         (options.subRequirement as ImplementNameRequirement).implementTypeName = options.newValue.implementTypeName;
-        
+
         this.currentExerciseSubject.next(this.currentExerciseValue);
         return of(this.currentExerciseValue);
       case SubRequirementType.CONTAINS_FIELD:

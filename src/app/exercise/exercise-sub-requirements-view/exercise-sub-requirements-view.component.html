@@ -35,6 +35,9 @@
                     <div *ngSwitchCase="'implement-name'">
                         Class <span class="highlight-name">{{ editClassRequirement.name }}</span> implements an interface named <div class="highlight-name">{{ getImplementNameRequirement(req).implementTypeName }}</div>
                     </div>
+                    <div *ngSwitchCase="'extend-name'">
+                        Class <span class="highlight-name">{{ editClassRequirement.name }}</span> extends a class named <div class="highlight-name">{{ getExtendNameRequirement(req).extendTypeName }}</div>
+                    </div>
                 </div>
                 <div class="subrequirement-action">
                     <button pButton pRipple type="button" icon="pi pi-cog" class="p-button-rounded" (click)="editSubRequirement(req)"></button>

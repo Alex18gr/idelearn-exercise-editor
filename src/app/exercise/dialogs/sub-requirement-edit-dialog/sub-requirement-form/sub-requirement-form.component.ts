@@ -3,6 +3,7 @@ import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, V
 import { ExerciseService } from 'src/app/exercise/exercise.service';
 import { ClassRequirement } from 'src/app/models/requirements/class-requirement';
 import { ContainsSubRequirement } from 'src/app/models/requirements/contains-sub-requirement';
+import { ExtendNameRequirement } from 'src/app/models/requirements/extend-name-requirement';
 import { ExtendSubRequirement } from 'src/app/models/requirements/extend-sub-requirement';
 import { ClassHasConstructorRequirement } from 'src/app/models/requirements/has-constructor-sub-requirement';
 import { ClassHasFieldRequirement } from 'src/app/models/requirements/has-field-sub-requirement';
@@ -69,6 +70,12 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
             relationType: new FormControl('', [Validators.required]),
           });
           break;
+        case SubRequirementType.EXTEND_NAME:
+          this.formHeader = 'Extends Class by name Requirement';
+          this.classSubRequirementForm = new FormGroup({
+            extendTypeName: new FormControl('', [Validators.required])
+          });
+          break;
         case SubRequirementType.IMPLEMENT_NAME:
           this.formHeader = 'Implements interface by name Requirement';
           this.classSubRequirementForm = new FormGroup({
@@ -130,6 +137,12 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
             fieldName: (this.editSubRequirement as ClassHasFieldRequirement).field.name,
             modifiers: (this.editSubRequirement as ClassHasFieldRequirement).field.modifiers,
             type: this.exerciseService.stringifyType((this.editSubRequirement as ClassHasFieldRequirement).field.type)
+          });
+          break;
+        case SubRequirementType.EXTEND_NAME:
+
+          this.classSubRequirementForm.patchValue({
+            extendTypeName: (this.editSubRequirement as ExtendNameRequirement).extendTypeName,
           });
           break;
         case SubRequirementType.IMPLEMENT_NAME:

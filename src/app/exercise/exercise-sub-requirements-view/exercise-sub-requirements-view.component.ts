@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Exercise } from 'src/app/models/exercise';
 import { ClassRequirement } from 'src/app/models/requirements/class-requirement';
 import { ContainsSubRequirement } from 'src/app/models/requirements/contains-sub-requirement';
+import { ExtendNameRequirement } from 'src/app/models/requirements/extend-name-requirement';
 import { ExtendSubRequirement } from 'src/app/models/requirements/extend-sub-requirement';
 import { ClassHasConstructorRequirement } from 'src/app/models/requirements/has-constructor-sub-requirement';
 import { ClassHasFieldRequirement } from 'src/app/models/requirements/has-field-sub-requirement';
@@ -79,6 +80,10 @@ export class ExerciseSubRequirementsViewComponent implements OnInit {
 
   getImplementNameRequirement(req: IRequirement): ImplementNameRequirement {
     return req as ImplementNameRequirement;
+  }
+
+  getExtendNameRequirement(req: IRequirement): ExtendNameRequirement {
+    return req as ExtendNameRequirement;
   }
 
 }
