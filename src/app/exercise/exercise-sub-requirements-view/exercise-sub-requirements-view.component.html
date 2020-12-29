@@ -29,6 +29,9 @@
                         Class <span class="highlight-name">{{ editClassRequirement.name }}</span> contains a method with name <span class="highlight-name">{{ getClassHasMethodRequirement(req).method.name }}</span> 
                         , parameters list <div class="highlight-name">{{ getMethodTypeString(getClassHasMethodRequirement(req).method) }}</div> return type <span class="highlight-name">{{ stringifyType(getClassHasMethodRequirement(req).method.type) }}</span>
                     </div>
+                    <div *ngSwitchCase="'constructor'">
+                        Class <span class="highlight-name">{{ editClassRequirement.name }}</span> contains a constructor with parameters list <div class="highlight-name">{{ getMethodTypeString(getClassHasConstructorRequirement(req).constructorReq) }}</div>
+                    </div>
                 </div>
                 <div class="subrequirement-action">
                     <button pButton pRipple type="button" icon="pi pi-cog" class="p-button-rounded" (click)="editSubRequirement(req)"></button>

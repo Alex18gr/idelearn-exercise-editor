@@ -3,9 +3,11 @@ import { Exercise } from 'src/app/models/exercise';
 import { ClassRequirement } from 'src/app/models/requirements/class-requirement';
 import { ContainsSubRequirement } from 'src/app/models/requirements/contains-sub-requirement';
 import { ExtendSubRequirement } from 'src/app/models/requirements/extend-sub-requirement';
+import { ClassHasConstructorRequirement } from 'src/app/models/requirements/has-constructor-sub-requirement';
 import { ClassHasFieldRequirement } from 'src/app/models/requirements/has-field-sub-requirement';
 import { ClassHasMethodRequirement } from 'src/app/models/requirements/has-method-sub-requirement';
 import { IRequirement } from 'src/app/models/requirements/irequirement';
+import { RequirementConstructor } from 'src/app/models/requirements/requirement-constructor';
 import { RequirementMethod } from 'src/app/models/requirements/requirement-method';
 import { RequirementType } from 'src/app/models/requirements/requirement-type';
 import { ExerciseDialogService } from '../dialogs/exercise-dialog.service';
@@ -50,7 +52,7 @@ export class ExerciseSubRequirementsViewComponent implements OnInit {
     return this.exerciseService.stringifyType(type);
   }
 
-  getMethodTypeString(method: RequirementMethod): string {
+  getMethodTypeString(method: RequirementMethod | RequirementConstructor): string {
     return this.exerciseService.getMethodParametersString(method);
   }
 
@@ -68,6 +70,10 @@ export class ExerciseSubRequirementsViewComponent implements OnInit {
 
   getClassHasMethodRequirement(req: IRequirement): ClassHasMethodRequirement {
     return req as ClassHasMethodRequirement;
+  }
+
+  getClassHasConstructorRequirement(req: IRequirement): ClassHasConstructorRequirement {
+    return req as ClassHasConstructorRequirement;
   }
 
 }

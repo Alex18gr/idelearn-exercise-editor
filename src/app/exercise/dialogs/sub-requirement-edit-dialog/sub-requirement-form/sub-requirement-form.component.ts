@@ -4,6 +4,7 @@ import { ExerciseService } from 'src/app/exercise/exercise.service';
 import { ClassRequirement } from 'src/app/models/requirements/class-requirement';
 import { ContainsSubRequirement } from 'src/app/models/requirements/contains-sub-requirement';
 import { ExtendSubRequirement } from 'src/app/models/requirements/extend-sub-requirement';
+import { ClassHasConstructorRequirement } from 'src/app/models/requirements/has-constructor-sub-requirement';
 import { ClassHasFieldRequirement } from 'src/app/models/requirements/has-field-sub-requirement';
 import { ClassHasMethodRequirement } from 'src/app/models/requirements/has-method-sub-requirement';
 import { IRequirement } from 'src/app/models/requirements/irequirement';
@@ -84,6 +85,13 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
             parameters: new FormArray([])
           });
           break;
+        case SubRequirementType.CONSTRUCTOR:
+          this.formHeader = 'Contain Constructor Requirement';
+          this.classSubRequirementForm = new FormGroup({
+            modifiers: new FormControl(''),
+            parameters: new FormArray([])
+          });
+          break;
         default:
           this.classSubRequirementForm = null;
           break;
@@ -135,6 +143,25 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
             name: (this.editSubRequirement as ClassHasMethodRequirement).method.name,
             modifiers: (this.editSubRequirement as ClassHasMethodRequirement).method.modifiers,
             type: this.exerciseService.stringifyType((this.editSubRequirement as ClassHasMethodRequirement).method.type)
+          });
+
+          break;
+        case SubRequirementType.CONSTRUCTOR:
+
+          for (let p of (this.editSubRequirement as ClassHasConstructorRequirement).constructorReq.parameters) {
+            const parameterGroup = new FormGroup({
+              name: new FormControl(''),
+              type: new FormControl('')
+            });
+            parameterGroup.patchValue({
+              name: p.name,
+              type: this.exerciseService.stringifyType(p.type)
+            });
+            (this.classSubRequirementForm.controls.parameters as FormArray).push(parameterGroup);
+          }
+
+          this.classSubRequirementForm.patchValue({
+            modifiers: (this.editSubRequirement as ClassHasConstructorRequirement).constructorReq.modifiers
           });
 
           break;

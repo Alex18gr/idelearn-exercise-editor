@@ -1,24 +1,24 @@
 import { ClassRequirement } from "./class-requirement";
 import { ISubRequirement } from "./isub-requirement";
-import { RequirementMethod } from "./requirement-method";
+import { RequirementConstructor } from "./requirement-constructor";
 
-export class ClassHasMethodRequirement implements ISubRequirement {
-    type: string = 'method';
+export class ClassHasConstructorRequirement implements ISubRequirement {
+    type: string = 'constructor';
     mainClass: ClassRequirement;
-    method: RequirementMethod;
+    constructorReq: RequirementConstructor;
 
     constructor(options: {
         mainClass: ClassRequirement,
-        method: RequirementMethod
+        constructorReq: RequirementConstructor
     }) {
         this.mainClass = options.mainClass;
-        this.method = options.method;
+        this.constructorReq = options.constructorReq;
     }
     getExportData() {
         return {
             type: this.type,
             main_class_id: this.mainClass.classId,
-            method: this.method
+            constructor_req: this.constructorReq
         };
     }
 }

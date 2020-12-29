@@ -15,6 +15,8 @@ import { ClassHasFieldRequirement } from '../models/requirements/has-field-sub-r
 import { RequirementType } from '../models/requirements/requirement-type';
 import { RequirementMethod } from '../models/requirements/requirement-method';
 import { ClassHasMethodRequirement } from '../models/requirements/has-method-sub-requirement';
+import { ClassHasConstructorRequirement } from '../models/requirements/has-constructor-sub-requirement';
+import { RequirementConstructor } from '../models/requirements/requirement-constructor';
 
 @Injectable({
   providedIn: 'root'
@@ -119,20 +121,20 @@ export class ExerciseService {
     for (let subReq of reqData.related_requirements) {
       if (subReq && subReq.type) {
         switch (subReq.type) {
-          case 'contains':
+          case SubRequirementType.CONTAINS:
             subRequirementsList.push(new ContainsSubRequirement({
               mainClass: currentClass,
               containClass: this.getClassById(classList, subReq.contain_class_id) || currentClass,
               relationType: subReq.relation_type
             }));
             break;
-          case 'extend':
+          case SubRequirementType.EXTEND:
             subRequirementsList.push(new ExtendSubRequirement({
               mainClass: currentClass,
               extendClass: this.getClassById(classList, subReq.extend_class_id) || currentClass
             }));
             break;
-          case 'contains-field':
+          case SubRequirementType.CONTAINS_FIELD:
             subRequirementsList.push(new ClassHasFieldRequirement({
               mainClass: currentClass,
               field: new FieldRequirement({
@@ -142,7 +144,7 @@ export class ExerciseService {
               })
             }));
             break;
-          case 'method':
+          case SubRequirementType.METHOD:
             subRequirementsList.push(new ClassHasMethodRequirement({
               mainClass: currentClass,
               method: new RequirementMethod({
@@ -150,6 +152,15 @@ export class ExerciseService {
                 type: subReq.method.type,
                 modifiers: subReq.method.modifiers,
                 parameters: subReq.method.parameters
+              })
+            }));
+            break;
+          case SubRequirementType.CONSTRUCTOR:
+            subRequirementsList.push(new ClassHasConstructorRequirement({
+              mainClass: currentClass,
+              constructorReq: new RequirementConstructor({
+                modifiers: subReq.constructor_req.modifiers,
+                parameters: subReq.constructor_req.parameters
               })
             }));
             break;
@@ -315,6 +326,28 @@ export class ExerciseService {
 
         (options.parentRequirement as ClassRequirement).relatedRequirements.push(classHasMethodRequirement);
         break;
+      case SubRequirementType.CONSTRUCTOR:
+        const constructorParameters: any[] = [];
+        for (let p of options.subRequirementData.parameters) {
+          constructorParameters.push({
+            name: p.name,
+            type: this.parseType(p.type)
+          });
+        }
+        const classHasConstructorRequirement = new ClassHasConstructorRequirement({
+          mainClass: options.parentRequirement as ClassRequirement,
+          constructorReq: new RequirementConstructor({
+            modifiers: options.subRequirementData.modifiers,
+            parameters: constructorParameters
+          })
+        });
+
+        if (this.checkSubRequirementExists(options.parentRequirement, classHasConstructorRequirement)) {
+          return throwError(new Error('Constructor subrequirement already exists'));
+        }
+
+        (options.parentRequirement as ClassRequirement).relatedRequirements.push(classHasConstructorRequirement);
+        break;
       default:
         return throwError(new Error('Invalid subrequirement type'));
     }
@@ -371,6 +404,20 @@ export class ExerciseService {
         (options.subRequirement as ClassHasMethodRequirement).method.modifiers = options.newValue.modifiers;
         (options.subRequirement as ClassHasMethodRequirement).method.type = this.parseType(options.newValue.type);
         (options.subRequirement as ClassHasMethodRequirement).method.parameters = parameters;
+
+        this.currentExerciseSubject.next(this.currentExerciseValue);
+        return of(this.currentExerciseValue);
+      case SubRequirementType.CONSTRUCTOR:
+        const constructorParameters: any[] = [];
+        for (let p of options.newValue.parameters) {
+          constructorParameters.push({
+            name: p.name,
+            type: this.parseType(p.type)
+          });
+        }
+
+        (options.subRequirement as ClassHasConstructorRequirement).constructorReq.modifiers = options.newValue.modifiers;
+        (options.subRequirement as ClassHasConstructorRequirement).constructorReq.parameters = constructorParameters;
 
         this.currentExerciseSubject.next(this.currentExerciseValue);
         return of(this.currentExerciseValue);
@@ -504,7 +551,7 @@ export class ExerciseService {
     };
   }
 
-  getMethodParametersString(method: RequirementMethod): string {
+  getMethodParametersString(method: RequirementMethod | RequirementConstructor): string {
     const parametersArray: string[] = [];
     parametersArray.push('(');
     for (let p of method.parameters) {

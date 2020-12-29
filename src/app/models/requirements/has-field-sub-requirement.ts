@@ -2,7 +2,7 @@ import { ClassRequirement } from "./class-requirement";
 import { FieldRequirement } from "./field-requirement";
 import { ISubRequirement } from "./isub-requirement";
 
-export class ClassHasFieldRequirement implements ISubRequirement{
+export class ClassHasFieldRequirement implements ISubRequirement {
     type: string = 'contains-field';
     mainClass: ClassRequirement;
     field: FieldRequirement;
