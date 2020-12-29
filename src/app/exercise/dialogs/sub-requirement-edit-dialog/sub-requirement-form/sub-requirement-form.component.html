@@ -67,5 +67,41 @@
             </div>
         </form>
 
+        <form class="sub-requirement-form" [formGroup]="classSubRequirementForm" *ngSwitchCase="'contains-field'">
+            <div class="p-field sub-requirement-input-group">
+                <span class="p-float-label">
+                    <input type="text" id="fieldName" class="custom-input-text" formControlName="fieldName"
+                        pInputText>
+                    <label for="fieldName">Field Name</label>
+                </span>
+                <small *ngIf="isControlInvalid(classSubRequirementForm.controls.fieldName)" class="p-invalid">
+                    {{ getErrorMessage(classSubRequirementForm.controls.fieldName) }}
+                </small>
+            </div>
+
+            <div class="p-field sub-requirement-input-group">
+                <span class="p-float-label">
+                    <p-multiSelect inputId="modifiers" [options]="modifiers"
+                        optionLabel="label" optionValue="value" appendTo="body" formControlName="modifiers"
+                        display="chip" styleClass="sub-requirement-type-custom-dropdown"></p-multiSelect>
+                    <label for="modifiers">Modifiers</label>
+                </span>
+                <small *ngIf="isControlInvalid(classSubRequirementForm.controls.modifiers)" class="p-invalid">
+                    {{ getErrorMessage(classSubRequirementForm.controls.modifiers) }}
+                </small>
+            </div>
+
+            <div class="p-field sub-requirement-input-group">
+                <span class="p-float-label">
+                    <input type="text" id="type" class="custom-input-text" formControlName="type"
+                        pInputText>
+                    <label for="type">Type</label>
+                </span>
+                <small *ngIf="isControlInvalid(classSubRequirementForm.controls.type)" class="p-invalid">
+                    {{ getErrorMessage(classSubRequirementForm.controls.type) }}
+                </small>
+            </div>
+        </form>
+
     </div>
 </section>

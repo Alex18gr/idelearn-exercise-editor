@@ -297,6 +297,11 @@ export class ExerciseService {
         }
         this.currentExerciseSubject.next(this.currentExerciseValue);
         return of(this.currentExerciseValue);
+      case SubRequirementType.CONTAINS_FIELD:
+        // No checks here...
+        
+        this.currentExerciseSubject.next(this.currentExerciseValue);
+        return of(this.currentExerciseValue);
       default:
         break;
     }

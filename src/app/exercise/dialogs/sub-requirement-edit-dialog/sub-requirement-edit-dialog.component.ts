@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { IRequirement } from 'src/app/models/requirements/irequirement';
@@ -26,13 +26,15 @@ export class SubRequirementEditDialogComponent implements OnInit {
   selectedSubRequirementType!: SubRequirementType;
   subRequirementTypeOptions: RequirementTypeDropdown[] = [
     { label: 'Extend a Class', value: 'extend' },
-    { label: 'Contain an Instance of a class', value: 'contains' }
+    { label: 'Contain an Instance of a class', value: 'contains' },
+    { label: 'Contain a field', value: 'contains-field' }
   ];
   subRequirementTypeDropdownDisabled: boolean = false;
 
   constructor(private exerciseDialogService: ExerciseDialogService,
     private exerciseService: ExerciseService,
-    private messageService: MessageService) { }
+    private messageService: MessageService,
+    private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.initializeSubscriptions();

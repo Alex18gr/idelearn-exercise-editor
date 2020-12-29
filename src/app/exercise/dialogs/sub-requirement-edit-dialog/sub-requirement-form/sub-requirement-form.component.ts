@@ -4,6 +4,7 @@ import { ExerciseService } from 'src/app/exercise/exercise.service';
 import { ClassRequirement } from 'src/app/models/requirements/class-requirement';
 import { ContainsSubRequirement } from 'src/app/models/requirements/contains-sub-requirement';
 import { ExtendSubRequirement } from 'src/app/models/requirements/extend-sub-requirement';
+import { ClassHasFieldRequirement } from 'src/app/models/requirements/has-field-sub-requirement';
 import { IRequirement } from 'src/app/models/requirements/irequirement';
 import { SubRequirementType } from 'src/app/models/sub-requirement-type';
 
@@ -24,6 +25,13 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
   relationTypes: { label: string, value: string }[] = [
     { label: 'One-To-One', value: 'one_to_one' },
     { label: 'One-To-Many', value: 'one_to_many' }
+  ];
+  modifiers: { label: string, value: string }[] = [
+    { label: 'Private', value: 'PRIVATE' },
+    { label: 'Public', value: 'PUBLIC' },
+    { label: 'Protected', value: 'PROTECTED' },
+    { label: 'Static', value: 'STATIC' },
+    { label: 'Abstract', value: 'ABSTRACT' }
   ];
   currentExerciseClassList: { id: number, name: string }[] = [];
 
@@ -58,6 +66,14 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
             relationType: new FormControl('', [Validators.required]),
           });
           break;
+        case SubRequirementType.CONTAINS_FIELD:
+          this.formHeader = 'Contain Field Requirement';
+          this.classSubRequirementForm = new FormGroup({
+            fieldName: new FormControl('', [Validators.required]),
+            modifiers: new FormControl(''),
+            type: new FormControl('', [Validators.required])
+          });
+          break;
         default:
           this.classSubRequirementForm = null;
           break;
@@ -73,16 +89,22 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
       switch (this.subRequirementType) {
         case SubRequirementType.EXTEND:
           this.classSubRequirementForm.patchValue({
-            // mainClass: (this.editSubRequirement as ExtendSubRequirement).mainClass.classId,
             extendClass: (this.editSubRequirement as ExtendSubRequirement).extendClass.classId
           });
           break;
         case SubRequirementType.CONTAINS:
 
           this.classSubRequirementForm.patchValue({
-            // mainClass: (this.editSubRequirement as ContainsSubRequirement).mainClass.classId,
             containClass: (this.editSubRequirement as ContainsSubRequirement).containClass.classId,
             relationType: (this.editSubRequirement as ContainsSubRequirement).relationType
+          });
+          break;
+        case SubRequirementType.CONTAINS_FIELD:
+
+          this.classSubRequirementForm.patchValue({
+            fieldName: (this.editSubRequirement as ClassHasFieldRequirement).field.name,
+            modifiers: (this.editSubRequirement as ClassHasFieldRequirement).field.modifiers,
+            type: (this.editSubRequirement as ClassHasFieldRequirement).field.type
           });
           break;
         default:
