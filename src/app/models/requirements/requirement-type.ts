@@ -1,12 +1,12 @@
 export class RequirementType {
     name: string;
-    typeArguments: RequirementType[];
+    type_arguments: RequirementType[];
 
     constructor(options: {
         name?: string,
-        typeArguments?: RequirementType[]
+        type_arguments?: RequirementType[]
     }) {
         this.name = options.name || '';
-        this.typeArguments = options.typeArguments || [];
+        this.type_arguments = options.type_arguments || [];
     }
 }

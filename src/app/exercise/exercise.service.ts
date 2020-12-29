@@ -13,6 +13,7 @@ import { ProjectInfo } from '../models/project-info';
 import { ExerciseFileService } from './file/exercise-file.service';
 import { FieldRequirement } from '../models/requirements/field-requirement';
 import { ClassHasFieldRequirement } from '../models/requirements/has-field-sub-requirement';
+import { RequirementType } from '../models/requirements/requirement-type';
 
 @Injectable({
   providedIn: 'root'
@@ -298,8 +299,11 @@ export class ExerciseService {
         this.currentExerciseSubject.next(this.currentExerciseValue);
         return of(this.currentExerciseValue);
       case SubRequirementType.CONTAINS_FIELD:
-        // No checks here...
-        
+
+        (options.subRequirement as ClassHasFieldRequirement).field.name = options.newValue.fieldName;
+        (options.subRequirement as ClassHasFieldRequirement).field.modifiers = options.newValue.modifiers;
+        (options.subRequirement as ClassHasFieldRequirement).field.type = options.newValue.type;
+
         this.currentExerciseSubject.next(this.currentExerciseValue);
         return of(this.currentExerciseValue);
       default:
@@ -326,7 +330,11 @@ export class ExerciseService {
     }
   }
 
-  stringifyType(type: any): string {
+  /**
+   * create the type string from the requirement type AST object
+   * @param type the requirement type object
+   */
+  stringifyType(type: RequirementType): string {
     if (!type) { return '' }
     const stringArray = [];
     stringArray.push(type.name);
@@ -334,8 +342,8 @@ export class ExerciseService {
       stringArray.push('<');
       for (let t of type.type_arguments) {
         this.stringifyTypeRecursive(t, stringArray);
-        if ((type.type_arguments as any[]).indexOf(t) + 1 !== (type.type_arguments as any[]).length) {
-          stringArray.push(', ')
+        if ((type.type_arguments as RequirementType[]).indexOf(t) + 1 !== (type.type_arguments as RequirementType[]).length) {
+          stringArray.push(', ');
         }
       }
       stringArray.push('>');
@@ -343,27 +351,94 @@ export class ExerciseService {
     return stringArray.join('');
   }
 
-  private stringifyTypeRecursive(type: any, stringArray: string[]): void {
+  /**
+   * create the type string from the AST object
+   * @param type the requirement type AST object
+   * @param stringArray the string array to create the string recursively
+   */
+  private stringifyTypeRecursive(type: RequirementType, stringArray: string[]): void {
     if (!type) { return }
     stringArray.push(type.name);
     if (type.type_arguments && type.type_arguments.length > 0) {
       stringArray.push('<');
       for (let t of type.type_arguments) {
         this.stringifyTypeRecursive(t, stringArray);
-        if ((type.type_arguments as any[]).indexOf(t) + 1 !== (type.type_arguments as any[]).length) {
-          stringArray.push(', ')
+        if ((type.type_arguments as RequirementType[]).indexOf(t) + 1 !== (type.type_arguments as RequirementType[]).length) {
+          stringArray.push(', ');
         }
       }
       stringArray.push('>');
     }
   }
 
-  parseType(typeString: string): any {
+  /**
+   * parse a type string to a requirement type AST
+   * @param typeString the type string
+   */
+  parseType(typeString: string): RequirementType {
+    // remove all whitespaces
+    typeString = typeString.replace(/ /g, '');
+
+    const typeArgumentsStart = typeString.indexOf('<');
+
+    if (typeArgumentsStart === -1) {
+      return new RequirementType({
+        name: typeString
+      });
+    } else {
+      const typeArguments = this.parseTypeArguments(typeString, typeArgumentsStart + 1);
+
+      return new RequirementType({
+        name: typeString.substring(0, typeArgumentsStart),
+        type_arguments: typeArguments.typeArguments
+      });
+    }
 
   }
 
+  /**
+   * create the requirement type AST recursively
+   * @param typeArgumentsString type string
+   * @param index the recursive search index
+   */
+  private parseTypeArguments(typeArgumentsString: string, index: number): { typeArguments: RequirementType[], index: number } {
+    const typeArguments: any[] = [];
+    let anchor = index;
+    for (let i = index; i < typeArgumentsString.length; i++) {
+      if (typeArgumentsString.charAt(i) === '<') {
+        const name = typeArgumentsString.substring(anchor, i);
+        const result = this.parseTypeArguments(typeArgumentsString, i + 1);
+        i = result.index + 2;
+        anchor = i;
+        typeArguments.push(new RequirementType({
+          name,
+          type_arguments: result.typeArguments
+        }));
+      } else if (typeArgumentsString.charAt(i) === '>') {
+        if (anchor !== i) {
+          const name = typeArgumentsString.substring(anchor, i);
+          typeArguments.push(new RequirementType({ name }));
+        }
+        return {
+          index: i,
+          typeArguments
+        };
+
+      } else if (typeArgumentsString.charAt(i) === ',') {
+        const name = typeArgumentsString.substring(anchor, i);
+        typeArguments.push(new RequirementType({ name }));
+        anchor = i + 1;
+      }
+    }
+    return {
+      index: typeArgumentsString.length,
+      typeArguments
+    };
+  }
 
 }
+
+
 
 export interface ExerciseData {
   exerciseName: string;
