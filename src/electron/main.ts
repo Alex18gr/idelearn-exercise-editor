@@ -33,7 +33,18 @@ ipcMain.handle('getPirates', () => {
 
 ipcMain.handle('exportCurrentExercise', (event: IpcMainInvokeEvent, args: any[]) => {
 
+  const editExercisePath: string = path.join(app.getPath('userData'), 'edit-exercise');
+
+  // Check the project file if exists
+  if ((args as any).hasStartingProject && !fs.existsSync(path.join(editExercisePath, 'project.zip'))) {
+    throw new Error('Starting project file error!');
+  }
+
   saveExercise(args);
+
+  if (!fs.existsSync(path.join(editExercisePath, 'exercise.json'))) {
+    throw new Error('Project data file error!');
+  }
 
   const saveFile = dialog.showSaveDialogSync(win, {
     title: 'Export exercise file',
@@ -47,13 +58,19 @@ ipcMain.handle('exportCurrentExercise', (event: IpcMainInvokeEvent, args: any[])
     ]
   });
 
-  const editExercisePath: string = path.join(app.getPath('userData'), 'edit-exercise');
+  if (!saveFile) {
+    return "CANCELED";
+  }
 
   const extractExerciseZipFile: AdmZip = new AdmZip();
   extractExerciseZipFile.addFile('exercise.json', fs.readFileSync(path.join(editExercisePath, 'exercise.json')));
-  extractExerciseZipFile.addFile('project.zip', fs.readFileSync(path.join(editExercisePath, 'project.zip')));
+  if ((args as any).hasStartingProject) {
+    extractExerciseZipFile.addFile('project.zip', fs.readFileSync(path.join(editExercisePath, 'project.zip')));
+  }
 
   extractExerciseZipFile.writeZip(saveFile);
+
+  return "OK";
 });
 
 ipcMain.handle('createNewExercise', (event: IpcMainInvokeEvent, args: any[]) => {
@@ -102,7 +119,17 @@ ipcMain.handle('openExerciseFile', () => {
   // const result = fs.readFileSync(__dirname + '/assets/pirates.json');
   // return JSON.parse(result.toString());
 
-  const dialogFileSelection: string[] | undefined = dialog.showOpenDialogSync(win);
+  const dialogFileSelection: string[] | undefined = dialog.showOpenDialogSync(win, {
+    title: 'Open exercise file',
+    filters: [
+      {
+        name: 'Exercise Package File',
+        extensions: [
+          'exercisepackage'
+        ]
+      }
+    ]
+  });
   // console.log(dialogFileSelection);
 
 

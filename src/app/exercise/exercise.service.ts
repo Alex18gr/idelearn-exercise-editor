@@ -211,6 +211,7 @@ export class ExerciseService {
     this.currentExerciseValue.requirements.push(new ClassRequirement({
       classId: this.getNewClassId(),
       name: options.requirementData.className,
+      isAbstract: options.requirementData.isAbstract
     }));
     this.currentExerciseSubject.next(this.currentExerciseValue);
     return of(this.currentExerciseValue);
@@ -218,9 +219,9 @@ export class ExerciseService {
 
   editRequirement(options: { requirement: IRequirement, newValue: any }) {
 
-    // Check if the name already exists
+    // Check if the name already exists and if the isAbstract value is changed
     for (let req of this.currentExerciseValue.requirements) {
-      if (req.type === 'class' && (req as ClassRequirement).name === options.newValue.className &&
+      if (req.type === 'class' && options.newValue.isAbstract !== (req as ClassRequirement).isAbstract && (req as ClassRequirement).name === options.newValue.className &&
         (req as ClassRequirement).classId !== (options.requirement as ClassRequirement).classId) {
         return throwError(new Error('Class with this class name already exists'));
       }

@@ -95,12 +95,12 @@ export class ExerciseEditDetailsDialogComponent implements OnInit {
           this.hideDialog();
         }, error => {
           this.savingData = false;
-          this.messageService.add({ severity: 'error', summary: 'Create error', detail: error });
+          this.messageService.add({ severity: 'error', summary: 'Edit error', detail: error });
         });
       } else {
         this.exerciseService.createExercise({ exerciseDetailsData: this.exerciseForm.getRawValue() }).subscribe(res => {
           this.savingData = false;
-          this.messageService.add({ severity: 'success', summary: 'Edit Success', detail: 'Exercise details changed successfuly' });
+          this.messageService.add({ severity: 'success', summary: 'Create Success', detail: 'Exercise created successfuly' });
           this.hideDialog();
         }, error => {
           this.savingData = false;

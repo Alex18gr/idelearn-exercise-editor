@@ -9,12 +9,12 @@ export class ClassRequirement implements IRequirement {
     relatedRequirements: ISubRequirement[];
 
     constructor(options: {
-        classId?: number,
+        classId: number,
         name?: string,
         isAbstract?: boolean,
         relatedRequirements?: ISubRequirement[]
     }) {
-        this.classId = options.classId || NaN;
+        this.classId = options.classId;
         this.name = options.name || '';
         this.isAbstract = options.isAbstract || false;
         this.relatedRequirements = options.relatedRequirements || [];
