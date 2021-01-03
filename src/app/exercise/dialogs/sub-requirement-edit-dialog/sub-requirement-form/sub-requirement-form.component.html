@@ -201,5 +201,23 @@
             </div>
         </form>
 
+        <form class="sub-requirement-form" [formGroup]="classSubRequirementForm" *ngSwitchCase="'override-object-method'">
+
+            <div class="p-field sub-requirement-input-group">
+                <span class="p-float-label">
+                    <p-dropdown inputId="objectMethod" [autoDisplayFirst]="false" [options]="objectMethods"
+                        optionLabel="label" optionValue="value" appendTo="body" formControlName="objectMethod"
+                        styleClass="sub-requirement-type-custom-dropdown">
+                    </p-dropdown>
+                    <label for="objectMethod">Object Method</label>
+                </span>
+                <small *ngIf="isControlInvalid(classSubRequirementForm.controls.objectMethod)" class="p-invalid">
+                    {{ getErrorMessage(classSubRequirementForm.controls.objectMethod) }}
+                </small>
+            </div>
+
+            
+        </form>
+
     </div>
 </section>

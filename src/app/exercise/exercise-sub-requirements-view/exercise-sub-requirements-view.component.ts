@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Exercise } from 'src/app/models/exercise';
+import { ClassOverridesObjectMethodSubRequirement } from 'src/app/models/requirements/class-overrides-object-method-sub-requirement';
 import { ClassRequirement } from 'src/app/models/requirements/class-requirement';
 import { ContainsSubRequirement } from 'src/app/models/requirements/contains-sub-requirement';
 import { ExtendNameRequirement } from 'src/app/models/requirements/extend-name-requirement';
@@ -102,6 +103,10 @@ export class ExerciseSubRequirementsViewComponent implements OnInit {
 
   getExtendNameRequirement(req: IRequirement): ExtendNameRequirement {
     return req as ExtendNameRequirement;
+  }
+
+  getOverrideObjectMethodRequirement(req: IRequirement): ClassOverridesObjectMethodSubRequirement {
+    return req as ClassOverridesObjectMethodSubRequirement;
   }
 
 }

@@ -19,6 +19,7 @@ import { ClassHasConstructorRequirement } from '../models/requirements/has-const
 import { RequirementConstructor } from '../models/requirements/requirement-constructor';
 import { ImplementNameRequirement } from '../models/requirements/implement-name-requirement';
 import { ExtendNameRequirement } from '../models/requirements/extend-name-requirement';
+import { ClassOverridesObjectMethodSubRequirement } from '../models/requirements/class-overrides-object-method-sub-requirement';
 
 @Injectable({
   providedIn: 'root'
@@ -176,6 +177,12 @@ export class ExerciseService {
                 modifiers: subReq.constructor_req.modifiers,
                 parameters: subReq.constructor_req.parameters
               })
+            }));
+            break;
+          case SubRequirementType.OVERRIDE_OBJECT_METHOD:
+            subRequirementsList.push(new ClassOverridesObjectMethodSubRequirement({
+              mainClass: currentClass,
+              objectMethod: subReq.object_method
             }));
             break;
           default:
@@ -388,6 +395,18 @@ export class ExerciseService {
 
         (options.parentRequirement as ClassRequirement).relatedRequirements.push(classHasConstructorRequirement);
         break;
+      case SubRequirementType.OVERRIDE_OBJECT_METHOD:
+        const classOverridesObjectMethodSubRequirement = new ClassOverridesObjectMethodSubRequirement({
+          mainClass: options.parentRequirement as ClassRequirement,
+          objectMethod: options.subRequirementData.objectMethod
+        });
+
+        if (this.checkSubRequirementExists(options.parentRequirement, classOverridesObjectMethodSubRequirement)) {
+          return throwError(new Error('Constructor subrequirement already exists'));
+        }
+
+        (options.parentRequirement as ClassRequirement).relatedRequirements.push(classOverridesObjectMethodSubRequirement);
+        break;
       default:
         return throwError(new Error('Invalid subrequirement type'));
     }
@@ -470,6 +489,11 @@ export class ExerciseService {
 
         (options.subRequirement as ClassHasConstructorRequirement).constructorReq.modifiers = options.newValue.modifiers;
         (options.subRequirement as ClassHasConstructorRequirement).constructorReq.parameters = constructorParameters;
+
+        this.currentExerciseSubject.next(this.currentExerciseValue);
+        return of(this.currentExerciseValue);
+      case SubRequirementType.OVERRIDE_OBJECT_METHOD:
+        (options.subRequirement as ClassOverridesObjectMethodSubRequirement).objectMethod = options.newValue.objectMethod;
 
         this.currentExerciseSubject.next(this.currentExerciseValue);
         return of(this.currentExerciseValue);
@@ -631,12 +655,12 @@ export class ExerciseService {
   }
 
   checkClassRequirementRelations(req: ClassRequirement): boolean {
-    for(let r of this.currentExerciseValue.requirements) {
+    for (let r of this.currentExerciseValue.requirements) {
       if (r === req) { continue; }
       if (r instanceof ClassRequirement) {
         for (let subR of r.relatedRequirements) {
           if ((subR.type === SubRequirementType.CONTAINS && (subR as ContainsSubRequirement).containClass === req) ||
-          (subR.type === SubRequirementType.EXTEND && (subR as ExtendSubRequirement).extendClass === req)) {
+            (subR.type === SubRequirementType.EXTEND && (subR as ExtendSubRequirement).extendClass === req)) {
             return true;
           }
         }

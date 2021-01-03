@@ -5,5 +5,6 @@ export enum SubRequirementType {
     CONTAINS = 'contains',
     CONTAINS_FIELD = 'contains-field',
     METHOD = 'method',
-    CONSTRUCTOR = 'constructor'
+    CONSTRUCTOR = 'constructor',
+    OVERRIDE_OBJECT_METHOD = 'override-object-method'
 }

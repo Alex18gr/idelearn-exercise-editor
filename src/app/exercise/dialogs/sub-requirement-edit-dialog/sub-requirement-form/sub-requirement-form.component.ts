@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ExerciseService } from 'src/app/exercise/exercise.service';
+import { ClassOverridesObjectMethodSubRequirement } from 'src/app/models/requirements/class-overrides-object-method-sub-requirement';
 import { ClassRequirement } from 'src/app/models/requirements/class-requirement';
 import { ContainsSubRequirement } from 'src/app/models/requirements/contains-sub-requirement';
 import { ExtendNameRequirement } from 'src/app/models/requirements/extend-name-requirement';
@@ -37,6 +38,12 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
     { label: 'Static', value: 'STATIC' },
     { label: 'Abstract', value: 'ABSTRACT' }
   ];
+  objectMethods: { label: string, value: string }[] = [
+    { label: 'clone', value: 'CLONE' },
+    { label: 'Equals', value: 'EQUALS' },
+    { label: 'hashCode', value: 'HASH_CODE' },
+    { label: 'toString', value: 'TO_STRING' }
+  ];
   currentExerciseClassList: { id: number, name: string }[] = [];
 
   constructor(private exerciseService: ExerciseService) {
@@ -48,8 +55,6 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
   }
 
   initializeClassRequirementForm() {
-
-
     if (this.subRequirementType && this.parentRequirement) {
       switch (this.subRequirementType) {
         case SubRequirementType.EXTEND:
@@ -104,6 +109,12 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
           this.classSubRequirementForm = new FormGroup({
             modifiers: new FormControl(''),
             parameters: new FormArray([])
+          });
+          break;
+        case SubRequirementType.OVERRIDE_OBJECT_METHOD:
+          this.formHeader = 'Override Object Method Requirement';
+          this.classSubRequirementForm = new FormGroup({
+            objectMethod: new FormControl('', [Validators.required])
           });
           break;
         default:
@@ -190,6 +201,11 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
             modifiers: (this.editSubRequirement as ClassHasConstructorRequirement).constructorReq.modifiers
           });
 
+          break;
+        case SubRequirementType.OVERRIDE_OBJECT_METHOD:
+          this.classSubRequirementForm.patchValue({
+            objectMethod: (this.editSubRequirement as ClassOverridesObjectMethodSubRequirement).objectMethod
+          });
           break;
         default:
           this.classSubRequirementForm = null;

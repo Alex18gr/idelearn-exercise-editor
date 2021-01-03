@@ -43,6 +43,9 @@
                     <div *ngSwitchCase="'extend-name'">
                         Class <span class="highlight-name">{{ editClassRequirement.name }}</span> extends a class named <div class="highlight-name">{{ getExtendNameRequirement(req).extendTypeName }}</div>
                     </div>
+                    <div *ngSwitchCase="'override-object-method'">
+                        Class <span class="highlight-name">{{ editClassRequirement.name }}</span> overrides Object method <div class="highlight-name">{{ getOverrideObjectMethodRequirement(req).objectMethod }}</div>
+                    </div>
                 </div>
                 <div class="subrequirement-action">
                     <button pButton pRipple type="button" icon="pi pi-cog" class="p-button-rounded" (click)="editSubRequirement(req)"></button>
