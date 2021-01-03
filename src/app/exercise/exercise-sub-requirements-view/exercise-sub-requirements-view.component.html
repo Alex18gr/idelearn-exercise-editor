@@ -46,6 +46,10 @@
                     <div *ngSwitchCase="'override-object-method'">
                         Class <span class="highlight-name">{{ editClassRequirement.name }}</span> overrides Object method <div class="highlight-name">{{ getOverrideObjectMethodRequirement(req).objectMethod }}</div>
                     </div>
+                    <div *ngSwitchCase="'method-call-method'">
+                        Class <span class="highlight-name">{{ editClassRequirement.name }}</span> must have in method <div class="highlight-name">{{ getMethodCallInMethodRequirement(req).method.name }}</div>
+                        a call at the method <div class="highlight-name">{{ getMethodCallInMethodRequirement(req).callMethod.name }}</div> of the class <div class="highlight-name">{{ getMethodCallInMethodRequirement(req).callMethodClassName }}</div>
+                    </div>
                 </div>
                 <div class="subrequirement-action">
                     <button pButton pRipple type="button" icon="pi pi-cog" class="p-button-rounded" (click)="editSubRequirement(req)"></button>

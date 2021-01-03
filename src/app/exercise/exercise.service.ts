@@ -20,6 +20,7 @@ import { RequirementConstructor } from '../models/requirements/requirement-const
 import { ImplementNameRequirement } from '../models/requirements/implement-name-requirement';
 import { ExtendNameRequirement } from '../models/requirements/extend-name-requirement';
 import { ClassOverridesObjectMethodSubRequirement } from '../models/requirements/class-overrides-object-method-sub-requirement';
+import { MethodCallInMethodRequirement } from '../models/requirements/method-call-in-method-sub-requirement';
 
 @Injectable({
   providedIn: 'root'
@@ -183,6 +184,24 @@ export class ExerciseService {
             subRequirementsList.push(new ClassOverridesObjectMethodSubRequirement({
               mainClass: currentClass,
               objectMethod: subReq.object_method
+            }));
+            break;
+          case SubRequirementType.METHOD_CALL_METHOD:
+            subRequirementsList.push(new MethodCallInMethodRequirement({
+              mainClass: currentClass,
+              method: new RequirementMethod({
+                name: subReq.method.name,
+                type: subReq.method.type,
+                modifiers: subReq.method.modifiers,
+                parameters: subReq.method.parameters
+              }),
+              callMethod: new RequirementMethod({
+                name: subReq.call_method.name,
+                type: subReq.call_method.type,
+                modifiers: subReq.call_method.modifiers,
+                parameters: subReq.call_method.parameters
+              }),
+              callMethodClassName: subReq.call_method_class_name
             }));
             break;
           default:
@@ -407,6 +426,44 @@ export class ExerciseService {
 
         (options.parentRequirement as ClassRequirement).relatedRequirements.push(classOverridesObjectMethodSubRequirement);
         break;
+      case SubRequirementType.METHOD_CALL_METHOD:
+        const methodParams: any[] = [];
+        for (let p of options.subRequirementData.method.parameters) {
+          methodParams.push({
+            name: p.name,
+            type: this.parseType(p.type)
+          });
+        }
+        const callMethodParams: any[] = [];
+        for (let p of options.subRequirementData.callMethod.parameters) {
+          methodParams.push({
+            name: p.name,
+            type: this.parseType(p.type)
+          });
+        }
+        const methodCallMethodRequirement = new MethodCallInMethodRequirement({
+          mainClass: options.parentRequirement as ClassRequirement,
+          method: new RequirementMethod({
+            name: options.subRequirementData.method.name,
+            modifiers: options.subRequirementData.method.modifiers,
+            type: this.parseType(options.subRequirementData.method.type),
+            parameters: methodParams
+          }),
+          callMethod: new RequirementMethod({
+            name: options.subRequirementData.callMethod.name,
+            modifiers: options.subRequirementData.callMethod.modifiers,
+            type: this.parseType(options.subRequirementData.callMethod.type),
+            parameters: callMethodParams
+          }),
+          callMethodClassName: options.subRequirementData.callMethodClassName
+        });
+
+        if (this.checkSubRequirementExists(options.parentRequirement, methodCallMethodRequirement)) {
+          return throwError(new Error('Method call method subrequirement already exists'));
+        }
+
+        (options.parentRequirement as ClassRequirement).relatedRequirements.push(methodCallMethodRequirement);
+        break;
       default:
         return throwError(new Error('Invalid subrequirement type'));
     }
@@ -495,6 +552,36 @@ export class ExerciseService {
       case SubRequirementType.OVERRIDE_OBJECT_METHOD:
         (options.subRequirement as ClassOverridesObjectMethodSubRequirement).objectMethod = options.newValue.objectMethod;
 
+        this.currentExerciseSubject.next(this.currentExerciseValue);
+        return of(this.currentExerciseValue);
+      case SubRequirementType.METHOD_CALL_METHOD:
+        const methodParams: any[] = [];
+        for (let p of options.newValue.method.parameters) {
+          methodParams.push({
+            name: p.name,
+            type: this.parseType(p.type)
+          });
+        }
+
+        const callMethodParams: any[] = [];
+        for (let p of options.newValue.callMethod.parameters) {
+          callMethodParams.push({
+            name: p.name,
+            type: this.parseType(p.type)
+          });
+        }
+
+        (options.subRequirement as MethodCallInMethodRequirement).method.name = options.newValue.method.name;
+        (options.subRequirement as MethodCallInMethodRequirement).method.modifiers = options.newValue.method.modifiers;
+        (options.subRequirement as MethodCallInMethodRequirement).method.type = this.parseType(options.newValue.method.type);
+        (options.subRequirement as MethodCallInMethodRequirement).method.parameters = methodParams;
+
+        (options.subRequirement as MethodCallInMethodRequirement).callMethod.name = options.newValue.callMethod.name;
+        (options.subRequirement as MethodCallInMethodRequirement).callMethod.modifiers = options.newValue.callMethod.modifiers;
+        (options.subRequirement as MethodCallInMethodRequirement).callMethod.type = this.parseType(options.newValue.callMethod.type);
+        (options.subRequirement as MethodCallInMethodRequirement).callMethod.parameters = callMethodParams;
+
+        (options.subRequirement as MethodCallInMethodRequirement).callMethodClassName = options.newValue.callMethodClassName;
         this.currentExerciseSubject.next(this.currentExerciseValue);
         return of(this.currentExerciseValue);
       default:

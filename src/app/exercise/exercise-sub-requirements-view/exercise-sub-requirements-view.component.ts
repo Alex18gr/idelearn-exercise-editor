@@ -12,6 +12,7 @@ import { ClassHasMethodRequirement } from 'src/app/models/requirements/has-metho
 import { ImplementNameRequirement } from 'src/app/models/requirements/implement-name-requirement';
 import { IRequirement } from 'src/app/models/requirements/irequirement';
 import { ISubRequirement } from 'src/app/models/requirements/isub-requirement';
+import { MethodCallInMethodRequirement } from 'src/app/models/requirements/method-call-in-method-sub-requirement';
 import { RequirementConstructor } from 'src/app/models/requirements/requirement-constructor';
 import { RequirementMethod } from 'src/app/models/requirements/requirement-method';
 import { RequirementType } from 'src/app/models/requirements/requirement-type';
@@ -107,6 +108,10 @@ export class ExerciseSubRequirementsViewComponent implements OnInit {
 
   getOverrideObjectMethodRequirement(req: IRequirement): ClassOverridesObjectMethodSubRequirement {
     return req as ClassOverridesObjectMethodSubRequirement;
+  }
+
+  getMethodCallInMethodRequirement(req: IRequirement): MethodCallInMethodRequirement {
+    return req as MethodCallInMethodRequirement;
   }
 
 }
