@@ -7,7 +7,12 @@
             Requirements
         </div>
     </div>
-    <div class="requirements-list">
+    <div *ngIf="exercise.requirements.length === 0">
+        <div class="empty-message">
+            No Requirements Exist
+        </div>
+    </div>
+    <div class="requirements-list" *ngIf="exercise.requirements.length > 0">
         <div class="requirement-item" *ngFor="let req of exercise.requirements">
             <div class="requirement-content">
                 <div class="requirement-type">
@@ -20,6 +25,7 @@
                 <div class="requirement-action">
                     <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded" (click)="editRequirement(req)"></button>
                     <button pButton pRipple type="button" icon="pi pi-cog" class="p-button-rounded" (click)="editRequirementSubrequirements(req)"></button>
+                    <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteRequirement(req)"></button>
                 </div>
             </div>
         </div>

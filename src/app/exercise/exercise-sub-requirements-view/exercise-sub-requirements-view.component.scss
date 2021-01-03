@@ -13,6 +13,13 @@
             }
         }
     }
+    .empty-message {
+        width: 100%;
+        text-align: center;
+        padding: 40px 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
     .subrequirements-list {
         width: 80%;
         margin: 25px auto 0 auto;
@@ -48,7 +55,10 @@
                     }
                 }
                 .subrequirement-action {
-                    width: 5%;
+                    width: 20%;
+                    button {
+                        margin: 2px;
+                    }
                 }
             }
         }

@@ -616,6 +616,42 @@ export class ExerciseService {
     return parametersArray.join('');
   }
 
+  deleteClassRequirement(req: ClassRequirement) {
+
+    // Check if there are any relations that contain this requirement
+    if (this.checkClassRequirementRelations(req)) {
+      return throwError(new Error('There are relations with class requirement "' + req.name + '" that prevent it from being deleted.'));
+    }
+
+    // delete safely the requirement
+    this.currentExerciseValue.requirements.splice(this.currentExerciseValue.requirements.indexOf(req), 1);
+
+    this.currentExerciseSubject.next(this.currentExerciseValue);
+    return of(this.currentExerciseValue);
+  }
+
+  checkClassRequirementRelations(req: ClassRequirement): boolean {
+    for(let r of this.currentExerciseValue.requirements) {
+      if (r === req) { continue; }
+      if (r instanceof ClassRequirement) {
+        for (let subR of r.relatedRequirements) {
+          if ((subR.type === SubRequirementType.CONTAINS && (subR as ContainsSubRequirement).containClass === req) ||
+          (subR.type === SubRequirementType.EXTEND && (subR as ExtendSubRequirement).extendClass === req)) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  deleteSubRequirement(req: ISubRequirement) {
+    req.mainClass.relatedRequirements.splice(req.mainClass.relatedRequirements.indexOf(req), 1);
+
+    this.currentExerciseSubject.next(this.currentExerciseValue);
+    return of(this.currentExerciseValue);
+  }
+
 }
 
 

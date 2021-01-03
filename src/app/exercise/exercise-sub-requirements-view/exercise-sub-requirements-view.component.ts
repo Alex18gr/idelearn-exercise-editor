@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Exercise } from 'src/app/models/exercise';
 import { ClassRequirement } from 'src/app/models/requirements/class-requirement';
 import { ContainsSubRequirement } from 'src/app/models/requirements/contains-sub-requirement';
@@ -9,6 +10,7 @@ import { ClassHasFieldRequirement } from 'src/app/models/requirements/has-field-
 import { ClassHasMethodRequirement } from 'src/app/models/requirements/has-method-sub-requirement';
 import { ImplementNameRequirement } from 'src/app/models/requirements/implement-name-requirement';
 import { IRequirement } from 'src/app/models/requirements/irequirement';
+import { ISubRequirement } from 'src/app/models/requirements/isub-requirement';
 import { RequirementConstructor } from 'src/app/models/requirements/requirement-constructor';
 import { RequirementMethod } from 'src/app/models/requirements/requirement-method';
 import { RequirementType } from 'src/app/models/requirements/requirement-type';
@@ -26,7 +28,9 @@ export class ExerciseSubRequirementsViewComponent implements OnInit {
   @Output() back: EventEmitter<void> = new EventEmitter();
 
   constructor(private exerciseService: ExerciseService,
-    private exerciseDialogService: ExerciseDialogService) { }
+    private exerciseDialogService: ExerciseDialogService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService) { }
 
   ngOnInit(): void {
   }
@@ -43,6 +47,20 @@ export class ExerciseSubRequirementsViewComponent implements OnInit {
     // opne the modal for a new requirement
     this.exerciseDialogService.showEditSubrequirementDialog({
       parentRequirement: this.editClassRequirement
+    });
+  }
+
+  deleteSubRequirement(req: ISubRequirement) {
+    this.confirmationService.confirm({
+      header: 'Delete Subrequirement',
+      message: 'Are you sure that you want to delete this subrequirement?',
+      accept: () => {
+        this.exerciseService.deleteSubRequirement(req).subscribe(res => {
+          this.messageService.add({ severity: 'success', summary: 'Delete Success', detail: 'Subrequirement deleted successfuly' });
+        }, error => {
+          this.messageService.add({ severity: 'error', summary: 'Delete error', detail: error });
+        });
+      }
     });
   }
 

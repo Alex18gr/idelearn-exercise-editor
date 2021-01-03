@@ -8,7 +8,12 @@
             Class {{ editClassRequirement.name }} Subrequirements
         </div>
     </div>
-    <div class="subrequirements-list">
+    <div *ngIf="editClassRequirement.relatedRequirements.length === 0">
+        <div class="empty-message">
+            No Subrequirements Exist
+        </div>
+    </div>
+    <div class="subrequirements-list" *ngIf="editClassRequirement.relatedRequirements.length > 0">
         <div class="subrequirement-item" *ngFor="let req of editClassRequirement.relatedRequirements">
             <div class="subrequirement-content">
                 <div class="subrequirement-type">
@@ -41,6 +46,7 @@
                 </div>
                 <div class="subrequirement-action">
                     <button pButton pRipple type="button" icon="pi pi-cog" class="p-button-rounded" (click)="editSubRequirement(req)"></button>
+                    <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteSubRequirement(req)"></button>
                 </div>
             </div>
         </div>
