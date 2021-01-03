@@ -3,6 +3,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { Exercise } from 'src/app/models/exercise';
 import { ClassOverridesObjectMethodSubRequirement } from 'src/app/models/requirements/class-overrides-object-method-sub-requirement';
 import { ClassRequirement } from 'src/app/models/requirements/class-requirement';
+import { ConstructorCallInConstructorRequirement } from 'src/app/models/requirements/constructor-call-in-constructor-sub-requirement';
 import { ContainsSubRequirement } from 'src/app/models/requirements/contains-sub-requirement';
 import { ExtendNameRequirement } from 'src/app/models/requirements/extend-name-requirement';
 import { ExtendSubRequirement } from 'src/app/models/requirements/extend-sub-requirement';
@@ -117,6 +118,10 @@ export class ExerciseSubRequirementsViewComponent implements OnInit {
 
   getMethodCallInConstructorRequirement(req: IRequirement): MethodCallInConstructorRequirement {
     return req as MethodCallInConstructorRequirement;
+  }
+
+  getConstructorCallInConstructorRequirement(req: IRequirement): ConstructorCallInConstructorRequirement {
+    return req as ConstructorCallInConstructorRequirement;
   }
 
 }

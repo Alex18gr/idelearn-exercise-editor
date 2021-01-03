@@ -34,7 +34,8 @@ export class SubRequirementEditDialogComponent implements OnInit {
     { label: 'Contain a constructor', value: 'constructor' },
     { label: 'Overrides an Object Method', value: 'override-object-method' },
     { label: 'A method is called inside a method', value: 'method-call-method' },
-    { label: 'A method is called inside a constructor', value: 'constructor-call-method' }
+    { label: 'A method is called inside a constructor', value: 'constructor-call-method' },
+    { label: 'A constructor is called inside a constructor', value: 'constructor-call-constructor' }
   ];
   subRequirementTypeDropdownDisabled: boolean = false;
 

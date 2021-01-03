@@ -455,5 +455,82 @@
                 </small>
             </div>
         </form>
+
+        <form class="sub-requirement-form" [formGroup]="classSubRequirementForm" *ngSwitchCase="'constructor-call-constructor'"> 
+            <div formGroupName="constructorMethod">
+                <h3>Constructor Method</h3>
+    
+                <div class="p-field sub-requirement-input-group">
+                    <span class="p-float-label">
+                        <p-multiSelect inputId="modifiers" [options]="modifiers"
+                            optionLabel="label" optionValue="value" appendTo="body" formControlName="modifiers"
+                            display="chip" styleClass="sub-requirement-type-custom-dropdown"></p-multiSelect>
+                        <label for="modifiers">Modifiers</label>
+                    </span>
+                    <small *ngIf="isControlInvalid(asFormGroup(classSubRequirementForm.controls.constructorMethod).controls.modifiers)" class="p-invalid">
+                        {{ getErrorMessage(asFormGroup(classSubRequirementForm.controls.constructorMethod).controls.modifiers) }}
+                    </small>
+                </div>
+    
+                <div class="sub-requirement-input-group" formArrayName="parameters">
+                    <div class="parameters-header">
+                        <h3 class="parameters-header-title">Parameters</h3>
+                        <button pButton pRipple type="button" class="p-button-raised p-button-sm" label="Add" icon="pi pi-plus" (click)="addConstructorMethodParameter()"></button>
+                    </div>
+                    <div *ngFor="let parameterGroup of getConstructorMethodParameters().controls; index as i">
+                        <div class="parameter-input" [formGroupName]="i">
+                            <span class="p-float-label parameter-field">
+                                <input type="text" id="parameterName" class="parameter-input-text" formControlName="name"
+                                    pInputText>
+                                <label for="parameterName">Name</label>
+                            </span>
+                            <span class="p-float-label parameter-field">
+                                <input type="text" id="type" class="parameter-input-text" formControlName="type"
+                                    pInputText>
+                                <label for="type">Type</label>
+                            </span>
+                            <button pButton pRipple type="button" class="p-button-raised p-button-sm p-button-danger" icon="pi pi-times" (click)="removeConstructorMethodParameter(i)"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div formGroupName="callConstructor">
+                <h3>Call Constructor</h3>
+    
+                <div class="p-field sub-requirement-input-group">
+                    <span class="p-float-label">
+                        <p-multiSelect inputId="modifiers" [options]="modifiers"
+                            optionLabel="label" optionValue="value" appendTo="body" formControlName="modifiers"
+                            display="chip" styleClass="sub-requirement-type-custom-dropdown"></p-multiSelect>
+                        <label for="modifiers">Modifiers</label>
+                    </span>
+                    <small *ngIf="isControlInvalid(asFormGroup(classSubRequirementForm.controls.callConstructor).controls.modifiers)" class="p-invalid">
+                        {{ getErrorMessage(asFormGroup(classSubRequirementForm.controls.callConstructor).controls.modifiers) }}
+                    </small>
+                </div>
+    
+                <div class="sub-requirement-input-group" formArrayName="parameters">
+                    <div class="parameters-header">
+                        <h3 class="parameters-header-title">Parameters</h3>
+                        <button pButton pRipple type="button" class="p-button-raised p-button-sm" label="Add" icon="pi pi-plus" (click)="addCallConstructorParameter()"></button>
+                    </div>
+                    <div *ngFor="let parameterGroup of getCallConstructorParameters().controls; index as i">
+                        <div class="parameter-input" [formGroupName]="i">
+                            <span class="p-float-label parameter-field">
+                                <input type="text" id="parameterName" class="parameter-input-text" formControlName="name"
+                                    pInputText>
+                                <label for="parameterName">Name</label>
+                            </span>
+                            <span class="p-float-label parameter-field">
+                                <input type="text" id="type" class="parameter-input-text" formControlName="type"
+                                    pInputText>
+                                <label for="type">Type</label>
+                            </span>
+                            <button pButton pRipple type="button" class="p-button-raised p-button-sm p-button-danger" icon="pi pi-times" (click)="removeCallConstructorParameter(i)"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 </section>

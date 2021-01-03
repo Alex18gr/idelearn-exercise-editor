@@ -3,6 +3,7 @@ import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, V
 import { ExerciseService } from 'src/app/exercise/exercise.service';
 import { ClassOverridesObjectMethodSubRequirement } from 'src/app/models/requirements/class-overrides-object-method-sub-requirement';
 import { ClassRequirement } from 'src/app/models/requirements/class-requirement';
+import { ConstructorCallInConstructorRequirement } from 'src/app/models/requirements/constructor-call-in-constructor-sub-requirement';
 import { ContainsSubRequirement } from 'src/app/models/requirements/contains-sub-requirement';
 import { ExtendNameRequirement } from 'src/app/models/requirements/extend-name-requirement';
 import { ExtendSubRequirement } from 'src/app/models/requirements/extend-sub-requirement';
@@ -151,6 +152,19 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
               parameters: new FormArray([])
             }),
             callMethodClassName: new FormControl('', [Validators.required])
+          });
+          break;
+        case SubRequirementType.CONSTRUCTOR_CALL_CONSTRUCTOR:
+          this.formHeader = 'Super Constructor Call Inside Constructor Requirement';
+          this.classSubRequirementForm = new FormGroup({
+            constructorMethod: new FormGroup({
+              modifiers: new FormControl(''),
+              parameters: new FormArray([])
+            }),
+            callConstructor: new FormGroup({
+              modifiers: new FormControl(''),
+              parameters: new FormArray([])
+            })
           });
           break;
         default:
@@ -323,6 +337,42 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
           });
 
           break;
+        case SubRequirementType.CONSTRUCTOR_CALL_CONSTRUCTOR:
+
+          for (let p of (this.editSubRequirement as ConstructorCallInConstructorRequirement).constructorMethod.parameters) {
+            const parameterGroup = new FormGroup({
+              name: new FormControl(''),
+              type: new FormControl('')
+            });
+            parameterGroup.patchValue({
+              name: p.name,
+              type: this.exerciseService.stringifyType(p.type)
+            });
+            ((this.classSubRequirementForm.controls.constructorMethod as FormGroup).controls.parameters as FormArray).push(parameterGroup);
+          }
+
+          for (let p of (this.editSubRequirement as ConstructorCallInConstructorRequirement).callConstructor.parameters) {
+            const parameterGroup = new FormGroup({
+              name: new FormControl(''),
+              type: new FormControl('')
+            });
+            parameterGroup.patchValue({
+              name: p.name,
+              type: this.exerciseService.stringifyType(p.type)
+            });
+            ((this.classSubRequirementForm.controls.callConstructor as FormGroup).controls.parameters as FormArray).push(parameterGroup);
+          }
+
+          this.classSubRequirementForm.patchValue({
+            constructorMethod: {
+              modifiers: (this.editSubRequirement as ConstructorCallInConstructorRequirement).constructorMethod.modifiers,
+            },
+            callConstructor: {
+              modifiers: (this.editSubRequirement as ConstructorCallInConstructorRequirement).callConstructor.modifiers,
+            }
+          });
+
+          break;
         default:
           this.classSubRequirementForm = null;
           break;
@@ -391,6 +441,10 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
     return ((this.classSubRequirementForm?.controls.constructorMethod as FormGroup).controls.parameters as FormArray);
   }
 
+  getCallConstructorParameters(): FormArray {
+    return ((this.classSubRequirementForm?.controls.callConstructor as FormGroup).controls.parameters as FormArray);
+  }
+
   addParameter() {
     this.getParameters().push(new FormGroup({
       name: new FormControl(''),
@@ -419,6 +473,13 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
     }));
   }
 
+  addCallConstructorParameter() {
+    this.getCallConstructorParameters().push(new FormGroup({
+      name: new FormControl(''),
+      type: new FormControl('')
+    }));
+  }
+
   removeParameter(index: number) {
     this.getParameters().removeAt(index);
   }
@@ -433,6 +494,10 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
 
   removeConstructorMethodParameter(index: number) {
     this.getConstructorMethodParameters().removeAt(index);
+  }
+
+  removeCallConstructorParameter(index: number) {
+    this.getCallConstructorParameters().removeAt(index);
   }
 
   private differentClassesValidator(...classControlNames: string[]): ValidatorFn {
