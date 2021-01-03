@@ -11,6 +11,7 @@ import { ClassHasFieldRequirement } from 'src/app/models/requirements/has-field-
 import { ClassHasMethodRequirement } from 'src/app/models/requirements/has-method-sub-requirement';
 import { ImplementNameRequirement } from 'src/app/models/requirements/implement-name-requirement';
 import { IRequirement } from 'src/app/models/requirements/irequirement';
+import { MethodCallInConstructorRequirement } from 'src/app/models/requirements/method-call-in-constructor-sub-requirement';
 import { MethodCallInMethodRequirement } from 'src/app/models/requirements/method-call-in-method-sub-requirement';
 import { SubRequirementType } from 'src/app/models/sub-requirement-type';
 
@@ -125,6 +126,22 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
               name: new FormControl('', [Validators.required]),
               modifiers: new FormControl(''),
               type: new FormControl('', [Validators.required]),
+              parameters: new FormArray([])
+            }),
+            callMethod: new FormGroup({
+              name: new FormControl('', [Validators.required]),
+              modifiers: new FormControl(''),
+              type: new FormControl('', [Validators.required]),
+              parameters: new FormArray([])
+            }),
+            callMethodClassName: new FormControl('', [Validators.required])
+          });
+          break;
+        case SubRequirementType.CONSTRUCTOR_CALL_METHOD:
+          this.formHeader = 'Method Call Inside Constructor Requirement';
+          this.classSubRequirementForm = new FormGroup({
+            constructorMethod: new FormGroup({
+              modifiers: new FormControl(''),
               parameters: new FormArray([])
             }),
             callMethod: new FormGroup({
@@ -267,23 +284,50 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
           });
 
           break;
+        case SubRequirementType.CONSTRUCTOR_CALL_METHOD:
+
+          for (let p of (this.editSubRequirement as MethodCallInConstructorRequirement).constructorMethod.parameters) {
+            const parameterGroup = new FormGroup({
+              name: new FormControl(''),
+              type: new FormControl('')
+            });
+            parameterGroup.patchValue({
+              name: p.name,
+              type: this.exerciseService.stringifyType(p.type)
+            });
+            ((this.classSubRequirementForm.controls.constructorMethod as FormGroup).controls.parameters as FormArray).push(parameterGroup);
+          }
+
+          for (let p of (this.editSubRequirement as MethodCallInConstructorRequirement).callMethod.parameters) {
+            const parameterGroup = new FormGroup({
+              name: new FormControl(''),
+              type: new FormControl('')
+            });
+            parameterGroup.patchValue({
+              name: p.name,
+              type: this.exerciseService.stringifyType(p.type)
+            });
+            ((this.classSubRequirementForm.controls.callMethod as FormGroup).controls.parameters as FormArray).push(parameterGroup);
+          }
+
+          this.classSubRequirementForm.patchValue({
+            constructorMethod: {
+              modifiers: (this.editSubRequirement as MethodCallInConstructorRequirement).constructorMethod.modifiers,
+            },
+            callMethod: {
+              name: (this.editSubRequirement as MethodCallInConstructorRequirement).callMethod.name,
+              modifiers: (this.editSubRequirement as MethodCallInConstructorRequirement).callMethod.modifiers,
+              type: this.exerciseService.stringifyType((this.editSubRequirement as MethodCallInConstructorRequirement).callMethod.type)
+            },
+            callMethodClassName: (this.editSubRequirement as MethodCallInConstructorRequirement).callMethodClassName
+          });
+
+          break;
         default:
           this.classSubRequirementForm = null;
           break;
       }
     }
-  }
-
-  getParameters(): FormArray {
-    return (this.classSubRequirementForm?.controls.parameters as FormArray);
-  }
-
-  getMethodParameters(): FormArray {
-    return ((this.classSubRequirementForm?.controls.method as FormGroup).controls.parameters as FormArray);
-  }
-
-  getCallMethodParameters(): FormArray {
-    return ((this.classSubRequirementForm?.controls.callMethod as FormGroup).controls.parameters as FormArray);
   }
 
   isControlInvalid(control: AbstractControl): boolean {
@@ -331,6 +375,22 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
     }
   }
 
+  getParameters(): FormArray {
+    return (this.classSubRequirementForm?.controls.parameters as FormArray);
+  }
+
+  getMethodParameters(): FormArray {
+    return ((this.classSubRequirementForm?.controls.method as FormGroup).controls.parameters as FormArray);
+  }
+
+  getCallMethodParameters(): FormArray {
+    return ((this.classSubRequirementForm?.controls.callMethod as FormGroup).controls.parameters as FormArray);
+  }
+
+  getConstructorMethodParameters(): FormArray {
+    return ((this.classSubRequirementForm?.controls.constructorMethod as FormGroup).controls.parameters as FormArray);
+  }
+
   addParameter() {
     this.getParameters().push(new FormGroup({
       name: new FormControl(''),
@@ -352,6 +412,13 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
     }));
   }
 
+  addConstructorMethodParameter() {
+    this.getConstructorMethodParameters().push(new FormGroup({
+      name: new FormControl(''),
+      type: new FormControl('')
+    }));
+  }
+
   removeParameter(index: number) {
     this.getParameters().removeAt(index);
   }
@@ -362,6 +429,10 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
 
   removeCallMethodParameter(index: number) {
     this.getCallMethodParameters().removeAt(index);
+  }
+
+  removeConstructorMethodParameter(index: number) {
+    this.getConstructorMethodParameters().removeAt(index);
   }
 
   private differentClassesValidator(...classControlNames: string[]): ValidatorFn {

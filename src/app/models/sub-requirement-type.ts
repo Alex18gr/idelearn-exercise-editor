@@ -7,5 +7,7 @@ export enum SubRequirementType {
     METHOD = 'method',
     CONSTRUCTOR = 'constructor',
     OVERRIDE_OBJECT_METHOD = 'override-object-method',
-    METHOD_CALL_METHOD = 'method-call-method'
+    METHOD_CALL_METHOD = 'method-call-method',
+    CONSTRUCTOR_CALL_METHOD = 'constructor-call-method',
+    CONSTRUCTOR_CALL_CONSTRUCTOR = 'constructor-call-constructor'
 }

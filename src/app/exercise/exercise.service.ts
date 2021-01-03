@@ -21,6 +21,7 @@ import { ImplementNameRequirement } from '../models/requirements/implement-name-
 import { ExtendNameRequirement } from '../models/requirements/extend-name-requirement';
 import { ClassOverridesObjectMethodSubRequirement } from '../models/requirements/class-overrides-object-method-sub-requirement';
 import { MethodCallInMethodRequirement } from '../models/requirements/method-call-in-method-sub-requirement';
+import { MethodCallInConstructorRequirement } from '../models/requirements/method-call-in-constructor-sub-requirement';
 
 @Injectable({
   providedIn: 'root'
@@ -204,6 +205,22 @@ export class ExerciseService {
               callMethodClassName: subReq.call_method_class_name
             }));
             break;
+          case SubRequirementType.CONSTRUCTOR_CALL_METHOD:
+            subRequirementsList.push(new MethodCallInConstructorRequirement({
+              mainClass: currentClass,
+              constructorMethod: new RequirementConstructor({
+                modifiers: subReq.constructor_method.modifiers,
+                parameters: subReq.constructor_method.parameters
+              }),
+              callMethod: new RequirementMethod({
+                name: subReq.call_method.name,
+                type: subReq.call_method.type,
+                modifiers: subReq.call_method.modifiers,
+                parameters: subReq.call_method.parameters
+              }),
+              callMethodClassName: subReq.call_method_class_name
+            }));
+            break;
           default:
             break;
         }
@@ -291,6 +308,7 @@ export class ExerciseService {
   }
 
   addSubRequirementToRequirement(options: { parentRequirement: IRequirement, type: SubRequirementType, subRequirementData: any }): Observable<any> {
+    const callMethodParams: any[] = [];
     switch (options.type) {
       case SubRequirementType.CONTAINS:
         const containClass: ClassRequirement | null = this.getClassById(this.currentExerciseValue.requirements, options.subRequirementData.containClass);
@@ -434,9 +452,9 @@ export class ExerciseService {
             type: this.parseType(p.type)
           });
         }
-        const callMethodParams: any[] = [];
+        // const callMethodParams: any[] = [];
         for (let p of options.subRequirementData.callMethod.parameters) {
-          methodParams.push({
+          callMethodParams.push({
             name: p.name,
             type: this.parseType(p.type)
           });
@@ -464,6 +482,42 @@ export class ExerciseService {
 
         (options.parentRequirement as ClassRequirement).relatedRequirements.push(methodCallMethodRequirement);
         break;
+      case SubRequirementType.CONSTRUCTOR_CALL_METHOD:
+        const constructorMethodParams: any[] = [];
+        for (let p of options.subRequirementData.constructorMethod.parameters) {
+          constructorMethodParams.push({
+            name: p.name,
+            type: this.parseType(p.type)
+          });
+        }
+        // const callMethodParams: any[] = [];
+        for (let p of options.subRequirementData.callMethod.parameters) {
+          callMethodParams.push({
+            name: p.name,
+            type: this.parseType(p.type)
+          });
+        }
+        const constructorCallMethodRequirement = new MethodCallInConstructorRequirement({
+          mainClass: options.parentRequirement as ClassRequirement,
+          constructorMethod: new RequirementConstructor({
+            modifiers: options.subRequirementData.constructorMethod.modifiers,
+            parameters: constructorMethodParams
+          }),
+          callMethod: new RequirementMethod({
+            name: options.subRequirementData.callMethod.name,
+            modifiers: options.subRequirementData.callMethod.modifiers,
+            type: this.parseType(options.subRequirementData.callMethod.type),
+            parameters: callMethodParams
+          }),
+          callMethodClassName: options.subRequirementData.callMethodClassName
+        });
+
+        if (this.checkSubRequirementExists(options.parentRequirement, constructorCallMethodRequirement)) {
+          return throwError(new Error('Method call method subrequirement already exists'));
+        }
+
+        (options.parentRequirement as ClassRequirement).relatedRequirements.push(constructorCallMethodRequirement);
+        break;
       default:
         return throwError(new Error('Invalid subrequirement type'));
     }
@@ -472,6 +526,7 @@ export class ExerciseService {
   }
 
   editSubRequirement(options: { parentRequirement: IRequirement, subRequirement: IRequirement, newValue: any }) {
+    const callMethodParams: any[] = [];
     switch (options.subRequirement.type) {
       case SubRequirementType.CONTAINS:
         // check id the contain class exists
@@ -563,7 +618,7 @@ export class ExerciseService {
           });
         }
 
-        const callMethodParams: any[] = [];
+        // const callMethodParams: any[] = [];
         for (let p of options.newValue.callMethod.parameters) {
           callMethodParams.push({
             name: p.name,
@@ -582,6 +637,34 @@ export class ExerciseService {
         (options.subRequirement as MethodCallInMethodRequirement).callMethod.parameters = callMethodParams;
 
         (options.subRequirement as MethodCallInMethodRequirement).callMethodClassName = options.newValue.callMethodClassName;
+        this.currentExerciseSubject.next(this.currentExerciseValue);
+        return of(this.currentExerciseValue);
+      case SubRequirementType.CONSTRUCTOR_CALL_METHOD:
+        const constructorMethodParams: any[] = [];
+        for (let p of options.newValue.constructorMethod.parameters) {
+          constructorMethodParams.push({
+            name: p.name,
+            type: this.parseType(p.type)
+          });
+        }
+
+        // const callMethodParams: any[] = [];
+        for (let p of options.newValue.callMethod.parameters) {
+          callMethodParams.push({
+            name: p.name,
+            type: this.parseType(p.type)
+          });
+        }
+
+        (options.subRequirement as MethodCallInConstructorRequirement).constructorMethod.modifiers = options.newValue.constructorMethod.modifiers;
+        (options.subRequirement as MethodCallInConstructorRequirement).constructorMethod.parameters = callMethodParams;
+
+        (options.subRequirement as MethodCallInConstructorRequirement).callMethod.name = options.newValue.callMethod.name;
+        (options.subRequirement as MethodCallInConstructorRequirement).callMethod.modifiers = options.newValue.callMethod.modifiers;
+        (options.subRequirement as MethodCallInConstructorRequirement).callMethod.type = this.parseType(options.newValue.callMethod.type);
+        (options.subRequirement as MethodCallInConstructorRequirement).callMethod.parameters = callMethodParams;
+
+        (options.subRequirement as MethodCallInConstructorRequirement).callMethodClassName = options.newValue.callMethodClassName;
         this.currentExerciseSubject.next(this.currentExerciseValue);
         return of(this.currentExerciseValue);
       default:

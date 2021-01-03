@@ -31,7 +31,10 @@ export class SubRequirementEditDialogComponent implements OnInit {
     { label: 'Implements an interface with name', value: 'implement-name' },
     { label: 'Contain a field', value: 'contains-field' },
     { label: 'Contain a method', value: 'method' },
-    { label: 'Contain a constructor', value: 'constructor' }
+    { label: 'Contain a constructor', value: 'constructor' },
+    { label: 'Overrides an Object Method', value: 'override-object-method' },
+    { label: 'A method is called inside a method', value: 'method-call-method' },
+    { label: 'A method is called inside a constructor', value: 'constructor-call-method' }
   ];
   subRequirementTypeDropdownDisabled: boolean = false;
 
