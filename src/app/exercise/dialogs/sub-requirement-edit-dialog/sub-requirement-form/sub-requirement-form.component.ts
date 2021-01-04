@@ -45,7 +45,8 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
     { label: 'clone', value: 'CLONE' },
     { label: 'Equals', value: 'EQUALS' },
     { label: 'hashCode', value: 'HASH_CODE' },
-    { label: 'toString', value: 'TO_STRING' }
+    { label: 'toString', value: 'TO_STRING' },
+    { label: 'Comparable - compareTo', value: 'COMPARABLE_COMPARE_TO' }
   ];
   currentExerciseClassList: { id: number, name: string }[] = [];
 
