@@ -104,6 +104,16 @@
                     {{ getErrorMessage(classSubRequirementForm.controls.type) }}
                 </small>
             </div>
+
+            <div class="p-field sub-requirement-input-group">
+                <h5>Include Setter Method</h5>
+                <p-inputSwitch formControlName="includeSetter"></p-inputSwitch>
+            </div>
+
+            <div class="p-field sub-requirement-input-group">
+                <h5>Include Getter Method</h5>
+                <p-inputSwitch formControlName="includeGetter"></p-inputSwitch>
+            </div>
         </form>
 
         <form class="sub-requirement-form" [formGroup]="classSubRequirementForm" *ngSwitchCase="'method'">

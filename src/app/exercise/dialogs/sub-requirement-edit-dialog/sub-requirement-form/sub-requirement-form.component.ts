@@ -95,7 +95,9 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
           this.classSubRequirementForm = new FormGroup({
             fieldName: new FormControl('', [Validators.required]),
             modifiers: new FormControl(''),
-            type: new FormControl('', [Validators.required])
+            type: new FormControl('', [Validators.required]),
+            includeSetter: new FormControl(false),
+            includeGetter: new FormControl(false),
           });
           break;
         case SubRequirementType.METHOD:
@@ -197,7 +199,9 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
           this.classSubRequirementForm.patchValue({
             fieldName: (this.editSubRequirement as ClassHasFieldRequirement).field.name,
             modifiers: (this.editSubRequirement as ClassHasFieldRequirement).field.modifiers,
-            type: this.exerciseService.stringifyType((this.editSubRequirement as ClassHasFieldRequirement).field.type)
+            type: this.exerciseService.stringifyType((this.editSubRequirement as ClassHasFieldRequirement).field.type),
+            includeSetter: (this.editSubRequirement as ClassHasFieldRequirement).includeSetter,
+            includeGetter: (this.editSubRequirement as ClassHasFieldRequirement).includeGetter
           });
           break;
         case SubRequirementType.EXTEND_NAME:

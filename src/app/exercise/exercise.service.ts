@@ -159,7 +159,9 @@ export class ExerciseService {
                 name: subReq.field.name,
                 type: subReq.field.type,
                 modifiers: subReq.field.modifiers
-              })
+              }),
+              includeSetter: subReq.include_setter,
+              includeGetter: subReq.include_getter
             }));
             break;
           case SubRequirementType.METHOD:
@@ -392,7 +394,9 @@ export class ExerciseService {
             name: options.subRequirementData.fieldName,
             modifiers: options.subRequirementData.modifiers,
             type: this.parseType(options.subRequirementData.type)
-          })
+          }),
+          includeSetter: options.subRequirementData.includeSetter,
+          includeGetter: options.subRequirementData.includeGetter
         });
 
         if (this.checkSubRequirementExists(options.parentRequirement, classHasFieldRequirement)) {
@@ -616,6 +620,8 @@ export class ExerciseService {
         (options.subRequirement as ClassHasFieldRequirement).field.name = options.newValue.fieldName;
         (options.subRequirement as ClassHasFieldRequirement).field.modifiers = options.newValue.modifiers;
         (options.subRequirement as ClassHasFieldRequirement).field.type = this.parseType(options.newValue.type);
+        (options.subRequirement as ClassHasFieldRequirement).includeSetter = options.newValue.includeSetter;
+        (options.subRequirement as ClassHasFieldRequirement).includeGetter = options.newValue.includeGetter;
 
         this.currentExerciseSubject.next(this.currentExerciseValue);
         return of(this.currentExerciseValue);
