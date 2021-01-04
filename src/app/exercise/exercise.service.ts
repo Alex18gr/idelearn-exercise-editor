@@ -98,7 +98,7 @@ export class ExerciseService {
   getClassById(classRequirements: IRequirement[], id: any): ClassRequirement | null {
     for (let classReq of classRequirements) {
       if (classReq instanceof ClassRequirement) {
-        if (classReq.classId && classReq.classId === id) {
+        if (classReq.classId === id) {
           return classReq;
         }
       }
