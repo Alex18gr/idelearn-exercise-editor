@@ -91,12 +91,13 @@ ipcMain.handle('createNewExercise', (event: IpcMainInvokeEvent, args: any[]) => 
     id: newUuid,
     name: exerciseData.exerciseName,
     targets: [],
+    description: exerciseData.description,
     exercise_project_info: {
       title: exerciseData.projectTitle,
       starting_project: exerciseData.hasStartingProject
     },
     requirements: []
-  }
+  };
 
   const contents: string[] = fs.readdirSync(editExercisePath);
   if (contents.length > 0) {

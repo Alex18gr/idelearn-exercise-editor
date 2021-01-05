@@ -23,6 +23,17 @@
                         {{ getErrorMessage(exerciseForm.controls.projectTitle) }}
                     </small>
                 </div>
+                <div class="p-field input-group">
+                    <span class="p-float-label">
+                        <textarea pInputTextarea id="description" class="custom-input-text custom-text-area"
+                            formControlName="description">
+                        </textarea>
+                        <label for="description">Description</label>
+                    </span>
+                    <small *ngIf="isControlInvalid(exerciseForm.controls.description)" class="p-invalid">
+                        {{ getErrorMessage(exerciseForm.controls.description) }}
+                    </small>
+                </div>
                 <div class="file-upload-container">
                     <div class="p-field input-group switch-input-group">
                         <label for="enableFileUploadSwitch">Enable Start Project</label>

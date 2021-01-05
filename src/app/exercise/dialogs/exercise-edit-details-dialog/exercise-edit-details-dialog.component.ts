@@ -47,6 +47,7 @@ export class ExerciseEditDetailsDialogComponent implements OnInit {
       this.exerciseForm?.patchValue({
         exerciseName: exercise.name,
         projectTitle: exercise.projectInfo.title,
+        description: exercise.description,
         hasStartingProject: exercise.projectInfo.startingProject
       });
       this.showDialog();
@@ -62,6 +63,7 @@ export class ExerciseEditDetailsDialogComponent implements OnInit {
     this.exerciseForm = new FormGroup({
       exerciseName: new FormControl('', [Validators.required]),
       projectTitle: new FormControl('', [Validators.required]),
+      description: new FormControl(''),
       hasStartingProject: new FormControl(''),
       startingProjectUrl: new FormControl('')
     });

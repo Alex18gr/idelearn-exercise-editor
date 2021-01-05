@@ -35,6 +35,7 @@ export class NewExerciseDialogComponent implements OnInit {
       this.exercise = exercise;
       this.exerciseForm.patchValue({
         exerciseName: exercise.name,
+        description: exercise.description,
         projectTitle: exercise.projectInfo.title
       });
       this.showDialog();
@@ -45,6 +46,7 @@ export class NewExerciseDialogComponent implements OnInit {
     this.exerciseForm = new FormGroup({
       exerciseName: new FormControl('', [Validators.required]),
       projectTitle: new FormControl('', [Validators.required]),
+      description: new FormControl(''),
       startingProject: new FormControl('')
     });
   }

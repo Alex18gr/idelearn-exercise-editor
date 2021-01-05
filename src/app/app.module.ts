@@ -17,6 +17,7 @@ import { InputSwitchModule } from 'primeng/inputswitch';
 import { CheckboxModule } from 'primeng/checkbox';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RequirementEditDialogComponent } from './exercise/dialogs/requirement-edit-dialog/requirement-edit-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -62,7 +63,8 @@ import { FileUploadComponent } from './exercise/dialogs/exercise-edit-details-di
     InputSwitchModule,
     CheckboxModule,
     MultiSelectModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    InputTextareaModule
   ],
   providers: [
     MessageService,

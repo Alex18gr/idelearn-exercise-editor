@@ -70,6 +70,7 @@ export class ExerciseService {
       id: jsonData.id,
       name: jsonData.name,
       targets: jsonData.targets,
+      description: jsonData.description,
       projectInfo: new ProjectInfo({
         title: jsonData.exercise_project_info.title,
         startingProject: jsonData.exercise_project_info.starting_project
@@ -750,6 +751,7 @@ export class ExerciseService {
     }
 
     options.exercise.name = options.exerciseDetailsData.exerciseName;
+    options.exercise.description = options.exerciseDetailsData.description;
     options.exercise.projectInfo.title = options.exerciseDetailsData.projectTitle;
     options.exercise.projectInfo.startingProject = options.exerciseDetailsData.hasStartingProject;
 
@@ -918,11 +920,10 @@ export class ExerciseService {
 
 }
 
-
-
 export interface ExerciseData {
   exerciseName: string;
   projectTitle: string;
+  description: string;
   startingProjectUrl: string;
   hasStartingProject: boolean
 }
