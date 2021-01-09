@@ -31,6 +31,7 @@ import { ElectronService, NgxElectronModule } from 'ngx-electron';
 import { StartPageComponent } from './home/start-page/start-page.component';
 import { NewExerciseDialogComponent } from './exercise/dialogs/new-exercise-dialog/new-exercise-dialog.component';
 import { FileUploadComponent } from './exercise/dialogs/exercise-edit-details-dialog/file-upload/file-upload.component';
+import { DragDropModule } from "@angular/cdk/drag-drop";
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { FileUploadComponent } from './exercise/dialogs/exercise-edit-details-di
     CheckboxModule,
     MultiSelectModule,
     ConfirmDialogModule,
-    InputTextareaModule
+    InputTextareaModule,
+    DragDropModule,
   ],
   providers: [
     MessageService,

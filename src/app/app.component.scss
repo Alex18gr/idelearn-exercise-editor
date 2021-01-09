@@ -1,3 +1,93 @@
 .main-container {
     margin: 0;
 }
+
+::ng-deep .subrequirement-item {
+    background: #ffffff;
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+    border-radius: 3px;
+    border-left: solid #0891cf 6px;
+    margin-bottom: 20px;
+    min-height: 70px;
+    padding: 15px 0;
+    width: 100%;
+    cursor: pointer;
+    .subrequirement-content {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        height: 100%;
+        .subrequirement-type {
+            border: solid #0891cf 1px;
+            color: #0891cf;
+            border-radius: 1em;
+            padding: 3px 8px;
+            width: 15%;
+        }
+        .subrequirement-description {
+            width: 60%;
+            .highlight-name {
+                font-weight: 600;
+                color: #0891cf;
+            }
+        }
+        .subrequirement-action {
+            width: 15%;
+            button {
+                margin: 2px;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 720px) {
+    .subrequirement-item {
+        padding: 5px 0;
+        .subrequirement-type {
+            width: 17%;
+        }
+        .subrequirement-description {
+            width: 40%;
+        }
+        .subrequirement-action {
+            width: 20%;
+        }
+    }
+}
+
+::ng-deep .requirement-item {
+    background: #ffffff;
+    box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 1px 3px 0 rgba(0, 0, 0, 0.12);
+    border-radius: 3px;
+    border-left: solid #0891cf 6px;
+    margin-bottom: 20px;
+    height: 70px;
+    width: 100%;
+    cursor: pointer;
+    .requirement-content {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        height: 100%;
+        .requirement-type {
+            border: solid #0891cf 1px;
+            color: #0891cf;
+            border-radius: 1em;
+            padding: 3px 8px;
+        }
+        .requirement-description {
+            width: 30%;
+            .highlight-name {
+                font-weight: 600;
+                color: #0891cf;
+            }
+        }
+        .requirement-action {
+            width: auto;
+            display: flex;
+            button {
+                margin: 0 2px;
+            }
+        }
+    }
+}

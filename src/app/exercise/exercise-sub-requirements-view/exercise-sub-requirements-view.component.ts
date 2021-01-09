@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Exercise } from 'src/app/models/exercise';
@@ -66,6 +67,10 @@ export class ExerciseSubRequirementsViewComponent implements OnInit {
         });
       }
     });
+  }
+
+  onDrop(event: CdkDragDrop<IRequirement[]>) {
+    moveItemInArray(this.editClassRequirement.relatedRequirements, event.previousIndex, event.currentIndex);
   }
 
   goBackToRequirements() {

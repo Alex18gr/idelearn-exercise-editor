@@ -13,8 +13,9 @@
             No Subrequirements Exist
         </div>
     </div>
-    <div class="subrequirements-list" *ngIf="editClassRequirement.relatedRequirements.length > 0">
-        <div class="subrequirement-item" *ngFor="let req of editClassRequirement.relatedRequirements">
+    <div class="subrequirements-list" *ngIf="editClassRequirement.relatedRequirements.length > 0" cdkDropList (cdkDropListDropped)="onDrop($event)">
+        <div class="subrequirement-item" *ngFor="let req of editClassRequirement.relatedRequirements" cdkDrag cdkDragLockAxis="y">
+            <div class="requirement-drag-placeholder" *cdkDragPlaceholder></div>
             <div class="subrequirement-content">
                 <div class="subrequirement-type">
                     {{ req.type }}
@@ -32,31 +33,31 @@
                     </div>
                     <div *ngSwitchCase="'method'">
                         Class <span class="highlight-name">{{ editClassRequirement.name }}</span> contains a method with name <span class="highlight-name">{{ getClassHasMethodRequirement(req).method.name }}</span> 
-                        , parameters list <div class="highlight-name">{{ getMethodTypeString(getClassHasMethodRequirement(req).method) }}</div> return type <span class="highlight-name">{{ stringifyType(getClassHasMethodRequirement(req).method.type) }}</span>
+                        , parameters list <span class="highlight-name">{{ getMethodTypeString(getClassHasMethodRequirement(req).method) }}</span> return type <span class="highlight-name">{{ stringifyType(getClassHasMethodRequirement(req).method.type) }}</span>
                     </div>
                     <div *ngSwitchCase="'constructor'">
                         Class <span class="highlight-name">{{ editClassRequirement.name }}</span> contains a constructor with parameters list <div class="highlight-name">{{ getMethodTypeString(getClassHasConstructorRequirement(req).constructorReq) }}</div>
                     </div>
                     <div *ngSwitchCase="'implement-name'">
-                        Class <span class="highlight-name">{{ editClassRequirement.name }}</span> implements an interface named <div class="highlight-name">{{ getImplementNameRequirement(req).implementTypeName }}</div>
+                        Class <span class="highlight-name">{{ editClassRequirement.name }}</span> implements an interface named <span class="highlight-name">{{ getImplementNameRequirement(req).implementTypeName }}</span>
                     </div>
                     <div *ngSwitchCase="'extend-name'">
-                        Class <span class="highlight-name">{{ editClassRequirement.name }}</span> extends a class named <div class="highlight-name">{{ getExtendNameRequirement(req).extendTypeName }}</div>
+                        Class <span class="highlight-name">{{ editClassRequirement.name }}</span> extends a class named <span class="highlight-name">{{ getExtendNameRequirement(req).extendTypeName }}</span>
                     </div>
                     <div *ngSwitchCase="'override-object-method'">
-                        Class <span class="highlight-name">{{ editClassRequirement.name }}</span> overrides Object method <div class="highlight-name">{{ getOverrideObjectMethodRequirement(req).objectMethod }}</div>
+                        Class <span class="highlight-name">{{ editClassRequirement.name }}</span> overrides Object method <span class="highlight-name">{{ getOverrideObjectMethodRequirement(req).objectMethod }}</span>
                     </div>
                     <div *ngSwitchCase="'method-call-method'">
-                        Class <span class="highlight-name">{{ editClassRequirement.name }}</span> must have in method <div class="highlight-name">{{ getMethodCallInMethodRequirement(req).method.name }}</div>
-                        a call at the method <div class="highlight-name">{{ getMethodCallInMethodRequirement(req).callMethod.name }}</div> of the class <div class="highlight-name">{{ getMethodCallInMethodRequirement(req).callMethodClassName }}</div>
+                        Class <span class="highlight-name">{{ editClassRequirement.name }}</span> must have in method <span class="highlight-name">{{ getMethodCallInMethodRequirement(req).method.name }}</span>
+                        a call at the method <span class="highlight-name">{{ getMethodCallInMethodRequirement(req).callMethod.name }}</span> of the class <span class="highlight-name">{{ getMethodCallInMethodRequirement(req).callMethodClassName }}</span>
                     </div>
                     <div *ngSwitchCase="'constructor-call-method'">
-                        Class <span class="highlight-name">{{ editClassRequirement.name }}</span> must have in constructor <div class="highlight-name">{{ getMethodTypeString(getMethodCallInConstructorRequirement(req).constructorMethod) }}</div>
-                        a call at the method <div class="highlight-name">{{ getMethodCallInConstructorRequirement(req).callMethod.name }}</div> of the class <div class="highlight-name">{{ getMethodCallInConstructorRequirement(req).callMethodClassName }}</div>
+                        Class <span class="highlight-name">{{ editClassRequirement.name }}</span> must have in constructor <span class="highlight-name">{{ getMethodTypeString(getMethodCallInConstructorRequirement(req).constructorMethod) }}</span>
+                        a call at the method <span class="highlight-name">{{ getMethodCallInConstructorRequirement(req).callMethod.name }}</span> of the class <span class="highlight-name">{{ getMethodCallInConstructorRequirement(req).callMethodClassName }}</span>
                     </div>
                     <div *ngSwitchCase="'constructor-call-constructor'">
-                        Class <span class="highlight-name">{{ editClassRequirement.name }}</span> must have in constructor <div class="highlight-name">{{ getMethodTypeString(getConstructorCallInConstructorRequirement(req).constructorMethod) }}</div>
-                        a call at the super constructor <div class="highlight-name">{{ getMethodTypeString(getConstructorCallInConstructorRequirement(req).callConstructor) }}</div>
+                        Class <span class="highlight-name">{{ editClassRequirement.name }}</span> must have in constructor <span class="highlight-name">{{ getMethodTypeString(getConstructorCallInConstructorRequirement(req).constructorMethod) }}</span>
+                        a call at the super constructor <span class="highlight-name">{{ getMethodTypeString(getConstructorCallInConstructorRequirement(req).callConstructor) }}</span>
                     </div>
                 </div>
                 <div class="subrequirement-action">
