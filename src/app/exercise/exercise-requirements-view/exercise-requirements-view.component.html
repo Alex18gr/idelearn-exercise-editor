@@ -20,8 +20,9 @@
                     {{ req.type }}
                 </div>
                 <div class="requirement-description">
-                    <span *ngIf="getClassRequirement(req).isAbstract"><span class="highlight-name">Abstract</span> class</span>
-                    <span *ngIf="!getClassRequirement(req).isAbstract">Class</span> with name <span class="highlight-name">{{ getClassRequirement(req).name }}</span>
+                    <span *ngIf="!getClassRequirement(req).isAbstract && getClassRequirement(req).isInterface"><span class="highlight-name">Interface</span></span>
+                    <span *ngIf="getClassRequirement(req).isAbstract && !getClassRequirement(req).isInterface"><span class="highlight-name">Abstract</span> class</span>
+                    <span *ngIf="!getClassRequirement(req).isAbstract && !getClassRequirement(req).isInterface">Class</span> with name <span class="highlight-name">{{ getClassRequirement(req).name }}</span>
                 </div>
                 <div class="requirement-action">
                     <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded" (click)="editRequirement(req)"></button>

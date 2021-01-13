@@ -114,7 +114,8 @@ export class ExerciseService {
     return new ClassRequirement({
       classId: reqData.class_id,
       name: reqData.name,
-      isAbstract: reqData.is_abstract
+      isAbstract: reqData.is_abstract,
+      isInterface: reqData.is_interface
     });
   }
 
@@ -271,7 +272,8 @@ export class ExerciseService {
     this.currentExerciseValue.requirements.push(new ClassRequirement({
       classId: this.getNewClassId(),
       name: options.requirementData.className,
-      isAbstract: options.requirementData.isAbstract
+      isAbstract: options.requirementData.isAbstract,
+      isInterface: options.requirementData.isInterface
     }));
     this.currentExerciseSubject.next(this.currentExerciseValue);
     return of(this.currentExerciseValue);
@@ -290,6 +292,7 @@ export class ExerciseService {
     // Update class requirement data
     (options.requirement as ClassRequirement).name = options.newValue.className;
     (options.requirement as ClassRequirement).isAbstract = options.newValue.isAbstract;
+    (options.requirement as ClassRequirement).isInterface = options.newValue.isInterface;
 
     this.currentExerciseSubject.next(this.currentExerciseValue);
     return of(this.currentExerciseValue);
