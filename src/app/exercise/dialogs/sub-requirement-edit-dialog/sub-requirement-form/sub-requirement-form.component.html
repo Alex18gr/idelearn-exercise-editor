@@ -373,6 +373,12 @@
                     {{ getErrorMessage(classSubRequirementForm.controls.callMethodClassName) }}
                 </small>
             </div>
+            <div class="p-field sub-requirement-input-group">
+                <div class="p-field-checkbox">
+                    <p-checkbox [binary]="true" inputId="isCallMethodClassSuperClass" formControlName="isCallMethodClassSuperClass"></p-checkbox>
+                    <label for="isCallMethodClassSuperClass">Is call to a Super Class Method?</label>
+                </div>
+            </div>
         </form>
 
         <form class="sub-requirement-form" [formGroup]="classSubRequirementForm" *ngSwitchCase="'constructor-call-method'"> 

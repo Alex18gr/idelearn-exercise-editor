@@ -8,17 +8,20 @@ export class MethodCallInMethodRequirement implements ISubRequirement {
     method: RequirementMethod;
     callMethod: RequirementMethod;
     callMethodClassName: string;
+    isCallMethodClassSuperClass: boolean;
 
     constructor(options: {
         mainClass: ClassRequirement,
         method: RequirementMethod,
         callMethod: RequirementMethod,
-        callMethodClassName: string
+        callMethodClassName: string,
+        isCallMethodClassSuperClass?: boolean
     }) {
         this.mainClass = options.mainClass;
         this.method = options.method;
         this.callMethod = options.callMethod;
         this.callMethodClassName = options.callMethodClassName
+        this.isCallMethodClassSuperClass = options.isCallMethodClassSuperClass || false;
     }
     getExportData() {
         return {
@@ -26,7 +29,8 @@ export class MethodCallInMethodRequirement implements ISubRequirement {
             main_class_id: this.mainClass.classId,
             method: this.method,
             call_method: this.callMethod,
-            call_method_class_name: this.callMethodClassName
+            call_method_class_name: this.callMethodClassName,
+            is_call_method_class_super_class: this.isCallMethodClassSuperClass
         };
     }
 }

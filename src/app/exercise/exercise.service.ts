@@ -209,7 +209,8 @@ export class ExerciseService {
                 modifiers: subReq.call_method.modifiers,
                 parameters: subReq.call_method.parameters
               }),
-              callMethodClassName: subReq.call_method_class_name
+              callMethodClassName: subReq.call_method_class_name,
+              isCallMethodClassSuperClass: subReq.is_call_method_class_super_class
             }));
             break;
           case SubRequirementType.CONSTRUCTOR_CALL_METHOD:
@@ -499,7 +500,8 @@ export class ExerciseService {
             type: this.parseType(options.subRequirementData.callMethod.type),
             parameters: callMethodParams
           }),
-          callMethodClassName: options.subRequirementData.callMethodClassName
+          callMethodClassName: options.subRequirementData.callMethodClassName,
+          isCallMethodClassSuperClass: options.subRequirementData.isCallMethodClassSuperClass
         });
 
         if (this.checkSubRequirementExists(options.parentRequirement, methodCallMethodRequirement)) {
@@ -697,6 +699,8 @@ export class ExerciseService {
         (options.subRequirement as MethodCallInMethodRequirement).callMethod.parameters = callMethodParams;
 
         (options.subRequirement as MethodCallInMethodRequirement).callMethodClassName = options.newValue.callMethodClassName;
+        
+        (options.subRequirement as MethodCallInMethodRequirement).isCallMethodClassSuperClass = options.newValue.isCallMethodClassSuperClass;
         this.currentExerciseSubject.next(this.currentExerciseValue);
         return of(this.currentExerciseValue);
       case SubRequirementType.CONSTRUCTOR_CALL_METHOD:

@@ -140,7 +140,8 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
               type: new FormControl('', [Validators.required]),
               parameters: new FormArray([])
             }),
-            callMethodClassName: new FormControl('', [Validators.required])
+            callMethodClassName: new FormControl('', [Validators.required]),
+            isCallMethodClassSuperClass: new FormControl('')
           });
           break;
         case SubRequirementType.CONSTRUCTOR_CALL_METHOD:
@@ -303,7 +304,8 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
               modifiers: (this.editSubRequirement as MethodCallInMethodRequirement).callMethod.modifiers,
               type: this.exerciseService.stringifyType((this.editSubRequirement as MethodCallInMethodRequirement).callMethod.type)
             },
-            callMethodClassName: (this.editSubRequirement as MethodCallInMethodRequirement).callMethodClassName
+            callMethodClassName: (this.editSubRequirement as MethodCallInMethodRequirement).callMethodClassName,
+            isCallMethodClassSuperClass: (this.editSubRequirement as MethodCallInMethodRequirement).isCallMethodClassSuperClass
           });
 
           break;

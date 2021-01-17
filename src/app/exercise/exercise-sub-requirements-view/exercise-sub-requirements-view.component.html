@@ -50,7 +50,8 @@
                     </div>
                     <div *ngSwitchCase="'method-call-method'">
                         Class <span class="highlight-name">{{ editClassRequirement.name }}</span> must have in method <span class="highlight-name">{{ getMethodCallInMethodRequirement(req).method.name }}</span>
-                        a call at the method <span class="highlight-name">{{ getMethodCallInMethodRequirement(req).callMethod.name }}</span> of the class <span class="highlight-name">{{ getMethodCallInMethodRequirement(req).callMethodClassName }}</span>
+                        a call at the method <span class="highlight-name">{{ getMethodCallInMethodRequirement(req).callMethod.name }}</span> of the class <span class="highlight-name">{{ getMethodCallInMethodRequirement(req).callMethodClassName }}</span>. 
+                        <span *ngIf="getMethodCallInMethodRequirement(req).isCallMethodClassSuperClass" class="highlight-name">Method is form super class</span>
                     </div>
                     <div *ngSwitchCase="'constructor-call-method'">
                         Class <span class="highlight-name">{{ editClassRequirement.name }}</span> must have in constructor <span class="highlight-name">{{ getMethodTypeString(getMethodCallInConstructorRequirement(req).constructorMethod) }}</span>
