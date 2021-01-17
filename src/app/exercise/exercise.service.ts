@@ -174,7 +174,9 @@ export class ExerciseService {
                 type: subReq.method.type,
                 modifiers: subReq.method.modifiers,
                 parameters: subReq.method.parameters
-              })
+              }),
+              overridingSuperClassMethod: subReq.overriding_super_class_method,
+              overridingSuperClassMethodName: subReq.overriding_super_class_method_name
             }));
             break;
           case SubRequirementType.CONSTRUCTOR:
@@ -424,7 +426,9 @@ export class ExerciseService {
             modifiers: options.subRequirementData.modifiers,
             type: this.parseType(options.subRequirementData.type),
             parameters: parameters
-          })
+          }),
+          overridingSuperClassMethod: options.subRequirementData.overridingSuperClassMethod,
+          overridingSuperClassMethodName: options.subRequirementData.overridingSuperClassMethodName
         });
 
         if (this.checkSubRequirementExists(options.parentRequirement, classHasMethodRequirement)) {
@@ -642,6 +646,9 @@ export class ExerciseService {
         (options.subRequirement as ClassHasMethodRequirement).method.modifiers = options.newValue.modifiers;
         (options.subRequirement as ClassHasMethodRequirement).method.type = this.parseType(options.newValue.type);
         (options.subRequirement as ClassHasMethodRequirement).method.parameters = parameters;
+
+        (options.subRequirement as ClassHasMethodRequirement).overridingSuperClassMethod = options.newValue.overridingSuperClassMethod;
+        (options.subRequirement as ClassHasMethodRequirement).overridingSuperClassMethodName = options.newValue.overridingSuperClassMethodName;
 
         this.currentExerciseSubject.next(this.currentExerciseValue);
         return of(this.currentExerciseValue);

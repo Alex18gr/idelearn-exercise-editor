@@ -107,7 +107,9 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
             name: new FormControl('', [Validators.required]),
             modifiers: new FormControl(''),
             type: new FormControl('', [Validators.required]),
-            parameters: new FormArray([])
+            parameters: new FormArray([]),
+            overridingSuperClassMethod: new FormControl(''),
+            overridingSuperClassMethodName: new FormControl('')
           });
           break;
         case SubRequirementType.CONSTRUCTOR:
@@ -234,7 +236,9 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
           this.classSubRequirementForm.patchValue({
             name: (this.editSubRequirement as ClassHasMethodRequirement).method.name,
             modifiers: (this.editSubRequirement as ClassHasMethodRequirement).method.modifiers,
-            type: this.exerciseService.stringifyType((this.editSubRequirement as ClassHasMethodRequirement).method.type)
+            type: this.exerciseService.stringifyType((this.editSubRequirement as ClassHasMethodRequirement).method.type),
+            overridingSuperClassMethod: (this.editSubRequirement as ClassHasMethodRequirement).overridingSuperClassMethod,
+            overridingSuperClassMethodName: (this.editSubRequirement as ClassHasMethodRequirement).overridingSuperClassMethodName
           });
 
           break;
@@ -382,6 +386,14 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
           this.classSubRequirementForm = null;
           break;
       }
+    }
+  }
+
+  toggleFormControlFromCheckbox(event: any, control: AbstractControl) {
+    if (event.checked) {
+      control.enable();
+    } else {
+      control.disable();
     }
   }
 

@@ -41,6 +41,13 @@
     width: 100%;
 }
 
+:host ::ng-deep .p-field-checkbox {
+    margin: 30px 5px;
+    label {
+        margin-left: 10px;
+    }
+}
+
 .parameters-header {
     display: flex;
     align-items: center;

@@ -34,6 +34,7 @@
                     <div *ngSwitchCase="'method'">
                         Class <span class="highlight-name">{{ editClassRequirement.name }}</span> contains a method with name <span class="highlight-name">{{ getClassHasMethodRequirement(req).method.name }}</span> 
                         , parameters list <span class="highlight-name">{{ getMethodTypeString(getClassHasMethodRequirement(req).method) }}</span> return type <span class="highlight-name">{{ stringifyType(getClassHasMethodRequirement(req).method.type) }}</span>
+                        . <span *ngIf="getClassHasMethodRequirement(req).overridingSuperClassMethod" class="highlight-name">Override method of class {{ getClassHasMethodRequirement(req).overridingSuperClassMethodName }}</span>
                     </div>
                     <div *ngSwitchCase="'constructor'">
                         Class <span class="highlight-name">{{ editClassRequirement.name }}</span> contains a constructor with parameters list <div class="highlight-name">{{ getMethodTypeString(getClassHasConstructorRequirement(req).constructorReq) }}</div>
