@@ -32,6 +32,9 @@ import { StartPageComponent } from './home/start-page/start-page.component';
 import { NewExerciseDialogComponent } from './exercise/dialogs/new-exercise-dialog/new-exercise-dialog.component';
 import { FileUploadComponent } from './exercise/dialogs/exercise-edit-details-dialog/file-upload/file-upload.component';
 import { DragDropModule } from "@angular/cdk/drag-drop";
+import { SaveChangesDialogComponent } from './common/dialogs/save-changes-dialog/save-changes-dialog.component';
+import { ExerciseService } from './exercise/exercise.service';
+import { ExerciseDialogService } from './exercise/dialogs/exercise-dialog.service';
 
 @NgModule({
   declarations: [
@@ -46,6 +49,7 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
     StartPageComponent,
     NewExerciseDialogComponent,
     FileUploadComponent,
+    SaveChangesDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,7 +75,11 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
   providers: [
     MessageService,
     ConfirmationService,
-    { provide: ExerciseFileService, useFactory: exerciseFileServiceFactory, deps: [ElectronService] },
+    { provide: ExerciseFileService, useFactory: exerciseFileServiceFactory, deps: [
+      ElectronService,
+      MessageService,
+      ExerciseDialogService
+    ]},
   ],
   bootstrap: [AppComponent]
 })

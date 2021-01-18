@@ -23,6 +23,7 @@ import { ClassOverridesObjectMethodSubRequirement } from '../models/requirements
 import { MethodCallInMethodRequirement } from '../models/requirements/method-call-in-method-sub-requirement';
 import { MethodCallInConstructorRequirement } from '../models/requirements/method-call-in-constructor-sub-requirement';
 import { ConstructorCallInConstructorRequirement } from '../models/requirements/constructor-call-in-constructor-sub-requirement';
+import { ExerciseDialogService } from './dialogs/exercise-dialog.service';
 
 @Injectable({
   providedIn: 'root'
@@ -35,13 +36,19 @@ export class ExerciseService {
   private maxClassId: number = -1;
   private currentExerciseValue!: Exercise;
 
-  constructor(private exerciseFileService: ExerciseFileService) {
+  constructor(private exerciseFileService: ExerciseFileService,
+    private exerciseDialogService: ExerciseDialogService) {
     this.currentExerciseSubject = new BehaviorSubject<Exercise | null>(null);
     this.currentExerciseObservable = this.currentExerciseSubject.asObservable();
+    this.addListenerToNewExercisePrompt();
   }
 
   public get userValue(): Exercise | null {
     return this.currentExerciseSubject.value;
+  }
+
+  isExerciseOpened(): boolean {
+    return !!this.currentExerciseValue;
   }
 
   exportExercise() {
@@ -930,6 +937,16 @@ export class ExerciseService {
 
     this.currentExerciseSubject.next(this.currentExerciseValue);
     return of(this.currentExerciseValue);
+  }
+
+  addListenerToNewExercisePrompt() {
+    this.exerciseFileService.addListenerToNewExercisePrompt((event: Electron.IpcRendererEvent, ...args: any[]): void => {
+      if (this.isExerciseOpened()) {
+        this.exerciseDialogService.showExerciseSaveChangesDialog();
+      } else {
+        this.exerciseDialogService.showNewExerciseDialog();
+      }
+    });
   }
 
 }

@@ -11,7 +11,7 @@ module.exports = {
     ]
   },
   entry: {
-    main: path.join(src, 'main.ts')
+    main: path.join(src, 'src', 'main.ts')
   },
   module: {
     rules: [

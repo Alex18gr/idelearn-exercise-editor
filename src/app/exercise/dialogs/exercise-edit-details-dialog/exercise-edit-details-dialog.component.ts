@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
@@ -27,7 +27,9 @@ export class ExerciseEditDetailsDialogComponent implements OnInit {
   constructor(private exerciseDialogService: ExerciseDialogService,
     private exerciseService: ExerciseService,
     private messageService: MessageService,
-    private exerciseFileService: ExerciseFileService) { }
+    private exerciseFileService: ExerciseFileService,
+    private cdr: ChangeDetectorRef
+  ) { }
 
   ngOnInit(): void {
     this.initializeSubscriptions();
@@ -71,6 +73,7 @@ export class ExerciseEditDetailsDialogComponent implements OnInit {
 
   showDialog() {
     this.display = true;
+    this.cdr.detectChanges();
   }
 
   hideDialog() {
@@ -109,7 +112,7 @@ export class ExerciseEditDetailsDialogComponent implements OnInit {
           this.messageService.add({ severity: 'error', summary: 'Create error', detail: error });
         });
       }
-      
+
     }
   }
 
