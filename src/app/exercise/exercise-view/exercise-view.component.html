@@ -1,8 +1,10 @@
 <section *ngIf="exercise" class="exercise-view-container">
     <section class="exercise-data">
-        <button pButton pRipple label="Export Data" type="button" class="p-button-raised" icon="pi pi-save" (click)="exportExercise()"></button>
+        <div class="top-action-buttons">
+            <button pButton pRipple label="Export Data" type="button" class="p-button-sm p-button-raised" icon="pi pi-save" (click)="exportExercise()"></button>
+        </div>
         <div class="exercise-title">
-            <h2>{{ exercise.name }}</h2>
+            <span>{{ exercise.name }}</span>
         </div>
         <div class="exercise-id">
             Exercise id: <span>{{ exercise.id }}</span>
@@ -19,16 +21,7 @@
             </div>
         </div>
         <div class="exercise-project-file">
-
         </div>
-        <!-- <div class="exercise-description">
-            <p>
-                This exercise is about many many things...
-            </p>
-            <h2>
-                {{ exercise.getExportData() | json}}
-            </h2>
-        </div> -->
     </section>
     <section class="requirements-container">
         <app-exercise-requirements-view *ngIf="!editSubRequirement" [exercise]="exercise" (addClassRequirement)="addNewRequirement()" class="requirements"

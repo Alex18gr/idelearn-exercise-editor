@@ -1,5 +1,3 @@
-
-
 .requirements-container {
     display: flex;
     flex-direction: column;
@@ -18,9 +16,16 @@
     z-index: 990;
     background-color: #ffffff;
     border-bottom: 1px solid #0891cf;
+    .top-action-buttons {
+        display: flex;
+        border-bottom: 2px solid #0891cf;
+        padding: 10px;
+        margin: -10px -10px 0 -10px;
+    }
     .exercise-title {
-        font-size: 1.5rem;
+        font-size: 2rem;
         font-weight: 500;
+        margin: 10px 0;
     }
     .exercise-id {
         font-size: 1em;
@@ -56,9 +61,20 @@
     }
 }
 
-
 .exercise-view-container {
     max-height: 100vh;
     display: grid;
-    grid-template-rows: 40% 60%;
+    grid-template-rows: 33% 67%;
+}
+
+@media screen and (max-height: 725px) {
+    .exercise-view-container {
+        grid-template-rows: 250px calc(100% - 250px);
+    }
+
+    @media screen and (max-width: 450px) {
+        .exercise-view-container {
+            grid-template-rows: 285px calc(100% - 285px);
+        }
+    }
 }
