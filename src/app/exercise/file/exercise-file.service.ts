@@ -12,6 +12,9 @@ export class ExerciseFileService {
   addListenerToNewExercisePrompt(listener: (event: Electron.IpcRendererEvent, ...args: any[]) => void) {
   }
 
+  addListenerToOpenExercisePrompt(listener: (event: Electron.IpcRendererEvent, ...args: any[]) => void) {
+  }
+
   openExerciseFileWithDialog() {
     return of(null);
   }

@@ -12,22 +12,24 @@
             No Requirements Exist
         </div>
     </div>
-    <div class="requirements-list" *ngIf="exercise.requirements.length > 0" cdkDropList (cdkDropListDropped)="onDrop($event)">
-        <div class="requirement-item" *ngFor="let req of exercise.requirements" cdkDrag cdkDragLockAxis="y">
-            <div class="requirement-drag-placeholder" *cdkDragPlaceholder></div>
-            <div class="requirement-content">
-                <div class="requirement-type">
-                    {{ req.type }}
-                </div>
-                <div class="requirement-description">
-                    <span *ngIf="!getClassRequirement(req).isAbstract && getClassRequirement(req).isInterface"><span class="highlight-name">Interface</span></span>
-                    <span *ngIf="getClassRequirement(req).isAbstract && !getClassRequirement(req).isInterface"><span class="highlight-name">Abstract</span> class</span>
-                    <span *ngIf="!getClassRequirement(req).isAbstract && !getClassRequirement(req).isInterface">Class</span> with name <span class="highlight-name">{{ getClassRequirement(req).name }}</span>
-                </div>
-                <div class="requirement-action">
-                    <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded" (click)="editRequirement(req)"></button>
-                    <button pButton pRipple type="button" icon="pi pi-cog" class="p-button-rounded" (click)="editRequirementSubrequirements(req)"></button>
-                    <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteRequirement(req)"></button>
+    <div class="requirements-list-container">
+        <div class="requirements-list" *ngIf="exercise.requirements.length > 0" cdkDropList (cdkDropListDropped)="onDrop($event)">
+            <div class="requirement-item" *ngFor="let req of exercise.requirements" cdkDrag cdkDragLockAxis="y">
+                <div class="requirement-drag-placeholder" *cdkDragPlaceholder></div>
+                <div class="requirement-content">
+                    <div class="requirement-type">
+                        {{ req.type }}
+                    </div>
+                    <div class="requirement-description">
+                        <span *ngIf="!getClassRequirement(req).isAbstract && getClassRequirement(req).isInterface"><span class="highlight-name">Interface</span></span>
+                        <span *ngIf="getClassRequirement(req).isAbstract && !getClassRequirement(req).isInterface"><span class="highlight-name">Abstract</span> class</span>
+                        <span *ngIf="!getClassRequirement(req).isAbstract && !getClassRequirement(req).isInterface">Class</span> with name <span class="highlight-name">{{ getClassRequirement(req).name }}</span>
+                    </div>
+                    <div class="requirement-action">
+                        <button pButton pRipple type="button" icon="pi pi-pencil" class="p-button-rounded" (click)="editRequirement(req)"></button>
+                        <button pButton pRipple type="button" icon="pi pi-cog" class="p-button-rounded" (click)="editRequirementSubrequirements(req)"></button>
+                        <button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteRequirement(req)"></button>
+                    </div>
                 </div>
             </div>
         </div>

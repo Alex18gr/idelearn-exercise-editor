@@ -11,6 +11,18 @@ const template: any = [
                 click: (menuItem: MenuItem, browserWindow: BrowserWindow | undefined, event: KeyboardEvent) => {
                     browserWindow?.webContents.send('newExercisePrompt', {});
                 }
+            },
+            {
+                label: 'Open Exercise',
+                click: (menuItem: MenuItem, browserWindow: BrowserWindow | undefined, event: KeyboardEvent) => {
+                    browserWindow?.webContents.send('openExercisePrompt', {});
+                }
+            },
+            {
+                label: 'Save Exercise',
+                click: (menuItem: MenuItem, browserWindow: BrowserWindow | undefined, event: KeyboardEvent) => {
+                    browserWindow?.webContents.send('exportExercisePrompt', {});
+                }
             }
 
         ]

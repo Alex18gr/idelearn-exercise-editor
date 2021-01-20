@@ -21,6 +21,10 @@ export class ExerciseFileLocalService {
     this.electron.ipcRenderer.on('newExercisePrompt', listener);
   }
 
+  addListenerToOpenExercisePrompt(listener: (event: Electron.IpcRendererEvent, ...args: any[]) => void) {
+    this.electron.ipcRenderer.on('openExercisePrompt', listener);
+  }
+
   openExerciseFileWithDialog() {
     return from(this.electron.ipcRenderer.invoke('openExerciseFile'));
   }

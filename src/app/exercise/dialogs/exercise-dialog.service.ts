@@ -20,8 +20,8 @@ export class ExerciseDialogService {
   private showNewExerciseSubject: Subject<void> = new Subject();
   public showNewExerciseObservable: Observable<void> = this.showNewExerciseSubject.asObservable();
 
-  private showExerciseSaveChangesDialogSubject: Subject<void> = new Subject();
-  public showExerciseSaveChangesDialogObservable: Observable<void> = this.showExerciseSaveChangesDialogSubject.asObservable();
+  private showExerciseSaveChangesDialogSubject: Subject<{ promptType: 'new' | 'open' | 'close' }> = new Subject();
+  public showExerciseSaveChangesDialogObservable: Observable<{ promptType: 'new' | 'open' | 'close' }> = this.showExerciseSaveChangesDialogSubject.asObservable();
 
   constructor() { }
 
@@ -41,8 +41,8 @@ export class ExerciseDialogService {
     this.showNewExerciseSubject.next();
   }
 
-  showExerciseSaveChangesDialog() {
-    this.showExerciseSaveChangesDialogSubject.next();
+  showExerciseSaveChangesDialog(options: { promptType: 'new' | 'open' | 'close' }) {
+    this.showExerciseSaveChangesDialogSubject.next(options);
   }
 
 }

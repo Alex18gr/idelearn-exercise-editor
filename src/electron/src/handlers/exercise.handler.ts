@@ -26,7 +26,7 @@ ipcMain.handle('getPirates', () => {
     const editExercisePath: string = path.join(app.getPath('userData'), 'edit-exercise');
   
     // Check the project file if exists
-    if ((args as any).hasStartingProject && !fs.existsSync(path.join(editExercisePath, 'project.zip'))) {
+    if ((args as any).exercise_project_info.starting_project && !fs.existsSync(path.join(editExercisePath, 'project.zip'))) {
       throw new Error('Starting project file error!');
     }
   
@@ -54,7 +54,7 @@ ipcMain.handle('getPirates', () => {
   
     const extractExerciseZipFile: AdmZip = new AdmZip();
     extractExerciseZipFile.addFile('exercise.json', fs.readFileSync(path.join(editExercisePath, 'exercise.json')));
-    if ((args as any).hasStartingProject) {
+    if ((args as any).exercise_project_info.starting_project) {
       extractExerciseZipFile.addFile('project.zip', fs.readFileSync(path.join(editExercisePath, 'project.zip')));
     }
   

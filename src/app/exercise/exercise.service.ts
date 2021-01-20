@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { ApplicationRef, ChangeDetectorRef, Injectable } from '@angular/core';
 import { BehaviorSubject, from, Observable, of, throwError } from 'rxjs';
 import { Exercise } from '../models/exercise';
 import { ClassRequirement } from '../models/requirements/class-requirement';
@@ -36,11 +36,14 @@ export class ExerciseService {
   private maxClassId: number = -1;
   private currentExerciseValue!: Exercise;
 
-  constructor(private exerciseFileService: ExerciseFileService,
-    private exerciseDialogService: ExerciseDialogService) {
+  constructor(
+    private exerciseFileService: ExerciseFileService,
+    private exerciseDialogService: ExerciseDialogService,
+    private appRef: ApplicationRef
+  ) {
     this.currentExerciseSubject = new BehaviorSubject<Exercise | null>(null);
     this.currentExerciseObservable = this.currentExerciseSubject.asObservable();
-    this.addListenerToNewExercisePrompt();
+    this.initializeListeners();
   }
 
   public get userValue(): Exercise | null {
@@ -706,7 +709,7 @@ export class ExerciseService {
         (options.subRequirement as MethodCallInMethodRequirement).callMethod.parameters = callMethodParams;
 
         (options.subRequirement as MethodCallInMethodRequirement).callMethodClassName = options.newValue.callMethodClassName;
-        
+
         (options.subRequirement as MethodCallInMethodRequirement).isCallMethodClassSuperClass = options.newValue.isCallMethodClassSuperClass;
         this.currentExerciseSubject.next(this.currentExerciseValue);
         return of(this.currentExerciseValue);
@@ -939,12 +942,37 @@ export class ExerciseService {
     return of(this.currentExerciseValue);
   }
 
+  openExercise() {
+    this.exerciseFileService.openExerciseFileWithDialog().subscribe(data => {
+      console.log(data);
+      if (data) {
+        this.openExerciseByJsonObject(data);
+      }
+      this.appRef.tick(); // this is used in order to trigger change detection in case of electron usage
+    });
+  }
+
+  initializeListeners() {
+    this.addListenerToNewExercisePrompt();
+    this.addListenerToOpenExercisePrompt();
+  }
+
   addListenerToNewExercisePrompt() {
     this.exerciseFileService.addListenerToNewExercisePrompt((event: Electron.IpcRendererEvent, ...args: any[]): void => {
       if (this.isExerciseOpened()) {
-        this.exerciseDialogService.showExerciseSaveChangesDialog();
+        this.exerciseDialogService.showExerciseSaveChangesDialog({ promptType: 'new' });
       } else {
         this.exerciseDialogService.showNewExerciseDialog();
+      }
+    });
+  }
+
+  addListenerToOpenExercisePrompt() {
+    this.exerciseFileService.addListenerToOpenExercisePrompt((event: Electron.IpcRendererEvent, ...args: any[]): void => {
+      if (this.isExerciseOpened()) {
+        this.exerciseDialogService.showExerciseSaveChangesDialog({ promptType: 'open' });
+      } else {
+        this.openExercise();
       }
     });
   }

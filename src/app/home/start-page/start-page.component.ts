@@ -18,12 +18,7 @@ export class StartPageComponent implements OnInit {
   }
 
   openExerciseFile() {
-    this.exerciseFileService.openExerciseFileWithDialog().subscribe(data => {
-      console.log(data);
-      if (data) {
-        this.exerciseService.openExerciseByJsonObject(data);
-      }
-    });
+    this.exerciseService.openExercise();
   }
 
   newExercise() {
