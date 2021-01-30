@@ -21,6 +21,9 @@
         border-bottom: 2px solid #0891cf;
         padding: 10px;
         margin: -10px -10px 0 -10px;
+        button {
+            margin-right: 4px;
+        }
     }
     .exercise-title {
         font-size: 2rem;
@@ -76,5 +79,11 @@
         .exercise-view-container {
             grid-template-rows: 285px calc(100% - 285px);
         }
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .exercise-view-container {
+        grid-template-rows: 285px calc(100% - 285px);
     }
 }

@@ -65,6 +65,14 @@ export class ExerciseViewComponent implements OnInit, OnDestroy {
     this.exerciseDialogService.showEditExerciseDetailsDialog(this.exercise);
   }
 
+  newExercise() {
+    this.exerciseService.newExerciseWithPrompt();
+  }
+
+  openExercise() {
+    this.exerciseService.openExerciseWithPrompt();
+  }
+
   exportExercise() {
     this.savingData = true;
     this.exerciseService.exportExercise().subscribe(res => {

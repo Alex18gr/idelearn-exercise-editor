@@ -1,7 +1,9 @@
 <section *ngIf="exercise" class="exercise-view-container">
     <section class="exercise-data">
         <div class="top-action-buttons">
-            <button pButton pRipple label="Export Data" type="button" class="p-button-sm p-button-raised" icon="pi pi-save" (click)="exportExercise()"></button>
+            <button pButton pRipple label="New Exercise" type="button" class="p-button-sm p-button-raised" icon="pi pi-file" (click)="newExercise()"></button>
+            <button pButton pRipple label="Open Exercise" type="button" class="p-button-sm p-button-outlined" icon="pi pi-folder-open" (click)="openExercise()"></button>
+            <button pButton pRipple label="Export Data" type="button" class="p-button-sm p-button-outlined" icon="pi pi-save" (click)="exportExercise()"></button>
         </div>
         <div class="exercise-title">
             <span>{{ exercise.name }}</span>

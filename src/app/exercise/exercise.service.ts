@@ -959,22 +959,30 @@ export class ExerciseService {
 
   addListenerToNewExercisePrompt() {
     this.exerciseFileService.addListenerToNewExercisePrompt((event: Electron.IpcRendererEvent, ...args: any[]): void => {
-      if (this.isExerciseOpened()) {
-        this.exerciseDialogService.showExerciseSaveChangesDialog({ promptType: 'new' });
-      } else {
-        this.exerciseDialogService.showNewExerciseDialog();
-      }
+      this.newExerciseWithPrompt();
     });
   }
 
   addListenerToOpenExercisePrompt() {
     this.exerciseFileService.addListenerToOpenExercisePrompt((event: Electron.IpcRendererEvent, ...args: any[]): void => {
-      if (this.isExerciseOpened()) {
-        this.exerciseDialogService.showExerciseSaveChangesDialog({ promptType: 'open' });
-      } else {
-        this.openExercise();
-      }
+      this.openExerciseWithPrompt();
     });
+  }
+
+  newExerciseWithPrompt() {
+    if (this.isExerciseOpened()) {
+      this.exerciseDialogService.showExerciseSaveChangesDialog({ promptType: 'new' });
+    } else {
+      this.exerciseDialogService.showNewExerciseDialog();
+    }
+  }
+
+  openExerciseWithPrompt() {
+    if (this.isExerciseOpened()) {
+      this.exerciseDialogService.showExerciseSaveChangesDialog({ promptType: 'open' });
+    } else {
+      this.openExercise();
+    }
   }
 
 }

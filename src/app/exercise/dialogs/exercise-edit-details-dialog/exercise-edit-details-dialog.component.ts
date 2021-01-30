@@ -127,11 +127,7 @@ export class ExerciseEditDetailsDialogComponent implements OnInit {
       console.log(res);
     });
   }
-
-  logFormValue() {
-    console.log(this.exerciseForm?.getRawValue());
-  }
-
+  
   startProjectSwitchChanged(event: any) {
     this.enableFileUpload = event.checked;
     if (!event.checked && !this.editMode) {
