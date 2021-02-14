@@ -22,6 +22,21 @@ function createWindow() {
   });
 
   mainWindow.loadFile('index.html');
+
+  // on application close event
+  mainWindow.on('close', (e: Electron.Event) => {
+    const choice = dialog.showMessageBoxSync(
+      mainWindow,
+      {
+        type: 'question',
+        buttons: ['Close', 'Cancel'],
+        title: 'Confirm Exit',
+        message: 'Do you really want to close the application?'
+      }
+    );
+    console.log('CHOICE: ', choice);
+    if (choice > 0) e.preventDefault();
+  })
   win = mainWindow;
 }
 
@@ -29,4 +44,6 @@ app.whenReady().then(() => {
   createWindow();
   watch('./Dist/Client/', (eventType, filename) => { win.reload(); })
 });
+
+
 
