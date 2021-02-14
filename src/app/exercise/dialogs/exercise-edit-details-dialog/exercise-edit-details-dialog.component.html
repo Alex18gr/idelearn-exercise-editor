@@ -23,6 +23,17 @@
                         {{ getErrorMessage(exerciseForm.controls.projectTitle) }}
                     </small>
                 </div>
+                <div class="p-field input-group">
+                    <span class="p-float-label">
+                        <textarea pInputTextarea id="description" class="custom-input-text custom-text-area" style="height: 25vh;"
+                            formControlName="description">
+                        </textarea>
+                        <label for="description">Description</label>
+                    </span>
+                    <small *ngIf="isControlInvalid(exerciseForm.controls.description)" class="p-invalid">
+                        {{ getErrorMessage(exerciseForm.controls.description) }}
+                    </small>
+                </div>
                 <div class="file-upload-container">
                     <div class="p-field input-group switch-input-group">
                         <label for="enableFileUploadSwitch">Enable Start Project</label>
@@ -33,13 +44,6 @@
                         <h1>{{ uploadProjectZipLabel }}</h1>
                         <app-file-upload formControlName="startingProjectUrl"></app-file-upload>
                     </div>
-                </div>
-                <div class="p-field input-group">
-                    <h2>Upload Project Zip</h2>
-                    <button pButton pRipple type="button" class="p-button-raised" label="Select File" icon="pi pi-plus"
-                        (click)="openSelectFileDialog()"></button>
-                    <button pButton pRipple type="button" class="p-button-raised" label="Select File" icon="pi pi-plus"
-                        (click)="logFormValue()"></button>
                 </div>
             </form>
         </div>

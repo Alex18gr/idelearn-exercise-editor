@@ -1,12 +1,15 @@
 {
     "name": "idelearn-exercise-editor",
-    "description": "Angular Electron Sample",
+    "description": "IDE Learn Exercise Editor",
     "version": "0.0.0",
     "author": {
         "name": "Alexandros Tsichouridis"
     },
     "main": "main.js",
-    "devDependencies": {
-        "@types/adm-zip": "^0.4.33"
+    "devDependencies": {},
+    "dependencies": {
+        "@types/adm-zip": "^0.4.33",
+        "adm-zip": "^0.5.1",
+        "uuid": "^8.3.2"
     }
 }

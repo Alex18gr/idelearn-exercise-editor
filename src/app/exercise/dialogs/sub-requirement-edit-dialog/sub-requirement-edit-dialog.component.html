@@ -18,7 +18,7 @@
     <p-footer>
         <button pButton pRipple type="button" class="p-button-raised p-button-text" label="Cancel" icon="pi pi-times"
             (click)="hideDialog()"></button>
-        <button *ngIf="!savingData" pButton pRipple type="button" class="p-button-raised" label="Save" icon="pi pi-save" (click)="saveSubRequirement()" [disabled]="!this.isSubRequirementFormValid()"></button>
+        <button *ngIf="!savingData" pButton pRipple type="button" class="p-button-raised" label="Save" icon="pi pi-save" (click)="saveSubRequirement()"></button>
         <button *ngIf="savingData" pButton pRipple type="button" class="p-button-raised" label="Saving" icon="pi pi-spin pi-spinner" [disabled]="true"></button>
     </p-footer>
 </p-dialog>

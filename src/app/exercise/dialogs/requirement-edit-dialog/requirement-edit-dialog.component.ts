@@ -39,6 +39,7 @@ export class RequirementEditDialogComponent implements OnInit, OnDestroy {
   initializeClassRequirementForm() {
     this.classRequirementForm = new FormGroup({
       className: new FormControl('', [Validators.required]),
+      isInterface: new FormControl(''),
       isAbstract: new FormControl('')
     });
   }
@@ -66,6 +67,7 @@ export class RequirementEditDialogComponent implements OnInit, OnDestroy {
     if (this.editMode) {
       this.classRequirementForm.patchValue({
         className: (this.editRequirement as ClassRequirement).name,
+        isInterface: (this.editRequirement as any).isInterface,
         isAbstract: (this.editRequirement as any).isAbstract
       });
     }

@@ -65,11 +65,25 @@ export class ExerciseViewComponent implements OnInit, OnDestroy {
     this.exerciseDialogService.showEditExerciseDetailsDialog(this.exercise);
   }
 
+  newExercise() {
+    this.exerciseService.newExerciseWithPrompt();
+  }
+
+  openExercise() {
+    this.exerciseService.openExerciseWithPrompt();
+  }
+
   exportExercise() {
     this.savingData = true;
     this.exerciseService.exportExercise().subscribe(res => {
+      
+      if (res === 'OK') {
+        this.messageService.add({ severity: 'success', summary: 'Edit Success', detail: 'Exercise exported successfuly' });
+      } else if (res === 'CANCELED') {
+        this.messageService.add({ severity: 'warn', summary: 'Export Canceled' });
+      }
+      
       this.savingData = false;
-      this.messageService.add({ severity: 'success', summary: 'Edit Success', detail: 'Exercise exported successfuly' });
     }, error => {
       this.savingData = false;
       this.messageService.add({ severity: 'error', summary: 'Export Error', detail: error });

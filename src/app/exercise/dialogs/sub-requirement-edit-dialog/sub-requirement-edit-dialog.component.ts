@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { IRequirement } from 'src/app/models/requirements/irequirement';
@@ -26,13 +26,23 @@ export class SubRequirementEditDialogComponent implements OnInit {
   selectedSubRequirementType!: SubRequirementType;
   subRequirementTypeOptions: RequirementTypeDropdown[] = [
     { label: 'Extend a Class', value: 'extend' },
-    { label: 'Contain an Instance of a class', value: 'contains' }
+    { label: 'Contain an Instance of a class', value: 'contains' },
+    { label: 'Extends a class with name', value: 'extend-name' },
+    { label: 'Implements an interface with name', value: 'implement-name' },
+    { label: 'Contain a field', value: 'contains-field' },
+    { label: 'Contain a method', value: 'method' },
+    { label: 'Contain a constructor', value: 'constructor' },
+    { label: 'Overrides an Object Method', value: 'override-object-method' },
+    { label: 'A method is called inside a method', value: 'method-call-method' },
+    { label: 'A method is called inside a constructor', value: 'constructor-call-method' },
+    { label: 'A constructor is called inside a constructor', value: 'constructor-call-constructor' }
   ];
   subRequirementTypeDropdownDisabled: boolean = false;
 
   constructor(private exerciseDialogService: ExerciseDialogService,
     private exerciseService: ExerciseService,
-    private messageService: MessageService) { }
+    private messageService: MessageService,
+    private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.initializeSubscriptions();

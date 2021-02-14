@@ -1,7 +1,10 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Exercise } from 'src/app/models/exercise';
 import { ClassRequirement } from 'src/app/models/requirements/class-requirement';
 import { IRequirement } from 'src/app/models/requirements/irequirement';
+import { ExerciseService } from '../exercise.service';
 
 @Component({
   selector: 'app-exercise-requirements-view',
@@ -14,7 +17,9 @@ export class ExerciseRequirementsViewComponent implements OnInit {
   @Output() editClassRequirementSubrequirements: EventEmitter<ClassRequirement> = new EventEmitter();
   @Output() addClassRequirement: EventEmitter<void> = new EventEmitter();
 
-  constructor() { }
+  constructor(private confirmationService: ConfirmationService,
+    private exerciseService: ExerciseService,
+    private messageService: MessageService) { }
 
   ngOnInit(): void {
   }
@@ -39,6 +44,22 @@ export class ExerciseRequirementsViewComponent implements OnInit {
     this.addClassRequirement.emit();
   }
 
-  
+  onDrop(event: CdkDragDrop<IRequirement[]>) {
+    moveItemInArray(this.exercise.requirements, event.previousIndex, event.currentIndex);
+  }
+
+  deleteRequirement(req: IRequirement) {
+    this.confirmationService.confirm({
+      header: 'Delete Class Requirement',
+      message: 'Are you sure that you want to delete class requirement "' + (req as ClassRequirement).name + '"?',
+      accept: () => {
+        this.exerciseService.deleteClassRequirement((req as ClassRequirement)).subscribe(res => {
+          this.messageService.add({ severity: 'success', summary: 'Delete Success', detail: 'Class Requirement "' + (req as ClassRequirement).name + '" deleted successfuly' });
+        }, error => {
+          this.messageService.add({ severity: 'error', summary: 'Delete error', detail: error });
+        });
+      }
+    });
+  }
 
 }

@@ -4,6 +4,6 @@
     "importHelpers": false
   },
   "include": [
-    "**/*.ts"
+    "src/**/*.ts"
   ]
 }

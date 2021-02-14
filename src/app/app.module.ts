@@ -8,13 +8,16 @@ import { ExerciseRequirementsViewComponent } from './exercise/exercise-requireme
 import { ExerciseSubRequirementsViewComponent } from './exercise/exercise-sub-requirements-view/exercise-sub-requirements-view.component';
 import { ToastModule } from 'primeng/toast';
 import { MessageModule } from 'primeng/message';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { FileUploadModule } from 'primeng/fileupload';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { CheckboxModule } from 'primeng/checkbox';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RequirementEditDialogComponent } from './exercise/dialogs/requirement-edit-dialog/requirement-edit-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -28,6 +31,10 @@ import { ElectronService, NgxElectronModule } from 'ngx-electron';
 import { StartPageComponent } from './home/start-page/start-page.component';
 import { NewExerciseDialogComponent } from './exercise/dialogs/new-exercise-dialog/new-exercise-dialog.component';
 import { FileUploadComponent } from './exercise/dialogs/exercise-edit-details-dialog/file-upload/file-upload.component';
+import { DragDropModule } from "@angular/cdk/drag-drop";
+import { SaveChangesDialogComponent } from './common/dialogs/save-changes-dialog/save-changes-dialog.component';
+import { ExerciseService } from './exercise/exercise.service';
+import { ExerciseDialogService } from './exercise/dialogs/exercise-dialog.service';
 
 @NgModule({
   declarations: [
@@ -42,6 +49,7 @@ import { FileUploadComponent } from './exercise/dialogs/exercise-edit-details-di
     StartPageComponent,
     NewExerciseDialogComponent,
     FileUploadComponent,
+    SaveChangesDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,11 +66,20 @@ import { FileUploadComponent } from './exercise/dialogs/exercise-edit-details-di
     HttpClientModule,
     NgxElectronModule,
     InputSwitchModule,
-    CheckboxModule
+    CheckboxModule,
+    MultiSelectModule,
+    ConfirmDialogModule,
+    InputTextareaModule,
+    DragDropModule,
   ],
   providers: [
     MessageService,
-    { provide: ExerciseFileService, useFactory: exerciseFileServiceFactory, deps: [ElectronService] },
+    ConfirmationService,
+    { provide: ExerciseFileService, useFactory: exerciseFileServiceFactory, deps: [
+      ElectronService,
+      MessageService,
+      ExerciseDialogService
+    ]},
   ],
   bootstrap: [AppComponent]
 })

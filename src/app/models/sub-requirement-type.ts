@@ -1,4 +1,13 @@
 export enum SubRequirementType {
     EXTEND = 'extend',
-    CONTAINS = 'contains'
+    EXTEND_NAME = 'extend-name',
+    IMPLEMENT_NAME = 'implement-name',
+    CONTAINS = 'contains',
+    CONTAINS_FIELD = 'contains-field',
+    METHOD = 'method',
+    CONSTRUCTOR = 'constructor',
+    OVERRIDE_OBJECT_METHOD = 'override-object-method',
+    METHOD_CALL_METHOD = 'method-call-method',
+    CONSTRUCTOR_CALL_METHOD = 'constructor-call-method',
+    CONSTRUCTOR_CALL_CONSTRUCTOR = 'constructor-call-constructor'
 }

@@ -26,6 +26,10 @@
     // height: 70vh;
 }
 
+:host ::ng-deep .p-dialog .p-dialog-footer {
+    padding: 1rem 1.5rem 1.5rem 1.5rem;
+}
+
 @media screen and (max-width: 1300px) {
     :host ::ng-deep .custom-edit-dialog {
        width: 65vw;
