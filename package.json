@@ -17,10 +17,15 @@
     "package:win": "electron-packager dist/idelearn-exercise-editor --out=dist --asar",
     "package:linux": "electron-packager dist/idelearn-exercise-editor --out=dist --asar --platform=linux --arch=x64",
     "package:snap": "electron-installer-snap --src=dist/idelearn-exercise-editor-linux-x64",
-    "build:electron-builder": "electron-builder build"
+    "build:electron-builder": "electron-builder build",
+    "publish": "electron-builder build --publish always"
   },
   "main": "main.js",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Alex18gr/idelearn-exercise-editor.git"
+  },
   "dependencies": {
     "@angular/animations": "~11.0.4",
     "@angular/cdk": "^11.0.2",
