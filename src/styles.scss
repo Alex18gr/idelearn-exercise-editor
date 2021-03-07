@@ -1,15 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
 
-body
-{
-  margin: 0;
-  font-family: "Open Sans", sans-serif;
-  background-color: #F7F6F3;
+@import 'assets/scss/modules/roboto/fonts';
+$primary_font: 'Roboto';
+body {
+    margin: 0;
+    font-family: "Open Sans", sans-serif;
+    background-color: #F7F6F3;
 }
 
 .highlighted-text {
     font-size: 1.25rem;
     font-weight: 500;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: $primary_font, "Helvetica Neue", sans-serif;
+}
