@@ -1,11 +1,12 @@
 .requirements {
     display: grid;
-    grid-template-rows: 12% 88%;
+    grid-template-rows: 46px calc(100% - 46px);
     height: 100%;
     .requirements-header {
         display: flex;
         align-items: center;
         border-bottom: 2px solid darkgrey;
+        font-size: 1rem;
         .add-button {
             margin-right: 15px;
             min-width: 190px;
