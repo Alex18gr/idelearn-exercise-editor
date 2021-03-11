@@ -116,6 +116,8 @@ export class MethodFormComponent implements OnInit, ControlValueAccessor, OnDest
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 
-  
+  validate(_: FormControl) {
+    return this.methodForm?.valid ? null : this.methodForm?.errors;
+  }
 
 }

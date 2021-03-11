@@ -7,7 +7,7 @@ export interface IMethodAnalyser {
 
     addClassMethod(classReq: ClassRequirement, method: RequirementMethod): void;
 
-    getClasses(): IterableIterator<ClassRequirement>;
+    getClasses(): ClassRequirement[];
 
 }
 
@@ -31,8 +31,8 @@ export class MethodAnalyser implements IMethodAnalyser {
         return this.classMethods.get(classReq);
     }
 
-    getClasses(): IterableIterator<ClassRequirement> {
-        return this.classMethods.keys();
+    getClasses(): ClassRequirement[] {
+        return Array.from(this.classMethods.keys());
     }
 
 }

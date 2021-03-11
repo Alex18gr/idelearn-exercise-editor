@@ -36,6 +36,7 @@ import { SaveChangesDialogComponent } from './common/dialogs/save-changes-dialog
 import { ExerciseService } from './exercise/exercise.service';
 import { ExerciseDialogService } from './exercise/dialogs/exercise-dialog.service';
 import { MethodFormComponent } from './common/forms/method-form/method-form.component';
+import { MethodSelectDialogComponent } from './common/dialogs/method-select-dialog/method-select-dialog.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { MethodFormComponent } from './common/forms/method-form/method-form.comp
     FileUploadComponent,
     SaveChangesDialogComponent,
     MethodFormComponent,
+    MethodSelectDialogComponent,
   ],
   imports: [
     BrowserModule,

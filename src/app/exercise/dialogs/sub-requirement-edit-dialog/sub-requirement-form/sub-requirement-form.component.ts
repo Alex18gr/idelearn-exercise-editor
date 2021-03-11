@@ -1,5 +1,6 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 import { ExerciseService } from 'src/app/exercise/exercise.service';
 import { ClassOverridesObjectMethodSubRequirement } from 'src/app/models/requirements/class-overrides-object-method-sub-requirement';
 import { ClassRequirement } from 'src/app/models/requirements/class-requirement';
@@ -14,16 +15,20 @@ import { ImplementNameRequirement } from 'src/app/models/requirements/implement-
 import { IRequirement } from 'src/app/models/requirements/irequirement';
 import { MethodCallInConstructorRequirement } from 'src/app/models/requirements/method-call-in-constructor-sub-requirement';
 import { MethodCallInMethodRequirement } from 'src/app/models/requirements/method-call-in-method-sub-requirement';
+import { RequirementMethod } from 'src/app/models/requirements/requirement-method';
 import { SubRequirementType } from 'src/app/models/sub-requirement-type';
+import { ExerciseDialogService } from '../../exercise-dialog.service';
 
 @Component({
   selector: 'app-sub-requirement-form',
   templateUrl: './sub-requirement-form.component.html',
   styleUrls: ['./sub-requirement-form.component.scss']
 })
-export class SubRequirementFormComponent implements OnInit, OnChanges {
+export class SubRequirementFormComponent implements OnInit, OnChanges, OnDestroy {
   classSubRequirementForm!: FormGroup | null;
   formHeader!: string;
+
+  subscriptions: Subscription[] = [];
 
   @Input() editMode: boolean = false;
   @Input() editSubRequirement!: IRequirement | null;
@@ -50,12 +55,20 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
   ];
   currentExerciseClassList: { id: number, name: string }[] = [];
 
-  constructor(private exerciseService: ExerciseService) {
+  constructor(
+    private exerciseService: ExerciseService,
+    private exerciseDialogService: ExerciseDialogService
+  ) {
     this.currentExerciseClassList = this.exerciseService.getCurrentExerciseClassList();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(s => s.unsubscribe());
   }
 
   ngOnInit(): void {
     this.initializeClassRequirementForm();
+    this.initializeSubscriptions();
   }
 
   initializeClassRequirementForm() {
@@ -391,6 +404,19 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
     }
   }
 
+  initializeSubscriptions() {
+    this.subscriptions.push(this.exerciseDialogService.methodSelectedObservable.subscribe((res: { method: RequirementMethod; control: string; }) => {
+      switch (res.control) {
+        case 'method':
+          
+          break;
+      
+        default:
+          break;
+      }
+    }));
+  }
+
   toggleFormControlFromCheckbox(event: any, control: AbstractControl) {
     if (event.checked) {
       control.enable();
@@ -534,6 +560,10 @@ export class SubRequirementFormComponent implements OnInit, OnChanges {
 
   asFormGroup(fg: any): FormGroup {
     return fg as FormGroup;
+  }
+
+  openPickMethodDialog(formGroupName: string) {
+    this.exerciseDialogService.showPickMethodDialog({ control: formGroupName });
   }
 
 }

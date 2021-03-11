@@ -893,6 +893,11 @@ export class ExerciseService {
     };
   }
 
+  getMethodSignature(method: RequirementMethod): string {
+    const methodModifiers = method.modifiers;
+    return methodModifiers.join(' ') + ' ' + this.stringifyType(method.type) + ' ' + method.name + this.getMethodParametersString(method);
+  }
+
   getMethodParametersString(method: RequirementMethod | RequirementConstructor): string {
     const parametersArray: string[] = [];
     parametersArray.push('(');

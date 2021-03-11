@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { Exercise } from 'src/app/models/exercise';
 import { IRequirement } from 'src/app/models/requirements/irequirement';
+import { RequirementMethod } from 'src/app/models/requirements/requirement-method';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,12 @@ export class ExerciseDialogService {
   private showExerciseSaveChangesDialogSubject: Subject<{ promptType: 'new' | 'open' | 'close' }> = new Subject();
   public showExerciseSaveChangesDialogObservable: Observable<{ promptType: 'new' | 'open' | 'close' }> = this.showExerciseSaveChangesDialogSubject.asObservable();
 
+  private showPickMethodDialogSubject: Subject<{ control: string }> = new Subject();
+  public showPickMethodDialogObservable: Observable<{ control: string }> = this.showPickMethodDialogSubject.asObservable();
+
+  private methodSelectedSubject: Subject<{ method: RequirementMethod, control: string }> = new Subject();
+  public methodSelectedObservable: Observable<{ method: RequirementMethod, control: string }> = this.methodSelectedSubject.asObservable();
+
   constructor() { }
 
   showEditRequirementDialog(options?: { requirement?: IRequirement }) {
@@ -43,6 +50,14 @@ export class ExerciseDialogService {
 
   showExerciseSaveChangesDialog(options: { promptType: 'new' | 'open' | 'close' }) {
     this.showExerciseSaveChangesDialogSubject.next(options);
+  }
+
+  showPickMethodDialog(options: { control: string }) {
+    this.showPickMethodDialogSubject.next(options);
+  }
+
+  methodSelected(method: { method: RequirementMethod, control: string }) {
+    this.methodSelectedSubject.next(method);
   }
 
 }

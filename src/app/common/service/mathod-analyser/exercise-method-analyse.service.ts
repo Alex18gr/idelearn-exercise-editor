@@ -10,12 +10,17 @@ import { MethodAnalyser } from './method-analyser';
 })
 export class ExerciseMethodAnalyseService {
 
-  private methodAnalyser: MethodAnalyser;
+  private _methodAnalyser: MethodAnalyser;
+  
+  public get methodAnalyser() : MethodAnalyser {
+    return this._methodAnalyser;
+  }
+  
 
   constructor(
     private exerciseService: ExerciseService
   ) {
-    this.methodAnalyser = new MethodAnalyser();
+    this._methodAnalyser = new MethodAnalyser();
     this.exerciseService.currentExerciseObservable.subscribe((exercise: Exercise | null) => {
       if (exercise) {
         this.analyseExerciseMethods(exercise);
@@ -34,7 +39,7 @@ export class ExerciseMethodAnalyseService {
   }
 
   initializeClassMethodsMap() {
-    this.methodAnalyser = new MethodAnalyser();
+    this._methodAnalyser = new MethodAnalyser();
   }
 
   extractMethods(exercise: Exercise) {
@@ -42,7 +47,7 @@ export class ExerciseMethodAnalyseService {
       if (req instanceof ClassRequirement) {
         for (let subReq of req.relatedRequirements) {
           if (subReq instanceof ClassHasMethodRequirement) {
-            this.methodAnalyser.addClassMethod(req, subReq.method);
+            this._methodAnalyser.addClassMethod(req, subReq.method);
           }
         }
       }
