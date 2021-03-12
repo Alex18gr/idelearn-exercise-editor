@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, FormArray } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { ExerciseDialogService } from 'src/app/exercise/dialogs/exercise-dialog.service';
@@ -11,11 +11,12 @@ import { ExerciseMethodAnalyseService } from '../../service/mathod-analyser/exer
 import { MethodAnalyser } from '../../service/mathod-analyser/method-analyser';
 
 @Component({
-  selector: 'app-method-select-dialog',
-  templateUrl: './method-select-dialog.component.html',
-  styleUrls: ['./method-select-dialog.component.scss']
+  selector: 'app-constructor-select-dialog',
+  templateUrl: './constructor-select-dialog.component.html',
+  styleUrls: ['./constructor-select-dialog.component.scss']
 })
-export class MethodSelectDialogComponent implements OnInit, OnDestroy {
+export class ConstructorSelectDialogComponent implements OnInit {
+
   display: boolean = false;
   title: string = 'Pick Method';
   loadingData: boolean = false;
@@ -184,5 +185,4 @@ export class MethodSelectDialogComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.showDialogSubscription) { this.showDialogSubscription.unsubscribe(); }
   }
-
 }

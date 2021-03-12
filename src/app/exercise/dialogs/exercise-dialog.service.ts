@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { Exercise } from 'src/app/models/exercise';
+import { MethodType } from 'src/app/models/method-type';
 import { IRequirement } from 'src/app/models/requirements/irequirement';
 import { RequirementMethod } from 'src/app/models/requirements/requirement-method';
 
@@ -24,11 +26,11 @@ export class ExerciseDialogService {
   private showExerciseSaveChangesDialogSubject: Subject<{ promptType: 'new' | 'open' | 'close' }> = new Subject();
   public showExerciseSaveChangesDialogObservable: Observable<{ promptType: 'new' | 'open' | 'close' }> = this.showExerciseSaveChangesDialogSubject.asObservable();
 
-  private showPickMethodDialogSubject: Subject<{ control: string }> = new Subject();
-  public showPickMethodDialogObservable: Observable<{ control: string }> = this.showPickMethodDialogSubject.asObservable();
+  private showPickMethodDialogSubject: Subject<{ formGroup: FormGroup, mehtodType: MethodType }> = new Subject();
+  public showPickMethodDialogObservable: Observable<{ formGroup: FormGroup, mehtodType: MethodType }> = this.showPickMethodDialogSubject.asObservable();
 
-  private methodSelectedSubject: Subject<{ method: RequirementMethod, control: string }> = new Subject();
-  public methodSelectedObservable: Observable<{ method: RequirementMethod, control: string }> = this.methodSelectedSubject.asObservable();
+  private methodSelectedSubject: Subject<{ method: RequirementMethod, formGroup: FormGroup }> = new Subject();
+  public methodSelectedObservable: Observable<{ method: RequirementMethod, formGroup: FormGroup }> = this.methodSelectedSubject.asObservable();
 
   constructor() { }
 
@@ -52,11 +54,11 @@ export class ExerciseDialogService {
     this.showExerciseSaveChangesDialogSubject.next(options);
   }
 
-  showPickMethodDialog(options: { control: string }) {
+  showPickMethodDialog(options: { formGroup: FormGroup, mehtodType: MethodType }) {
     this.showPickMethodDialogSubject.next(options);
   }
 
-  methodSelected(method: { method: RequirementMethod, control: string }) {
+  methodSelected(method: { method: RequirementMethod, formGroup: FormGroup }) {
     this.methodSelectedSubject.next(method);
   }
 

@@ -248,8 +248,10 @@
 
         <form class="sub-requirement-form" [formGroup]="classSubRequirementForm" *ngSwitchCase="'method-call-method'"> 
             <div formGroupName="method">
-                <button pButton pRipple type="button" class="p-button-raised p-button-sm" label="Add" icon="pi pi-plus" (click)="openPickMethodDialog('method')"></button>
-                <h3>Call Method</h3>
+                <div class="method-section-header">
+                    <h3>Caller Method</h3>
+                    <button pButton pRipple type="button" class="p-button-raised p-button-sm" label="Pick Method" icon="pi pi-external-link" (click)="openPickMethodDialog(methodType.CONTAINS_METHOD)"></button>
+                </div>
                 <div class="p-field sub-requirement-input-group">
                     <span class="p-float-label">
                         <input type="text" id="name" class="custom-input-text" formControlName="name"
@@ -307,7 +309,10 @@
                 </div>
             </div>
             <div formGroupName="callMethod">
-                <h3>Call Method</h3>
+                <div class="method-section-header">
+                    <h3>Calling Method</h3>
+                    <button pButton pRipple type="button" class="p-button-raised p-button-sm" label="Pick Method" icon="pi pi-external-link" (click)="openPickMethodDialog(methodType.CONTAINS_CALL_METHOD)"></button>
+                </div>
                 <div class="p-field sub-requirement-input-group">
                     <span class="p-float-label">
                         <input type="text" id="name" class="custom-input-text" formControlName="name"
@@ -421,7 +426,10 @@
                 </div>
             </div>
             <div formGroupName="callMethod">
-                <h3>Call Method</h3>
+                <div class="method-section-header">
+                    <h3>Calling Method</h3>
+                    <button pButton pRipple type="button" class="p-button-raised p-button-sm" label="Pick Method" icon="pi pi-external-link" (click)="openPickMethodDialog(methodType.CONSTRUCTOR_CALL_METHOD)"></button>
+                </div>
                 <div class="p-field sub-requirement-input-group">
                     <span class="p-float-label">
                         <input type="text" id="name" class="custom-input-text" formControlName="name"

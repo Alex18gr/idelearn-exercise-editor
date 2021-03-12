@@ -1,0 +1,41 @@
+:host ::ng-deep .p-dropdown {
+    width: 90%;
+}
+
+:host ::ng-deep .custom-edit-dialog {
+    width: 50vw;
+    height: 60vh;
+}
+
+:host ::ng-deep .p-dialog .p-dialog-content {
+    height: 100%;
+}
+
+.dialog-content {
+    padding: 15px 0;
+    .method-form {
+        display: flex;
+        flex-direction: column;
+        .dropdown-input {
+            margin-bottom: 25px;
+        }
+    }
+}
+
+@media screen and (max-width: 1300px) {
+    :host ::ng-deep .custom-edit-dialog {
+       width: 65vw;
+   }
+}
+
+@media screen and (max-width: 1100px) {
+    :host ::ng-deep .custom-edit-dialog {
+       width: 85vw;
+   }
+}
+
+@media screen and (max-width: 650px) {
+     :host ::ng-deep .custom-edit-dialog {
+        width: 95vw;
+    }
+}

@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ExerciseService } from 'src/app/exercise/exercise.service';
+import { MethodType } from 'src/app/models/method-type';
 import { ClassOverridesObjectMethodSubRequirement } from 'src/app/models/requirements/class-overrides-object-method-sub-requirement';
 import { ClassRequirement } from 'src/app/models/requirements/class-requirement';
 import { ConstructorCallInConstructorRequirement } from 'src/app/models/requirements/constructor-call-in-constructor-sub-requirement';
@@ -27,6 +28,7 @@ import { ExerciseDialogService } from '../../exercise-dialog.service';
 export class SubRequirementFormComponent implements OnInit, OnChanges, OnDestroy {
   classSubRequirementForm!: FormGroup | null;
   formHeader!: string;
+  methodType = MethodType;
 
   subscriptions: Subscription[] = [];
 
@@ -405,15 +407,7 @@ export class SubRequirementFormComponent implements OnInit, OnChanges, OnDestroy
   }
 
   initializeSubscriptions() {
-    this.subscriptions.push(this.exerciseDialogService.methodSelectedObservable.subscribe((res: { method: RequirementMethod; control: string; }) => {
-      switch (res.control) {
-        case 'method':
-          
-          break;
-      
-        default:
-          break;
-      }
+    this.subscriptions.push(this.exerciseDialogService.methodSelectedObservable.subscribe((res) => {
     }));
   }
 
@@ -562,8 +556,10 @@ export class SubRequirementFormComponent implements OnInit, OnChanges, OnDestroy
     return fg as FormGroup;
   }
 
-  openPickMethodDialog(formGroupName: string) {
-    this.exerciseDialogService.showPickMethodDialog({ control: formGroupName });
+  openPickMethodDialog(mehtodType: MethodType) {
+    if (this.classSubRequirementForm) {
+          this.exerciseDialogService.showPickMethodDialog({ formGroup: this.classSubRequirementForm, mehtodType: mehtodType });
+    }
   }
 
 }
