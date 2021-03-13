@@ -898,6 +898,10 @@ export class ExerciseService {
     return methodModifiers.join(' ') + ' ' + this.stringifyType(method.type) + ' ' + method.name + this.getMethodParametersString(method);
   }
 
+  getConstructorMethodSignature(constructor: RequirementConstructor): string {
+    return constructor.modifiers.join(' ') + this.getMethodParametersString(constructor);
+  }
+
   getMethodParametersString(method: RequirementMethod | RequirementConstructor): string {
     const parametersArray: string[] = [];
     parametersArray.push('(');

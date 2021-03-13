@@ -2,6 +2,7 @@ import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@
 import { AbstractControl, FormArray, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { ExerciseService } from 'src/app/exercise/exercise.service';
+import { ConstructorType } from 'src/app/models/constructor-type';
 import { MethodType } from 'src/app/models/method-type';
 import { ClassOverridesObjectMethodSubRequirement } from 'src/app/models/requirements/class-overrides-object-method-sub-requirement';
 import { ClassRequirement } from 'src/app/models/requirements/class-requirement';
@@ -29,6 +30,7 @@ export class SubRequirementFormComponent implements OnInit, OnChanges, OnDestroy
   classSubRequirementForm!: FormGroup | null;
   formHeader!: string;
   methodType = MethodType;
+  constructorType = ConstructorType;
 
   subscriptions: Subscription[] = [];
 
@@ -556,9 +558,15 @@ export class SubRequirementFormComponent implements OnInit, OnChanges, OnDestroy
     return fg as FormGroup;
   }
 
-  openPickMethodDialog(mehtodType: MethodType) {
+  openPickMethodDialog(mehtodType: MethodType, mustBeFromCurrentClass: boolean) {
     if (this.classSubRequirementForm) {
           this.exerciseDialogService.showPickMethodDialog({ formGroup: this.classSubRequirementForm, mehtodType: mehtodType });
+    }
+  }
+
+  openPickConstructorDialog(constructorType: ConstructorType, mustBeFromCurrentClass: boolean) {
+    if (this.classSubRequirementForm) {
+          this.exerciseDialogService.showPickConstructorDialog({ formGroup: this.classSubRequirementForm, constructorType: constructorType });
     }
   }
 

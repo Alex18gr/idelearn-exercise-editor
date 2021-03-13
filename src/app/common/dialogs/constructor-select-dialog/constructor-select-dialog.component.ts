@@ -4,11 +4,13 @@ import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
 import { ExerciseDialogService } from 'src/app/exercise/dialogs/exercise-dialog.service';
 import { ExerciseService } from 'src/app/exercise/exercise.service';
+import { ConstructorType } from 'src/app/models/constructor-type';
 import { MethodType } from 'src/app/models/method-type';
 import { ClassRequirement } from 'src/app/models/requirements/class-requirement';
+import { RequirementConstructor } from 'src/app/models/requirements/requirement-constructor';
 import { RequirementMethod } from 'src/app/models/requirements/requirement-method';
-import { ExerciseMethodAnalyseService } from '../../service/mathod-analyser/exercise-method-analyse.service';
-import { MethodAnalyser } from '../../service/mathod-analyser/method-analyser';
+import { ExerciseAnalyseService } from '../../service/mathod-analyser/exercise-analyse.service';
+import { ExerciseAnalyser } from '../../service/mathod-analyser/exercise-analyser';
 
 @Component({
   selector: 'app-constructor-select-dialog',
@@ -18,19 +20,19 @@ import { MethodAnalyser } from '../../service/mathod-analyser/method-analyser';
 export class ConstructorSelectDialogComponent implements OnInit {
 
   display: boolean = false;
-  title: string = 'Pick Method';
+  title: string = 'Pick Constructor';
   loadingData: boolean = false;
   showDialogSubscription: Subscription | undefined;
-  methodAnalyser: MethodAnalyser | undefined;
+  exerciseAnalyser: ExerciseAnalyser | undefined;
   classesList: { label: string, value: ClassRequirement }[] = [];
-  methodsList: { label: string, value: RequirementMethod }[] = [];
+  methodsList: { label: string, value: RequirementConstructor }[] = [];
   selectedClass: ClassRequirement | undefined;
-  selectedMethod: RequirementMethod | undefined;
+  selectedConstructor: RequirementConstructor | undefined;
   formGroup: FormGroup | undefined;
-  methodType: MethodType | undefined;
+  constructorType: ConstructorType | undefined;
 
   constructor(
-    private exerciseMethodAnayseService: ExerciseMethodAnalyseService,
+    private exerciseAnayseService: ExerciseAnalyseService,
     private exerciseDialogService: ExerciseDialogService,
     private exerciseService: ExerciseService,
     private cdr: ChangeDetectorRef,
@@ -42,22 +44,22 @@ export class ConstructorSelectDialogComponent implements OnInit {
   }
 
   initializeSubscriptions() {
-    this.showDialogSubscription = this.exerciseDialogService.showPickMethodDialogObservable.subscribe((options: { formGroup: FormGroup, mehtodType: MethodType }) => {
+    this.showDialogSubscription = this.exerciseDialogService.showPickConstructorDialogObservable.subscribe((options: { formGroup: FormGroup, constructorType: ConstructorType }) => {
       this.showDialog(options);
     });
   }
 
-  showDialog(options: { formGroup: FormGroup, mehtodType: MethodType }) {
+  showDialog(options: { formGroup: FormGroup, constructorType: ConstructorType }) {
     this.formGroup = options.formGroup;
-    this.methodType = options.mehtodType;
-    this.getMehodData();
+    this.constructorType = options.constructorType;
+    this.getConstructorData();
     this.display = true;
   }
 
-  getMehodData() {
-    this.methodAnalyser = this.exerciseMethodAnayseService.methodAnalyser;
+  getConstructorData() {
+    this.exerciseAnalyser = this.exerciseAnayseService.exerciseAnalyser;
     this.classesList = [];
-    this.methodAnalyser.getClasses().forEach((value: ClassRequirement) => {
+    this.exerciseAnalyser.getClasses().forEach((value: ClassRequirement) => {
       this.classesList.push({
         label: value.name,
         value: value
@@ -67,26 +69,27 @@ export class ConstructorSelectDialogComponent implements OnInit {
 
   hideDialog() {
     this.formGroup = undefined;
-    this.selectedMethod = undefined;
+    this.selectedConstructor = undefined;
     this.selectedClass = undefined;
-    this.methodType = undefined;
+    this.constructorType = undefined;
     this.display = false;
   }
 
   confirm() {
-    if (this.selectedMethod && this.formGroup && this.methodType) {
+    if (this.selectedConstructor && this.formGroup && this.constructorType) {
       this.patchFormValue();
-      this.exerciseDialogService.methodSelected({ method: this.selectedMethod, formGroup: this.formGroup });
+      // this.exerciseDialogService.methodSelected({ method: this.selectedMethod, formGroup: this.formGroup });
       this.hideDialog();
     }
   }
 
   patchFormValue() {
-    if (this.selectedClass && this.selectedMethod && this.formGroup) {
+    if (this.selectedClass && this.selectedConstructor && this.formGroup) {
       const parametersArray: FormGroup[] = [];
-      switch (this.methodType) {
-        case MethodType.CONTAINS_METHOD:
-          for (let p of this.selectedMethod.parameters) {
+      switch (this.constructorType) {
+        case ConstructorType.CONSTRUCTOR_CALL_METHOD:
+        case ConstructorType.CURRENT_CONSTRUCTOR_CALL_CONSTRUCTOR:
+          for (let p of this.selectedConstructor.parameters) {
             const parameterGroup = new FormGroup({
               name: new FormControl(''),
               type: new FormControl('')
@@ -97,18 +100,16 @@ export class ConstructorSelectDialogComponent implements OnInit {
             });
             parametersArray.push(parameterGroup);
           }
-          (this.formGroup.controls.method as FormGroup).controls.parameters = new FormArray(parametersArray);
+          (this.formGroup.controls.constructorMethod as FormGroup).controls.parameters = new FormArray(parametersArray);
 
           this.formGroup.patchValue({
-            method: {
-              name: this.selectedMethod.name,
-              modifiers: this.selectedMethod.modifiers,
-              type: this.exerciseService.stringifyType(this.selectedMethod.type)
+            constructorMethod: {
+              modifiers: this.selectedConstructor.modifiers,
             }
           });
           break;
-        case MethodType.CONTAINS_CALL_METHOD:
-          for (let p of this.selectedMethod.parameters) {
+        case ConstructorType.OTHER_CONSTRUCTOR_CALL_CONSTRUCTOR:
+          for (let p of this.selectedConstructor.parameters) {
             const parameterGroup = new FormGroup({
               name: new FormControl(''),
               type: new FormControl('')
@@ -119,39 +120,12 @@ export class ConstructorSelectDialogComponent implements OnInit {
             });
             parametersArray.push(parameterGroup);
           }
-          (this.formGroup.controls.callMethod as FormGroup).controls.parameters = new FormArray(parametersArray);
+          (this.formGroup.controls.callConstructor as FormGroup).controls.parameters = new FormArray(parametersArray);
 
           this.formGroup.patchValue({
-            callMethod: {
-              name: this.selectedMethod.name,
-              modifiers: this.selectedMethod.modifiers,
-              type: this.exerciseService.stringifyType(this.selectedMethod.type)
-            },
-            callMethodClassName: this.selectedClass.name,
-            isCallMethodClassSuperClass: false
-          });
-          break;
-        case MethodType.CONSTRUCTOR_CALL_METHOD:
-          for (let p of this.selectedMethod.parameters) {
-            const parameterGroup = new FormGroup({
-              name: new FormControl(''),
-              type: new FormControl('')
-            });
-            parameterGroup.patchValue({
-              name: p.name,
-              type: this.exerciseService.stringifyType(p.type)
-            });
-            parametersArray.push(parameterGroup);
-          }
-          (this.formGroup.controls.callMethod as FormGroup).controls.parameters = new FormArray(parametersArray);
-
-          this.formGroup.patchValue({
-            callMethod: {
-              name: this.selectedMethod.name,
-              modifiers: this.selectedMethod.modifiers,
-              type: this.exerciseService.stringifyType(this.selectedMethod.type)
-            },
-            callMethodClassName: this.selectedClass.name
+            callConstructor: {
+              modifiers: this.selectedConstructor.modifiers,
+            }
           });
           break;
         default:
@@ -164,18 +138,18 @@ export class ConstructorSelectDialogComponent implements OnInit {
   classDropdownValueChanged(event: any) {
     const selectedClass = event.value;
     if (selectedClass instanceof ClassRequirement) {
-      this.getClassMethods(selectedClass);
+      this.getClassConstructors(selectedClass);
     }
   }
 
-  getClassMethods(selectedClass: ClassRequirement) {
-    this.selectedMethod = undefined;
-    const classMehods = this.methodAnalyser?.getClassMethods(selectedClass);
+  getClassConstructors(selectedClass: ClassRequirement) {
+    this.selectedConstructor = undefined;
+    const classMehods = this.exerciseAnalyser?.getClassConstructors(selectedClass);
     this.methodsList = [];
     if (classMehods) {
-      classMehods.forEach((value: RequirementMethod) => {
+      classMehods.forEach((value: RequirementConstructor) => {
         this.methodsList.push({
-          label: this.exerciseService.getMethodSignature(value),
+          label: this.exerciseService.getConstructorMethodSignature(value),
           value: value
         });
       });

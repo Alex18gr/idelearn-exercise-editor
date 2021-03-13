@@ -7,8 +7,8 @@ import { ExerciseService } from 'src/app/exercise/exercise.service';
 import { MethodType } from 'src/app/models/method-type';
 import { ClassRequirement } from 'src/app/models/requirements/class-requirement';
 import { RequirementMethod } from 'src/app/models/requirements/requirement-method';
-import { ExerciseMethodAnalyseService } from '../../service/mathod-analyser/exercise-method-analyse.service';
-import { MethodAnalyser } from '../../service/mathod-analyser/method-analyser';
+import { ExerciseAnalyseService } from '../../service/mathod-analyser/exercise-analyse.service';
+import { ExerciseAnalyser } from '../../service/mathod-analyser/exercise-analyser';
 
 @Component({
   selector: 'app-method-select-dialog',
@@ -20,7 +20,7 @@ export class MethodSelectDialogComponent implements OnInit, OnDestroy {
   title: string = 'Pick Method';
   loadingData: boolean = false;
   showDialogSubscription: Subscription | undefined;
-  methodAnalyser: MethodAnalyser | undefined;
+  exerciseAnalyser: ExerciseAnalyser | undefined;
   classesList: { label: string, value: ClassRequirement }[] = [];
   methodsList: { label: string, value: RequirementMethod }[] = [];
   selectedClass: ClassRequirement | undefined;
@@ -29,7 +29,7 @@ export class MethodSelectDialogComponent implements OnInit, OnDestroy {
   methodType: MethodType | undefined;
 
   constructor(
-    private exerciseMethodAnayseService: ExerciseMethodAnalyseService,
+    private exerciseAnayseService: ExerciseAnalyseService,
     private exerciseDialogService: ExerciseDialogService,
     private exerciseService: ExerciseService,
     private cdr: ChangeDetectorRef,
@@ -54,9 +54,9 @@ export class MethodSelectDialogComponent implements OnInit, OnDestroy {
   }
 
   getMehodData() {
-    this.methodAnalyser = this.exerciseMethodAnayseService.methodAnalyser;
+    this.exerciseAnalyser = this.exerciseAnayseService.exerciseAnalyser;
     this.classesList = [];
-    this.methodAnalyser.getClasses().forEach((value: ClassRequirement) => {
+    this.exerciseAnalyser.getClasses().forEach((value: ClassRequirement) => {
       this.classesList.push({
         label: value.name,
         value: value
@@ -169,7 +169,7 @@ export class MethodSelectDialogComponent implements OnInit, OnDestroy {
 
   getClassMethods(selectedClass: ClassRequirement) {
     this.selectedMethod = undefined;
-    const classMehods = this.methodAnalyser?.getClassMethods(selectedClass);
+    const classMehods = this.exerciseAnalyser?.getClassMethods(selectedClass);
     this.methodsList = [];
     if (classMehods) {
       classMehods.forEach((value: RequirementMethod) => {

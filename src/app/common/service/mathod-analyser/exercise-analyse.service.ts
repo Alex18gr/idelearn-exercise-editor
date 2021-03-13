@@ -2,25 +2,26 @@ import { Injectable } from '@angular/core';
 import { ExerciseService } from 'src/app/exercise/exercise.service';
 import { Exercise } from 'src/app/models/exercise';
 import { ClassRequirement } from 'src/app/models/requirements/class-requirement';
+import { ClassHasConstructorRequirement } from 'src/app/models/requirements/has-constructor-sub-requirement';
 import { ClassHasMethodRequirement } from 'src/app/models/requirements/has-method-sub-requirement';
-import { MethodAnalyser } from './method-analyser';
+import { ExerciseAnalyser } from './exercise-analyser';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ExerciseMethodAnalyseService {
+export class ExerciseAnalyseService {
 
-  private _methodAnalyser: MethodAnalyser;
+  private _exerciseAnalyser: ExerciseAnalyser;
   
-  public get methodAnalyser() : MethodAnalyser {
-    return this._methodAnalyser;
+  public get exerciseAnalyser() : ExerciseAnalyser {
+    return this._exerciseAnalyser;
   }
   
 
   constructor(
     private exerciseService: ExerciseService
   ) {
-    this._methodAnalyser = new MethodAnalyser();
+    this._exerciseAnalyser = new ExerciseAnalyser();
     this.exerciseService.currentExerciseObservable.subscribe((exercise: Exercise | null) => {
       if (exercise) {
         this.analyseExerciseMethods(exercise);
@@ -39,15 +40,18 @@ export class ExerciseMethodAnalyseService {
   }
 
   initializeClassMethodsMap() {
-    this._methodAnalyser = new MethodAnalyser();
+    this._exerciseAnalyser = new ExerciseAnalyser();
   }
 
   extractMethods(exercise: Exercise) {
     for (let req of exercise.requirements) {
       if (req instanceof ClassRequirement) {
+        this._exerciseAnalyser.addClass(req);
         for (let subReq of req.relatedRequirements) {
           if (subReq instanceof ClassHasMethodRequirement) {
-            this._methodAnalyser.addClassMethod(req, subReq.method);
+            this._exerciseAnalyser.addClassMethod(req, subReq.method);
+          } else if (subReq instanceof ClassHasConstructorRequirement) {
+            this._exerciseAnalyser.addClassConstructor(req, subReq.constructorReq);
           }
         }
       }

@@ -250,7 +250,7 @@
             <div formGroupName="method">
                 <div class="method-section-header">
                     <h3>Caller Method</h3>
-                    <button pButton pRipple type="button" class="p-button-raised p-button-sm" label="Pick Method" icon="pi pi-external-link" (click)="openPickMethodDialog(methodType.CONTAINS_METHOD)"></button>
+                    <button pButton pRipple type="button" class="p-button-raised p-button-sm" label="Pick Method" icon="pi pi-external-link" (click)="openPickMethodDialog(methodType.CONTAINS_METHOD, true)"></button>
                 </div>
                 <div class="p-field sub-requirement-input-group">
                     <span class="p-float-label">
@@ -311,7 +311,7 @@
             <div formGroupName="callMethod">
                 <div class="method-section-header">
                     <h3>Calling Method</h3>
-                    <button pButton pRipple type="button" class="p-button-raised p-button-sm" label="Pick Method" icon="pi pi-external-link" (click)="openPickMethodDialog(methodType.CONTAINS_CALL_METHOD)"></button>
+                    <button pButton pRipple type="button" class="p-button-raised p-button-sm" label="Pick Method" icon="pi pi-external-link" (click)="openPickMethodDialog(methodType.CONTAINS_CALL_METHOD, false)"></button>
                 </div>
                 <div class="p-field sub-requirement-input-group">
                     <span class="p-float-label">
@@ -389,8 +389,10 @@
 
         <form class="sub-requirement-form" [formGroup]="classSubRequirementForm" *ngSwitchCase="'constructor-call-method'"> 
             <div formGroupName="constructorMethod">
-                <h3>Constructor Method</h3>
-    
+                <div class="method-section-header">
+                    <h3>Constructor Method</h3>
+                    <button pButton pRipple type="button" class="p-button-raised p-button-sm" label="Pick Constructor" icon="pi pi-external-link" (click)="openPickConstructorDialog(constructorType.CONSTRUCTOR_CALL_METHOD, true)"></button>
+                </div>
                 <div class="p-field sub-requirement-input-group">
                     <span class="p-float-label">
                         <p-multiSelect inputId="modifiers" [options]="modifiers"
@@ -428,7 +430,7 @@
             <div formGroupName="callMethod">
                 <div class="method-section-header">
                     <h3>Calling Method</h3>
-                    <button pButton pRipple type="button" class="p-button-raised p-button-sm" label="Pick Method" icon="pi pi-external-link" (click)="openPickMethodDialog(methodType.CONSTRUCTOR_CALL_METHOD)"></button>
+                    <button pButton pRipple type="button" class="p-button-raised p-button-sm" label="Pick Method" icon="pi pi-external-link" (click)="openPickMethodDialog(methodType.CONSTRUCTOR_CALL_METHOD, false)"></button>
                 </div>
                 <div class="p-field sub-requirement-input-group">
                     <span class="p-float-label">
@@ -500,8 +502,10 @@
 
         <form class="sub-requirement-form" [formGroup]="classSubRequirementForm" *ngSwitchCase="'constructor-call-constructor'"> 
             <div formGroupName="constructorMethod">
-                <h3>Constructor Method</h3>
-    
+                <div class="method-section-header">
+                    <h3>Current Class Constructor Method</h3>
+                    <button pButton pRipple type="button" class="p-button-raised p-button-sm" label="Pick Constructor" icon="pi pi-external-link" (click)="openPickConstructorDialog(constructorType.CURRENT_CONSTRUCTOR_CALL_CONSTRUCTOR, true)"></button>
+                </div>
                 <div class="p-field sub-requirement-input-group">
                     <span class="p-float-label">
                         <p-multiSelect inputId="modifiers" [options]="modifiers"
@@ -537,8 +541,10 @@
                 </div>
             </div>
             <div formGroupName="callConstructor">
-                <h3>Call Constructor</h3>
-    
+                <div class="method-section-header">
+                    <h3>Calling Constructor</h3>
+                    <button pButton pRipple type="button" class="p-button-raised p-button-sm" label="Pick Constructor" icon="pi pi-external-link" (click)="openPickConstructorDialog(constructorType.OTHER_CONSTRUCTOR_CALL_CONSTRUCTOR, false)"></button>
+                </div>
                 <div class="p-field sub-requirement-input-group">
                     <span class="p-float-label">
                         <p-multiSelect inputId="modifiers" [options]="modifiers"

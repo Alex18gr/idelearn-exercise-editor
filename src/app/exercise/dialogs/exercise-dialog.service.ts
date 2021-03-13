@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
+import { ConstructorType } from 'src/app/models/constructor-type';
 import { Exercise } from 'src/app/models/exercise';
 import { MethodType } from 'src/app/models/method-type';
 import { IRequirement } from 'src/app/models/requirements/irequirement';
@@ -32,6 +33,9 @@ export class ExerciseDialogService {
   private methodSelectedSubject: Subject<{ method: RequirementMethod, formGroup: FormGroup }> = new Subject();
   public methodSelectedObservable: Observable<{ method: RequirementMethod, formGroup: FormGroup }> = this.methodSelectedSubject.asObservable();
 
+  private showPickConstructorDialogSubject: Subject<{ formGroup: FormGroup, constructorType: ConstructorType }> = new Subject();
+  public showPickConstructorDialogObservable: Observable<{ formGroup: FormGroup, constructorType: ConstructorType }> = this.showPickConstructorDialogSubject.asObservable();
+
   constructor() { }
 
   showEditRequirementDialog(options?: { requirement?: IRequirement }) {
@@ -60,6 +64,10 @@ export class ExerciseDialogService {
 
   methodSelected(method: { method: RequirementMethod, formGroup: FormGroup }) {
     this.methodSelectedSubject.next(method);
+  }
+
+  showPickConstructorDialog(options: { formGroup: FormGroup, constructorType: ConstructorType }) {
+    this.showPickConstructorDialogSubject.next(options);
   }
 
 }
