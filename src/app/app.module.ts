@@ -35,6 +35,9 @@ import { DragDropModule } from "@angular/cdk/drag-drop";
 import { SaveChangesDialogComponent } from './common/dialogs/save-changes-dialog/save-changes-dialog.component';
 import { ExerciseService } from './exercise/exercise.service';
 import { ExerciseDialogService } from './exercise/dialogs/exercise-dialog.service';
+import { MethodFormComponent } from './common/forms/method-form/method-form.component';
+import { MethodSelectDialogComponent } from './common/dialogs/method-select-dialog/method-select-dialog.component';
+import { ConstructorSelectDialogComponent } from './common/dialogs/constructor-select-dialog/constructor-select-dialog.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +53,9 @@ import { ExerciseDialogService } from './exercise/dialogs/exercise-dialog.servic
     NewExerciseDialogComponent,
     FileUploadComponent,
     SaveChangesDialogComponent,
+    MethodFormComponent,
+    MethodSelectDialogComponent,
+    ConstructorSelectDialogComponent,
   ],
   imports: [
     BrowserModule,

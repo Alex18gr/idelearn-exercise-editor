@@ -1,0 +1,38 @@
+<p-dialog [header]="title" [(visible)]="display" [modal]="true" [draggable]="false" (onHide)="hideDialog()"
+    [position]="'center'" styleClass="custom-edit-dialog">
+    <section class="dialog-content">
+        <section class="method-form">
+            <div class="dropdown-input">
+                <p-dropdown [options]="classesList" [(ngModel)]="selectedClass" placeholder="Select a Class" [disabled]="classDropdownDisabled"
+                    (onChange)="classDropdownValueChanged($event)" appendTo="body">
+                    <ng-template pTemplate="selectedItem">
+                        <div *ngIf="selectedClass">
+                            <div>{{selectedClass.name}}</div>
+                        </div>
+                    </ng-template>
+                    <ng-template let-classVal pTemplate="item">
+                        <div>
+                            <div>{{classVal.label}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+            <div class="dropdown-input">
+                <p-dropdown [options]="methodsList" [(ngModel)]="selectedMethod" placeholder="Select a Class Method"
+                    appendTo="body">
+                    <ng-template let-methodVal pTemplate="item">
+                        <div>
+                            <div>{{methodVal.label}}</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+        </section>
+    </section>
+    <p-footer>
+        <button pButton pRipple type="button" class="p-button-raised" label="Cancel" icon="pi pi-trash"
+            (click)="hideDialog()"></button>
+        <button pButton pRipple type="button" class="p-button-raised" label="Confirm" icon="pi pi-save"
+            (click)="confirm()"></button>
+    </p-footer>
+</p-dialog>
