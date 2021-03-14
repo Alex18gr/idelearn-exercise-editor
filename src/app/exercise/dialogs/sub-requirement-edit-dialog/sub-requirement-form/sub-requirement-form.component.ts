@@ -560,13 +560,13 @@ export class SubRequirementFormComponent implements OnInit, OnChanges, OnDestroy
 
   openPickMethodDialog(mehtodType: MethodType, mustBeFromCurrentClass: boolean) {
     if (this.classSubRequirementForm) {
-          this.exerciseDialogService.showPickMethodDialog({ formGroup: this.classSubRequirementForm, mehtodType: mehtodType });
+      this.exerciseDialogService.showPickMethodDialog({ formGroup: this.classSubRequirementForm, mehtodType: mehtodType, mustBeFromCurrentClass: mustBeFromCurrentClass, currentRequirement: this.parentRequirement });
     }
   }
 
   openPickConstructorDialog(constructorType: ConstructorType, mustBeFromCurrentClass: boolean) {
     if (this.classSubRequirementForm) {
-          this.exerciseDialogService.showPickConstructorDialog({ formGroup: this.classSubRequirementForm, constructorType: constructorType });
+      this.exerciseDialogService.showPickConstructorDialog({ formGroup: this.classSubRequirementForm, constructorType: constructorType, mustBeFromCurrentClass: mustBeFromCurrentClass, currentRequirement: this.parentRequirement });
     }
   }
 

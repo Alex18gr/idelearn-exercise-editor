@@ -3,7 +3,7 @@
     <section class="dialog-content">
         <section class="method-form">
             <div class="dropdown-input">
-                <p-dropdown [options]="classesList" [(ngModel)]="selectedClass" placeholder="Select a Class"
+                <p-dropdown [options]="classesList" [(ngModel)]="selectedClass" placeholder="Select a Class" [disabled]="classDropdownDisabled"
                     (onChange)="classDropdownValueChanged($event)" appendTo="body">
                     <ng-template pTemplate="selectedItem">
                         <div *ngIf="selectedClass">

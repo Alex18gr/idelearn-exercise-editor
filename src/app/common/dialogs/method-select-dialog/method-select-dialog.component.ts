@@ -6,6 +6,7 @@ import { ExerciseDialogService } from 'src/app/exercise/dialogs/exercise-dialog.
 import { ExerciseService } from 'src/app/exercise/exercise.service';
 import { MethodType } from 'src/app/models/method-type';
 import { ClassRequirement } from 'src/app/models/requirements/class-requirement';
+import { IRequirement } from 'src/app/models/requirements/irequirement';
 import { RequirementMethod } from 'src/app/models/requirements/requirement-method';
 import { ExerciseAnalyseService } from '../../service/mathod-analyser/exercise-analyse.service';
 import { ExerciseAnalyser } from '../../service/mathod-analyser/exercise-analyser';
@@ -27,6 +28,9 @@ export class MethodSelectDialogComponent implements OnInit, OnDestroy {
   selectedMethod: RequirementMethod | undefined;
   formGroup: FormGroup | undefined;
   methodType: MethodType | undefined;
+  mustBeFromCurrentClass: boolean = false;
+  currentRequirement: IRequirement | null | undefined;
+  classDropdownDisabled: boolean = false;
 
   constructor(
     private exerciseAnayseService: ExerciseAnalyseService,
@@ -41,14 +45,16 @@ export class MethodSelectDialogComponent implements OnInit, OnDestroy {
   }
 
   initializeSubscriptions() {
-    this.showDialogSubscription = this.exerciseDialogService.showPickMethodDialogObservable.subscribe((options: { formGroup: FormGroup, mehtodType: MethodType }) => {
+    this.showDialogSubscription = this.exerciseDialogService.showPickMethodDialogObservable.subscribe((options: { formGroup: FormGroup, mehtodType: MethodType, mustBeFromCurrentClass: boolean, currentRequirement: IRequirement | null }) => {
       this.showDialog(options);
     });
   }
 
-  showDialog(options: { formGroup: FormGroup, mehtodType: MethodType }) {
+  showDialog(options: { formGroup: FormGroup, mehtodType: MethodType, mustBeFromCurrentClass: boolean, currentRequirement: IRequirement | null }) {
     this.formGroup = options.formGroup;
     this.methodType = options.mehtodType;
+    this.mustBeFromCurrentClass = !!options.mustBeFromCurrentClass;
+    this.currentRequirement = options.currentRequirement;
     this.getMehodData();
     this.display = true;
   }
@@ -62,6 +68,11 @@ export class MethodSelectDialogComponent implements OnInit, OnDestroy {
         value: value
       });
     });
+    if (this.mustBeFromCurrentClass && this.currentRequirement instanceof ClassRequirement) {
+      this.classDropdownDisabled = true;
+      this.selectedClass = this.currentRequirement;
+      this.getClassMethods(this.selectedClass);
+    }
   }
 
   hideDialog() {
@@ -69,6 +80,9 @@ export class MethodSelectDialogComponent implements OnInit, OnDestroy {
     this.selectedMethod = undefined;
     this.selectedClass = undefined;
     this.methodType = undefined;
+    this.mustBeFromCurrentClass = false;
+    this.currentRequirement = null;
+    this.classDropdownDisabled = false;
     this.display = false;
   }
 

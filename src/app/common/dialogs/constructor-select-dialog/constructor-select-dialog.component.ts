@@ -7,6 +7,7 @@ import { ExerciseService } from 'src/app/exercise/exercise.service';
 import { ConstructorType } from 'src/app/models/constructor-type';
 import { MethodType } from 'src/app/models/method-type';
 import { ClassRequirement } from 'src/app/models/requirements/class-requirement';
+import { IRequirement } from 'src/app/models/requirements/irequirement';
 import { RequirementConstructor } from 'src/app/models/requirements/requirement-constructor';
 import { RequirementMethod } from 'src/app/models/requirements/requirement-method';
 import { ExerciseAnalyseService } from '../../service/mathod-analyser/exercise-analyse.service';
@@ -30,6 +31,9 @@ export class ConstructorSelectDialogComponent implements OnInit {
   selectedConstructor: RequirementConstructor | undefined;
   formGroup: FormGroup | undefined;
   constructorType: ConstructorType | undefined;
+  mustBeFromCurrentClass: boolean = false;
+  currentRequirement: IRequirement | null | undefined;
+  classDropdownDisabled: boolean = false;
 
   constructor(
     private exerciseAnayseService: ExerciseAnalyseService,
@@ -44,14 +48,16 @@ export class ConstructorSelectDialogComponent implements OnInit {
   }
 
   initializeSubscriptions() {
-    this.showDialogSubscription = this.exerciseDialogService.showPickConstructorDialogObservable.subscribe((options: { formGroup: FormGroup, constructorType: ConstructorType }) => {
+    this.showDialogSubscription = this.exerciseDialogService.showPickConstructorDialogObservable.subscribe((options: { formGroup: FormGroup, constructorType: ConstructorType, mustBeFromCurrentClass: boolean, currentRequirement: IRequirement | null }) => {
       this.showDialog(options);
     });
   }
 
-  showDialog(options: { formGroup: FormGroup, constructorType: ConstructorType }) {
+  showDialog(options: { formGroup: FormGroup, constructorType: ConstructorType, mustBeFromCurrentClass: boolean, currentRequirement: IRequirement | null }) {
     this.formGroup = options.formGroup;
     this.constructorType = options.constructorType;
+    this.mustBeFromCurrentClass = !!options.mustBeFromCurrentClass;
+    this.currentRequirement = options.currentRequirement;
     this.getConstructorData();
     this.display = true;
   }
@@ -65,6 +71,11 @@ export class ConstructorSelectDialogComponent implements OnInit {
         value: value
       });
     });
+    if (this.mustBeFromCurrentClass && this.currentRequirement instanceof ClassRequirement) {
+      this.classDropdownDisabled = true;
+      this.selectedClass = this.currentRequirement;
+      this.getClassConstructors(this.selectedClass);
+    }
   }
 
   hideDialog() {
@@ -72,6 +83,9 @@ export class ConstructorSelectDialogComponent implements OnInit {
     this.selectedConstructor = undefined;
     this.selectedClass = undefined;
     this.constructorType = undefined;
+    this.mustBeFromCurrentClass = false;
+    this.currentRequirement = null;
+    this.classDropdownDisabled = false;
     this.display = false;
   }
 

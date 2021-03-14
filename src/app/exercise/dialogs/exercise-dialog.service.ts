@@ -4,6 +4,7 @@ import { Observable, Subject } from 'rxjs';
 import { ConstructorType } from 'src/app/models/constructor-type';
 import { Exercise } from 'src/app/models/exercise';
 import { MethodType } from 'src/app/models/method-type';
+import { ClassRequirement } from 'src/app/models/requirements/class-requirement';
 import { IRequirement } from 'src/app/models/requirements/irequirement';
 import { RequirementMethod } from 'src/app/models/requirements/requirement-method';
 
@@ -27,14 +28,14 @@ export class ExerciseDialogService {
   private showExerciseSaveChangesDialogSubject: Subject<{ promptType: 'new' | 'open' | 'close' }> = new Subject();
   public showExerciseSaveChangesDialogObservable: Observable<{ promptType: 'new' | 'open' | 'close' }> = this.showExerciseSaveChangesDialogSubject.asObservable();
 
-  private showPickMethodDialogSubject: Subject<{ formGroup: FormGroup, mehtodType: MethodType }> = new Subject();
-  public showPickMethodDialogObservable: Observable<{ formGroup: FormGroup, mehtodType: MethodType }> = this.showPickMethodDialogSubject.asObservable();
+  private showPickMethodDialogSubject: Subject<{ formGroup: FormGroup, mehtodType: MethodType, mustBeFromCurrentClass: boolean, currentRequirement: IRequirement | null }> = new Subject();
+  public showPickMethodDialogObservable: Observable<{ formGroup: FormGroup, mehtodType: MethodType, mustBeFromCurrentClass: boolean, currentRequirement: IRequirement | null }> = this.showPickMethodDialogSubject.asObservable();
 
   private methodSelectedSubject: Subject<{ method: RequirementMethod, formGroup: FormGroup }> = new Subject();
   public methodSelectedObservable: Observable<{ method: RequirementMethod, formGroup: FormGroup }> = this.methodSelectedSubject.asObservable();
 
-  private showPickConstructorDialogSubject: Subject<{ formGroup: FormGroup, constructorType: ConstructorType }> = new Subject();
-  public showPickConstructorDialogObservable: Observable<{ formGroup: FormGroup, constructorType: ConstructorType }> = this.showPickConstructorDialogSubject.asObservable();
+  private showPickConstructorDialogSubject: Subject<{ formGroup: FormGroup, constructorType: ConstructorType, mustBeFromCurrentClass: boolean, currentRequirement: IRequirement | null }> = new Subject();
+  public showPickConstructorDialogObservable: Observable<{ formGroup: FormGroup, constructorType: ConstructorType, mustBeFromCurrentClass: boolean, currentRequirement: IRequirement | null }> = this.showPickConstructorDialogSubject.asObservable();
 
   constructor() { }
 
@@ -58,7 +59,7 @@ export class ExerciseDialogService {
     this.showExerciseSaveChangesDialogSubject.next(options);
   }
 
-  showPickMethodDialog(options: { formGroup: FormGroup, mehtodType: MethodType }) {
+  showPickMethodDialog(options: { formGroup: FormGroup, mehtodType: MethodType, mustBeFromCurrentClass: boolean, currentRequirement: IRequirement | null }) {
     this.showPickMethodDialogSubject.next(options);
   }
 
@@ -66,7 +67,7 @@ export class ExerciseDialogService {
     this.methodSelectedSubject.next(method);
   }
 
-  showPickConstructorDialog(options: { formGroup: FormGroup, constructorType: ConstructorType }) {
+  showPickConstructorDialog(options: { formGroup: FormGroup, constructorType: ConstructorType, mustBeFromCurrentClass: boolean, currentRequirement: IRequirement | null }) {
     this.showPickConstructorDialogSubject.next(options);
   }
 
