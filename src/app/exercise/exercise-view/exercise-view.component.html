@@ -1,39 +1,45 @@
 <section *ngIf="exercise" class="exercise-view-container">
     <section class="exercise-data">
-        <button pButton pRipple label="Export Data" type="button" class="p-button-raised" icon="pi pi-save" (click)="exportExercise()"></button>
-        <div class="exercise-title">
-            <h2>{{ exercise.name }}</h2>
+        <div class="top-action-buttons">
+            <button pButton pRipple label="New Exercise" type="button" class="p-button-sm p-button-raised"
+                icon="pi pi-file" (click)="newExercise()"></button>
+            <button pButton pRipple label="Open Exercise" type="button" class="p-button-sm p-button-outlined"
+                icon="pi pi-folder-open" (click)="openExercise()"></button>
+            <button pButton pRipple label="Export Data" type="button" class="p-button-sm p-button-outlined"
+                icon="pi pi-save" (click)="exportExercise()"></button>
         </div>
-        <div class="exercise-id">
-            Exercise id: <span>{{ exercise.id }}</span>
-        </div>
-        <div class="exercise-exercise-project-info">
-            <div class="project-info-item">
-                <span class="project-info-header">Title:</span> {{ exercise.projectInfo.title }}
+        <div class="exercise-info">
+            <div class="exercise-title">
+                <span>{{ exercise.name }}</span>
             </div>
-            <div class="project-info-item">
-                <span class="project-info-header">Starting Project:</span> {{ exercise.projectInfo.startingProject ? 'With starting project' : 'Without starting project' }}
+            <div class="exercise-id">
+                Exercise id: <span>{{ exercise.id }}</span>
             </div>
-            <div class="project-info-edit-button">
-                <button pButton pRipple type="button" class="p-button-raised" icon="pi pi-pencil" (click)="editExerciseDetails()"></button>
+            <div class="exercise-exercise-project-info">
+                <div class="project-info-item">
+                    <span class="project-info-header">Title:</span> {{ exercise.projectInfo.title }}
+                </div>
+                <div class="project-info-item">
+                    <span class="project-info-header">Starting Project:</span> {{ exercise.projectInfo.startingProject ?
+                    'With starting project' : 'Without starting project' }}
+                </div>
+                <div class="project-info-edit-button">
+                    <button pButton pRipple type="button" class="p-button-raised" icon="pi pi-pencil"
+                        (click)="editExerciseDetails()"></button>
+                </div>
+            </div>
+            <div class="exercise-project-file">
             </div>
         </div>
-        <div class="exercise-project-file">
-
-        </div>
-        <!-- <div class="exercise-description">
-            <p>
-                This exercise is about many many things...
-            </p>
-            <h2>
-                {{ exercise.getExportData() | json}}
-            </h2>
-        </div> -->
     </section>
     <section class="requirements-container">
-        <app-exercise-requirements-view *ngIf="!editSubRequirement" [exercise]="exercise" (addClassRequirement)="addNewRequirement()" class="requirements"
-            (editClassRequirementSubrequirements)="editClassRequirementSubrequirements($event)" (editClassRequirement)="editClassRequirement($event)"></app-exercise-requirements-view>
-        <app-exercise-sub-requirements-view *ngIf="editSubRequirement" [exercise]="exercise" [editClassRequirement]="editRequirement" (back)="backToRequirements()" class="requirements"></app-exercise-sub-requirements-view>
+        <app-exercise-requirements-view *ngIf="!editSubRequirement" [exercise]="exercise"
+            (addClassRequirement)="addNewRequirement()" class="requirements"
+            (editClassRequirementSubrequirements)="editClassRequirementSubrequirements($event)"
+            (editClassRequirement)="editClassRequirement($event)"></app-exercise-requirements-view>
+        <app-exercise-sub-requirements-view *ngIf="editSubRequirement" [exercise]="exercise"
+            [editClassRequirement]="editRequirement" (back)="backToRequirements()" class="requirements">
+        </app-exercise-sub-requirements-view>
     </section>
 </section>
 

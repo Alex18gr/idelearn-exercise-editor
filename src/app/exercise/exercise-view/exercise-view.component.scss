@@ -1,11 +1,8 @@
-
-
 .requirements-container {
     display: flex;
     flex-direction: column;
     max-height: 100%;
     border-top: hsl(199, 93%, 42%) solid 2px;
-    padding-top: 8px;
     .requirements {
         height: 100%;
     }
@@ -14,51 +11,88 @@
 .exercise-data {
     display: flex;
     flex-direction: column;
-    padding: 10px;
     z-index: 990;
     background-color: #ffffff;
     border-bottom: 1px solid #0891cf;
-    .exercise-title {
-        font-size: 1.5rem;
-        font-weight: 500;
+    width: 100vw;
+    .top-action-buttons {
+        display: flex;
+        border-bottom: 2px solid #0891cf;
+        padding: 10px;
+        button {
+            margin-right: 4px;
+        }
     }
-    .exercise-id {
-        font-size: 1em;
-        color: grey;
-    }
-    .exercise-exercise-project-info {
-        border: 2px solid #0890cf7a;
-        border-radius: 5px;
-        padding: 7px;
-        margin-top: 15px;
+    .exercise-info {
         display: flex;
         flex-direction: column;
-        position: relative;
-        .project-info-item {
-            margin-left: 15px;
-            margin-top: 10px;
-            font-size: 1.25em;
-            .project-info-header {
-                color: #0891cf;
-                font-weight: 500;
-                margin-right: 20px;
+        padding: 0 5px;
+        .exercise-title {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin: 5px 0;
+            span {
+                display: inline-block;
+                overflow-x: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                width: 100%;
             }
         }
-        .project-info-edit-button {
-            position: absolute;
-            top: 5px;
-            right: 5px;
+        .exercise-id {
+            font-size: 1em;
+            color: grey;
+            font-size: 0.8rem;
+        }
+        .exercise-exercise-project-info {
+            border: 2px solid #0890cf7a;
+            border-radius: 5px;
+            padding: 7px;
+            margin-top: 5px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            .project-info-item {
+                margin-left: 15px;
+                margin-top: 0;
+                .project-info-header {
+                    color: #0891cf;
+                    font-weight: 500;
+                    margin-right: 20px;
+                }
+            }
+            .project-info-edit-button {
+                position: absolute;
+                top: 5px;
+                right: 5px;
+            }
+        }
+        .exercise-project-file {
+            border: 1px #0891cf;
+            border-radius: 5px;
         }
     }
-    .exercise-project-file {
-        border: 1px #0891cf;
-        border-radius: 5px;
-    }
 }
-
 
 .exercise-view-container {
-    max-height: 100vh;
+    height: 100%;
     display: grid;
-    grid-template-rows: 40% 60%;
+    grid-template-rows: 185px calc(100% - 185px);
 }
+
+// @media screen and (max-height: 725px) {
+//     .exercise-view-container {
+//         grid-template-rows: 250px calc(100% - 250px);
+//     }
+//     @media screen and (max-width: 450px) {
+//         .exercise-view-container {
+//             grid-template-rows: 285px calc(100% - 285px);
+//         }
+//     }
+// }
+
+// @media screen and (max-width: 450px) {
+//     .exercise-view-container {
+//         grid-template-rows: 285px calc(100% - 285px);
+//     }
+// }

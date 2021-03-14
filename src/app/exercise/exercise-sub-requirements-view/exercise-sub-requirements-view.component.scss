@@ -1,6 +1,6 @@
 .subrequirements {
     display: grid;
-    grid-template-rows: 12% 88%;
+    grid-template-rows: 46px calc(100% - 46px);
     height: 100%;
     .subrequirements-header {
         display: flex;

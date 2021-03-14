@@ -1,0 +1,39 @@
+{
+    "productName": "idelearn-exercise-editor",
+    "directories": {
+        "output": "dist/release/"
+    },
+    "files": [
+        {
+            "from": "dist/idelearn-exercise-editor",
+            "to": "./",
+            "filter": [
+                "**/*"
+            ]
+        }
+    ],
+    "win": {
+        "target": [
+            "portable"
+        ],
+        "publish": [
+            "github"
+        ]
+    },
+    "mac": {
+        "target": [
+            "dmg"
+        ],
+        "publish": [
+            "github"
+        ]
+    },
+    "linux": {
+        "target": [
+            "AppImage"
+        ],
+        "publish": [
+            "github"
+        ]
+    }
+}

@@ -893,6 +893,15 @@ export class ExerciseService {
     };
   }
 
+  getMethodSignature(method: RequirementMethod): string {
+    const methodModifiers = method.modifiers;
+    return methodModifiers.join(' ') + ' ' + this.stringifyType(method.type) + ' ' + method.name + this.getMethodParametersString(method);
+  }
+
+  getConstructorMethodSignature(constructor: RequirementConstructor): string {
+    return constructor.modifiers.join(' ') + this.getMethodParametersString(constructor);
+  }
+
   getMethodParametersString(method: RequirementMethod | RequirementConstructor): string {
     const parametersArray: string[] = [];
     parametersArray.push('(');
@@ -959,22 +968,30 @@ export class ExerciseService {
 
   addListenerToNewExercisePrompt() {
     this.exerciseFileService.addListenerToNewExercisePrompt((event: Electron.IpcRendererEvent, ...args: any[]): void => {
-      if (this.isExerciseOpened()) {
-        this.exerciseDialogService.showExerciseSaveChangesDialog({ promptType: 'new' });
-      } else {
-        this.exerciseDialogService.showNewExerciseDialog();
-      }
+      this.newExerciseWithPrompt();
     });
   }
 
   addListenerToOpenExercisePrompt() {
     this.exerciseFileService.addListenerToOpenExercisePrompt((event: Electron.IpcRendererEvent, ...args: any[]): void => {
-      if (this.isExerciseOpened()) {
-        this.exerciseDialogService.showExerciseSaveChangesDialog({ promptType: 'open' });
-      } else {
-        this.openExercise();
-      }
+      this.openExerciseWithPrompt();
     });
+  }
+
+  newExerciseWithPrompt() {
+    if (this.isExerciseOpened()) {
+      this.exerciseDialogService.showExerciseSaveChangesDialog({ promptType: 'new' });
+    } else {
+      this.exerciseDialogService.showNewExerciseDialog();
+    }
+  }
+
+  openExerciseWithPrompt() {
+    if (this.isExerciseOpened()) {
+      this.exerciseDialogService.showExerciseSaveChangesDialog({ promptType: 'open' });
+    } else {
+      this.openExercise();
+    }
   }
 
 }
