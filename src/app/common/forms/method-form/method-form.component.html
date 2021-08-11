@@ -6,7 +6,7 @@
                 pInputText>
             <label for="name">Method Name</label>
         </span>
-        <small *ngIf="isControlInvalid(methodForm.controls.name)" class="p-invalid">
+        <small *ngIf="isControlInvalid(methodForm.controls.name)" class="p-error">
             {{ getErrorMessage(methodForm.controls.name) }}
         </small>
     </div>
@@ -18,7 +18,7 @@
                 display="chip" styleClass="sub-requirement-type-custom-dropdown"></p-multiSelect>
             <label for="modifiers">Modifiers</label>
         </span>
-        <small *ngIf="isControlInvalid(methodForm.controls.modifiers)" class="p-invalid">
+        <small *ngIf="isControlInvalid(methodForm.controls.modifiers)" class="p-error">
             {{ getErrorMessage(methodForm.controls.modifiers) }}
         </small>
     </div>
@@ -29,7 +29,7 @@
                 pInputText>
             <label for="type">Type</label>
         </span>
-        <small *ngIf="isControlInvalid(methodForm.controls.type)" class="p-invalid">
+        <small *ngIf="isControlInvalid(methodForm.controls.type)" class="p-error">
             {{ getErrorMessage(methodForm.controls.type) }}
         </small>
     </div>

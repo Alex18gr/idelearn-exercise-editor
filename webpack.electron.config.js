@@ -8,7 +8,18 @@ module.exports = {
     extensions: [
       '.ts',
       '.js'
-    ]
+    ],
+    fallback: {
+      crypto: false,
+      tls: false,
+      net: false,
+      process: false,
+      module: false,
+      clearImmediate: false,
+      setImmediate: false,
+      Buffer: false,
+      fs: false
+    }
   },
   entry: {
     main: path.join(src, 'src', 'main.ts')
@@ -29,16 +40,7 @@ module.exports = {
     new ProgressPlugin()
   ],
   node: {
-    fs: false,
     global: false,
-    crypto: false,
-    tls: false,
-    net: false,
-    process: false,
-    module: false,
-    clearImmediate: false,
-    setImmediate: false,
-    Buffer: false,
     __filename: false,
     __dirname: false
   },

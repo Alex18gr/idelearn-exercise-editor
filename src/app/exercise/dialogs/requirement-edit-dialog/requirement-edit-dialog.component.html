@@ -20,7 +20,7 @@
                         <label for="className">Class Name</label>
                     </span>
                     <small *ngIf="isControlInvalid(classRequirementForm.controls.className)" id="username2-help"
-                        class="p-invalid">
+                        class="p-error">
                         {{ getErrorMessage(classRequirementForm.controls.className) }}
                     </small>
                 </div>

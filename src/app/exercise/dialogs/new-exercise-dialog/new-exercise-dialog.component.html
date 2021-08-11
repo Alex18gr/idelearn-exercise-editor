@@ -9,7 +9,7 @@
                             pInputText>
                         <label for="exerciseName">Exercise Name</label>
                     </span>
-                    <small *ngIf="isControlInvalid(exerciseForm.controls.exerciseName)" class="p-invalid">
+                    <small *ngIf="isControlInvalid(exerciseForm.controls.exerciseName)" class="p-error">
                         {{ getErrorMessage(exerciseForm.controls.exerciseName) }}
                     </small>
                 </div>
@@ -19,7 +19,7 @@
                             pInputText>
                         <label for="projectTitle">Exercise Project Title</label>
                     </span>
-                    <small *ngIf="isControlInvalid(exerciseForm.controls.projectTitle)" class="p-invalid">
+                    <small *ngIf="isControlInvalid(exerciseForm.controls.projectTitle)" class="p-error">
                         {{ getErrorMessage(exerciseForm.controls.projectTitle) }}
                     </small>
                 </div>
@@ -30,7 +30,7 @@
                         </textarea>
                         <label for="description">Description</label>
                     </span>
-                    <small *ngIf="isControlInvalid(exerciseForm.controls.description)" class="p-invalid">
+                    <small *ngIf="isControlInvalid(exerciseForm.controls.description)" class="p-error">
                         {{ getErrorMessage(exerciseForm.controls.description) }}
                     </small>
                 </div>
